@@ -19,7 +19,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.1 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.2 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -45,7 +45,7 @@ OPTIONS
   -n, --name=name  name of folder to copy boilerplate to
 ```
 
-_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.1/src/commands/bootstrap.ts)_
+_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.2/src/commands/bootstrap.ts)_
 
 ## `proton hello [FILE]`
 
@@ -65,7 +65,7 @@ EXAMPLE
   hello world from ./src/hello.ts!
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.1/src/commands/hello.ts)_
+_See code: [src/commands/hello.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.2/src/commands/hello.ts)_
 
 ## `proton help [COMMAND]`
 
