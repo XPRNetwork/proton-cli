@@ -19,7 +19,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.3 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.4 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -29,8 +29,10 @@ USAGE
 # Commands
 <!-- commands -->
 * [`proton bootstrap [FOLDER]`](#proton-bootstrap-folder)
-* [`proton hello [FILE]`](#proton-hello-file)
 * [`proton help [COMMAND]`](#proton-help-command)
+* [`proton install`](#proton-install)
+* [`proton version`](#proton-version)
+* [`proton wallet [FILE]`](#proton-wallet-file)
 
 ## `proton bootstrap [FOLDER]`
 
@@ -41,31 +43,10 @@ USAGE
   $ proton bootstrap [FOLDER]
 
 OPTIONS
-  -h, --help       show CLI help
-  -n, --name=name  name of folder to copy boilerplate to
+  -h, --help  show CLI help
 ```
 
-_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.3/src/commands/bootstrap.ts)_
-
-## `proton hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ proton hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ proton hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.3/src/commands/hello.ts)_
+_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/bootstrap.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -83,4 +64,42 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
+
+## `proton install`
+
+Install proton software
+
+```
+USAGE
+  $ proton install
+```
+
+_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/install.ts)_
+
+## `proton version`
+
+describe the command here
+
+```
+USAGE
+  $ proton version
+```
+
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/version.ts)_
+
+## `proton wallet [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ proton wallet [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/wallet/index.ts)_
 <!-- commandsstop -->
