@@ -19,7 +19,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.4 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.5 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -46,7 +46,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/bootstrap.ts)_
+_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/bootstrap.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -74,7 +74,7 @@ USAGE
   $ proton install
 ```
 
-_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/install.ts)_
 
 ## `proton version`
 
@@ -85,7 +85,7 @@ USAGE
   $ proton version
 ```
 
-_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/version.ts)_
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/version.ts)_
 
 ## `proton wallet [FILE]`
 
@@ -101,5 +101,5 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.4/src/commands/wallet/index.ts)_
+_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/wallet/index.ts)_
 <!-- commandsstop -->
