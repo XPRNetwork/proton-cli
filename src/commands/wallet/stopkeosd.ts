@@ -7,6 +7,7 @@ export default class StopKeos extends Command {
 
   async run() {
     await Keosd.keosd_stop()
+    this.log('Keosd successfully stopped')
   }
 
   async catch(error: Error) {

@@ -12,6 +12,7 @@ export default class OpenWallet extends Command {
   async run() {
     const {args} = this.parse(OpenWallet)
     await Keosd.wallet_open(args.name)
+    this.log(`Wallet ${args.name} successfully opened`)
   }
 
   async catch(error: Error) {

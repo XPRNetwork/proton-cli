@@ -7,6 +7,7 @@ export default class LockAllWallets extends Command {
 
   async run() {
     await Keosd.wallet_lock_all()
+    this.log('All wallets are locked')
   }
 
   async catch(error: Error) {
