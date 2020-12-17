@@ -48,7 +48,6 @@ USAGE
 * [`proton help [COMMAND]`](#proton-help-command)
 * [`proton install [VERSION]`](#proton-install-version)
 * [`proton version`](#proton-version)
-* [`proton wallet [FILE]`](#proton-wallet-file)
 * [`proton wallet:create [NAME]`](#proton-walletcreate-name)
 * [`proton wallet:createkey [NAME] [TYPE]`](#proton-walletcreatekey-name-type)
 * [`proton wallet:importkey [NAME] [PRIVATE_KEY]`](#proton-walletimportkey-name-private_key)
@@ -58,7 +57,7 @@ USAGE
 * [`proton wallet:lock [NAME]`](#proton-walletlock-name)
 * [`proton wallet:lockall`](#proton-walletlockall)
 * [`proton wallet:open [NAME]`](#proton-walletopen-name)
-* [`proton wallet:removekey [NAME] PUBLIC_KEY`](#proton-walletremovekey-name-public_key)
+* [`proton wallet:removekey [NAME] [PUBLIC_KEY]`](#proton-walletremovekey-name-public_key)
 * [`proton wallet:stopkeosd`](#proton-walletstopkeosd)
 * [`proton wallet:unlock [NAME]`](#proton-walletunlock-name)
 
@@ -118,22 +117,6 @@ USAGE
 
 _See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.29/src/commands/version.ts)_
 
-## `proton wallet [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ proton wallet [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-```
-
-_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.29/src/commands/wallet/index.ts)_
-
 ## `proton wallet:create [NAME]`
 
 Create new local wallet
@@ -174,13 +157,16 @@ List open wallets
 ```
 USAGE
   $ proton wallet:list
+
+ALIASES
+  $ proton wallet
 ```
 
 _See code: [src/commands/wallet/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.29/src/commands/wallet/list.ts)_
 
 ## `proton wallet:listprivatekeys [NAME]`
 
-List private keys
+List private keys for a single wallet
 
 ```
 USAGE
@@ -191,7 +177,7 @@ _See code: [src/commands/wallet/listprivatekeys.ts](https://github.com/ProtonPro
 
 ## `proton wallet:listpublickeys`
 
-List public keys
+List public keys for all wallets
 
 ```
 USAGE
@@ -233,13 +219,13 @@ USAGE
 
 _See code: [src/commands/wallet/open.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.29/src/commands/wallet/open.ts)_
 
-## `proton wallet:removekey [NAME] PUBLIC_KEY`
+## `proton wallet:removekey [NAME] [PUBLIC_KEY]`
 
 Remove private key from wallet
 
 ```
 USAGE
-  $ proton wallet:removekey [NAME] PUBLIC_KEY
+  $ proton wallet:removekey [NAME] [PUBLIC_KEY]
 ```
 
 _See code: [src/commands/wallet/removekey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.29/src/commands/wallet/removekey.ts)_
