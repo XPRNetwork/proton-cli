@@ -19,7 +19,8 @@ export default class ImportKeyWallet extends Command {
   }
 
   async catch(error: any) {
-    if (error.error.what === 'Key already exists') {
+    const {args} = this.parse(ImportKeyWallet)
+    if (error.error.what === `Key already exists in wakket ${args.name}`) {
       this.log(error.error.what)
     } else {
       ux.styledJSON(error)
