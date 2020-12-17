@@ -1,7 +1,7 @@
 {
   "name": "@protonprotocol/cli",
   "description": "Proton CLI",
-  "version": "0.3.29",
+  "version": "0.3.30",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
