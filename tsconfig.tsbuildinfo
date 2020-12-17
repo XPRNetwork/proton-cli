@@ -566,9 +566,204 @@
         "signature": "634fdeb9f8428a4121c0ba3737e17056d9d4184a20e7824cfab7a90a6809bd6a",
         "affectsGlobalScope": false
       },
-      "./src/commands/wallet/index.ts": {
-        "version": "ed42c7c23b44c20e6064b59f3f99da4d17cf78a0c0406d5d2db71695ade1cc69",
-        "signature": "4a6f61e1a9f1826f27becff5b71e9dd620669fc0e17ffa57f70c773a3f992d7e",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts": {
+        "version": "5e8f5c161f45825707f059786f957927ba486cd33f2b5414ee5af0aec47da833",
+        "signature": "5e8f5c161f45825707f059786f957927ba486cd33f2b5414ee5af0aec47da833",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts": {
+        "version": "6d5ec70f1166ccab34983c034fbacc89e399d5b87cd6ccee610d28b59219dd43",
+        "signature": "6d5ec70f1166ccab34983c034fbacc89e399d5b87cd6ccee610d28b59219dd43",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts": {
+        "version": "95a2e381d47cfbd1263ea1af244d94ecbc7e2316674c465579379a6aafe8b46d",
+        "signature": "95a2e381d47cfbd1263ea1af244d94ecbc7e2316674c465579379a6aafe8b46d",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts": {
+        "version": "eeaa6d95631c7358c1537c58501c2e0c7bd570a8c61afb49ff5a0444027b21e8",
+        "signature": "eeaa6d95631c7358c1537c58501c2e0c7bd570a8c61afb49ff5a0444027b21e8",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api.d.ts": {
+        "version": "f5d463604ff08c32bbda7dd55b32b12fed07c7a658eaec2bf6e9a77ecb0ae856",
+        "signature": "f5d463604ff08c32bbda7dd55b32b12fed07c7a658eaec2bf6e9a77ecb0ae856",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts": {
+        "version": "000e2986625130d6e2b98e43d8c6c8c3ed6c522cb86a59f38fcc59dc0ba469d2",
+        "signature": "000e2986625130d6e2b98e43d8c6c8c3ed6c522cb86a59f38fcc59dc0ba469d2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpcerror.d.ts": {
+        "version": "3bb1fd15496ee9963826e47bddb0a16dece77e8c3a409054e057bf5be97fa6e9",
+        "signature": "3bb1fd15496ee9963826e47bddb0a16dece77e8c3a409054e057bf5be97fa6e9",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/bn.js/index.d.ts": {
+        "version": "bc6dd50ac2fc9a7ca6488811b116bd0ddd606338db0bb97852c8fcf757e2d7f5",
+        "signature": "bc6dd50ac2fc9a7ca6488811b116bd0ddd606338db0bb97852c8fcf757e2d7f5",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@types/elliptic/index.d.ts": {
+        "version": "67b17d5cf1d5f6077380bffcf792815f963e219fe41439e71cedb3d092e6f5a2",
+        "signature": "67b17d5cf1d5f6077380bffcf792815f963e219fe41439e71cedb3d092e6f5a2",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts": {
+        "version": "91ad6c00d9c53d52a9bb6cb381df9a13b4983e0779cb74a0b287daf5ca61c438",
+        "signature": "91ad6c00d9c53d52a9bb6cb381df9a13b4983e0779cb74a0b287daf5ca61c438",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts": {
+        "version": "428394deaf570b6914c31fa93824d8af9334f0c4ae118f1a011a5932fa46d1d1",
+        "signature": "428394deaf570b6914c31fa93824d8af9334f0c4ae118f1a011a5932fa46d1d1",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/privatekey.d.ts": {
+        "version": "a7abf76d009e985f29a17bcf61ef2189e4d3217411f5dfa08b12654695e5820e",
+        "signature": "a7abf76d009e985f29a17bcf61ef2189e4d3217411f5dfa08b12654695e5820e",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts": {
+        "version": "89d7cbcfa71a48cfc30425eede126c17b2a168977fe44389d32ada3662fcfa63",
+        "signature": "89d7cbcfa71a48cfc30425eede126c17b2a168977fe44389d32ada3662fcfa63",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts": {
+        "version": "a291a1b192bed78e6680abcbd23d597f6fc3cc15522152f94de1101a04b93932",
+        "signature": "a291a1b192bed78e6680abcbd23d597f6fc3cc15522152f94de1101a04b93932",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jssig.d.ts": {
+        "version": "e214bc4e0aa159023086b1e304fd3e80d4f31a430f4b56cd1969d1be407851e3",
+        "signature": "e214bc4e0aa159023086b1e304fd3e80d4f31a430f4b56cd1969d1be407851e3",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-keosd.d.ts": {
+        "version": "afe256aea60d65182b40764766f75d5c5d8631076bac9e23f0dd5e8e3e823e68",
+        "signature": "afe256aea60d65182b40764766f75d5c5d8631076bac9e23f0dd5e8e3e823e68",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/@protonprotocol/protonjs/dist/index.d.ts": {
+        "version": "27ae4e684134dbce86486148066bede38aebb8a1a326d62dd8eab81a705c7521",
+        "signature": "27ae4e684134dbce86486148066bede38aebb8a1a326d62dd8eab81a705c7521",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/action/base.d.ts": {
+        "version": "0cbd2414d7f4ff0e02986d86037defc33d112b8dd22001b27889f062a3e3e4a7",
+        "signature": "0cbd2414d7f4ff0e02986d86037defc33d112b8dd22001b27889f062a3e3e4a7",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/config.d.ts": {
+        "version": "b061219e06b8a7afe38fd041b9b2e0efa25db23742ec839666ee36c9c7926367",
+        "signature": "b061219e06b8a7afe38fd041b9b2e0efa25db23742ec839666ee36c9c7926367",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/exit.d.ts": {
+        "version": "168840936351f71eba6047f128bd450e7f1d724ef92d66d1514f98907061e2e9",
+        "signature": "168840936351f71eba6047f128bd450e7f1d724ef92d66d1514f98907061e2e9",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/prompt.d.ts": {
+        "version": "e3d2b40728279d9695a6af01d145bd3953cd34e77be3ec76784d6c7690f0502c",
+        "signature": "e3d2b40728279d9695a6af01d145bd3953cd34e77be3ec76784d6c7690f0502c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/styled/table.d.ts": {
+        "version": "d26f4884622ee6ea7094c8dd9c23782783c3d27ba6a225029bb8243b0fd8ad7c",
+        "signature": "d26f4884622ee6ea7094c8dd9c23782783c3d27ba6a225029bb8243b0fd8ad7c",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/styled/header.d.ts": {
+        "version": "de8ede1a3263a477c17a9702db5eb4bf65c64f0a5cfc2843db886fa9f3bd8e76",
+        "signature": "de8ede1a3263a477c17a9702db5eb4bf65c64f0a5cfc2843db886fa9f3bd8e76",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/styled/json.d.ts": {
+        "version": "172c8da34d1fb46bcc97ec7e5829a8e1a71ec444757fcb3b5b90c004b9b45741",
+        "signature": "172c8da34d1fb46bcc97ec7e5829a8e1a71ec444757fcb3b5b90c004b9b45741",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/styled/tree.d.ts": {
+        "version": "b9c05c23f53be5b435dde4349f70d5851c74b891a3cdd252efbf149437c3c5f0",
+        "signature": "b9c05c23f53be5b435dde4349f70d5851c74b891a3cdd252efbf149437c3c5f0",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/open.d.ts": {
+        "version": "b53125286827258e0c254c9dd31c5b6f77ecb1494e5b3ea65b3258fa43035107",
+        "signature": "b53125286827258e0c254c9dd31c5b6f77ecb1494e5b3ea65b3258fa43035107",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/styled/progress.d.ts": {
+        "version": "c74a720a78e9d951f3d25c493b7073e3f640afd527f80232e3fca929807b7c52",
+        "signature": "c74a720a78e9d951f3d25c493b7073e3f640afd527f80232e3fca929807b7c52",
+        "affectsGlobalScope": false
+      },
+      "./node_modules/cli-ux/lib/index.d.ts": {
+        "version": "879932caaf4a58faf2519a504639b6ace1cf9145505341731cc01e9282e32c1f",
+        "signature": "879932caaf4a58faf2519a504639b6ace1cf9145505341731cc01e9282e32c1f",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/create.ts": {
+        "version": "6c8856450d095e79d4dc2855f64d23235e97eff4c745291bc0332be4daf81568",
+        "signature": "2cca9c3161649db143fa66f34ac48939f441a66fa138e47a6b3235034dfddaae",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/createkey.ts": {
+        "version": "a320a5d4d8003f220c560e05736c167b593a1f329a4851309389bb0dbd7aa2cb",
+        "signature": "1b1071a66c6f3a75f8d6a116d8638d6b55e30d1647dac406f6d947e6dd6c672e",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/importkey.ts": {
+        "version": "b93016c45f82c67fdf8db8c0e593baf27f2a66372bf3aa653f4a2b8b64f2569b",
+        "signature": "dbd9ad4cb95408cb9d1913f665906102e6a1bdffc7f38e2225cc8c23c687088f",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/list.ts": {
+        "version": "a4a9cc9a4f1bb3f4614c999a9d4d9684abdaadd761d44ee574cf29d285236797",
+        "signature": "1792f5b3ece88d8fc7712ac7037374dd77277fbb92059c8fd6919edeecffd4fe",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/listprivatekeys.ts": {
+        "version": "75f049a1012401a7bf4fe8f319615ada61dc59ecd9c97085f29c1e52eaf14bfb",
+        "signature": "4ed9982a98225980bcaaa98c57770e64ee4a66641e29aa229f27e8c719931e80",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/listpublickeys.ts": {
+        "version": "1cba1009cf5e9d43c0fad8107fd5f8e62b824c29cce066316fba90f6e937aa45",
+        "signature": "007baf9de6c6be4b76cee61c48afda95a8caa9d58824cc5945173fb1d9274c30",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/lock.ts": {
+        "version": "5e0068ff816f63a410b4de2f526baf2dd636b8a426135645a7fb7d0b66483154",
+        "signature": "a478f750baaa6301acd3226aa7fea3966ca7622c96c7553f7a675edf1d927bba",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/lockall.ts": {
+        "version": "fc6b678d4f2a03fe0370aa962775a252f0d65a377ee78e3f07319b41ffdec69c",
+        "signature": "f0ba8ebb081056784d67d30d19abdead85a864478128ccdcc952e5d2b74fa5e7",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/open.ts": {
+        "version": "b30db05dce851cff74830349a23d5e7a5a1e9fceff7fdb3ab205844392d077a1",
+        "signature": "01b9fcc803a8b020bdd7ac52fba73c9898f1d005ebf5d8ace018af31c5fdffc6",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/removekey.ts": {
+        "version": "af5dc5f18e54807b16ee1c2264b93d9ef3e0fb61d122f1bb4abe0601874cd321",
+        "signature": "056244c5921c120a314699119e9399b7fc1c0db118a5c66ddf0977c350202e23",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/stopkeosd.ts": {
+        "version": "52c5de9be30f9f99a703ed46f690d6204d4daaa7e7cce7e2ecd4757094048ca9",
+        "signature": "0ff05057e945fd13c7739a877d9fc91dc6aa12b9066fdea6ff93f6b99022e822",
+        "affectsGlobalScope": false
+      },
+      "./src/commands/wallet/unlock.ts": {
+        "version": "cdbeb59cbc0a53b17597d08490efeb7e31e6f7c48f07d6719fe471edd6468a00",
+        "signature": "4f0f0b0e9e723f1ad3da7e0d963d32663fafdb889ce35cb269b7a1806f36dbec",
         "affectsGlobalScope": false
       },
       "./node_modules/@types/chai/index.d.ts": {
@@ -769,6 +964,78 @@
         "./node_modules/@oclif/parser/lib/flags.d.ts",
         "./node_modules/@oclif/parser/lib/metadata.d.ts"
       ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jssig.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/privatekey.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/index.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-jssig.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-keosd.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpcerror.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/privatekey.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@types/bn.js/index.d.ts": [
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@types/elliptic/index.d.ts": [
+        "./node_modules/@types/bn.js/index.d.ts"
+      ],
       "./node_modules/@types/glob/index.d.ts": [
         "./node_modules/@types/minimatch/index.d.ts",
         "./node_modules/@types/node/events.d.ts",
@@ -1102,6 +1369,25 @@
       "./node_modules/@types/sinon/index.d.ts": [
         "./node_modules/@types/sinonjs__fake-timers/index.d.ts"
       ],
+      "./node_modules/cli-ux/lib/config.d.ts": [
+        "./node_modules/cli-ux/lib/action/base.d.ts"
+      ],
+      "./node_modules/cli-ux/lib/index.d.ts": [
+        "./node_modules/@oclif/errors/lib/index.d.ts",
+        "./node_modules/cli-ux/lib/action/base.d.ts",
+        "./node_modules/cli-ux/lib/config.d.ts",
+        "./node_modules/cli-ux/lib/exit.d.ts",
+        "./node_modules/cli-ux/lib/open.d.ts",
+        "./node_modules/cli-ux/lib/prompt.d.ts",
+        "./node_modules/cli-ux/lib/styled/header.d.ts",
+        "./node_modules/cli-ux/lib/styled/json.d.ts",
+        "./node_modules/cli-ux/lib/styled/progress.d.ts",
+        "./node_modules/cli-ux/lib/styled/table.d.ts",
+        "./node_modules/cli-ux/lib/styled/tree.d.ts"
+      ],
+      "./node_modules/cli-ux/lib/styled/table.d.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
       "./src/commands/boilerplate.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts",
         "./node_modules/@types/node/fs.d.ts",
@@ -1121,8 +1407,65 @@
       "./src/commands/version.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts"
       ],
-      "./src/commands/wallet/index.ts": [
-        "./node_modules/@oclif/command/lib/index.d.ts"
+      "./src/commands/wallet/create.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/createkey.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/importkey.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/list.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/listprivatekeys.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/listpublickeys.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/lock.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/lockall.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/open.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/removekey.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/stopkeosd.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/unlock.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+        "./node_modules/cli-ux/lib/index.d.ts"
       ],
       "./src/index.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts"
@@ -1219,6 +1562,78 @@
         "./node_modules/@oclif/parser/lib/flags.d.ts",
         "./node_modules/@oclif/parser/lib/metadata.d.ts"
       ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jssig.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/privatekey.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/index.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-api.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-jssig.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-keosd.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpcerror.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/privatekey.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts"
+      ],
+      "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts": [
+        "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+        "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+        "./node_modules/@types/elliptic/index.d.ts",
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@types/bn.js/index.d.ts": [
+        "./node_modules/@types/node/index.d.ts"
+      ],
+      "./node_modules/@types/elliptic/index.d.ts": [
+        "./node_modules/@types/bn.js/index.d.ts"
+      ],
       "./node_modules/@types/glob/index.d.ts": [
         "./node_modules/@types/minimatch/index.d.ts",
         "./node_modules/@types/node/events.d.ts",
@@ -1552,6 +1967,25 @@
       "./node_modules/@types/sinon/index.d.ts": [
         "./node_modules/@types/sinonjs__fake-timers/index.d.ts"
       ],
+      "./node_modules/cli-ux/lib/config.d.ts": [
+        "./node_modules/cli-ux/lib/action/base.d.ts"
+      ],
+      "./node_modules/cli-ux/lib/index.d.ts": [
+        "./node_modules/@oclif/errors/lib/index.d.ts",
+        "./node_modules/cli-ux/lib/action/base.d.ts",
+        "./node_modules/cli-ux/lib/config.d.ts",
+        "./node_modules/cli-ux/lib/exit.d.ts",
+        "./node_modules/cli-ux/lib/open.d.ts",
+        "./node_modules/cli-ux/lib/prompt.d.ts",
+        "./node_modules/cli-ux/lib/styled/header.d.ts",
+        "./node_modules/cli-ux/lib/styled/json.d.ts",
+        "./node_modules/cli-ux/lib/styled/progress.d.ts",
+        "./node_modules/cli-ux/lib/styled/table.d.ts",
+        "./node_modules/cli-ux/lib/styled/tree.d.ts"
+      ],
+      "./node_modules/cli-ux/lib/styled/table.d.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
       "./src/commands/boilerplate.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts",
         "./node_modules/@oclif/parser/lib/flags.d.ts"
@@ -1562,9 +1996,41 @@
       "./src/commands/version.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts"
       ],
-      "./src/commands/wallet/index.ts": [
-        "./node_modules/@oclif/command/lib/index.d.ts",
-        "./node_modules/@oclif/parser/lib/flags.d.ts"
+      "./src/commands/wallet/create.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/createkey.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/importkey.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/list.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/listprivatekeys.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/listpublickeys.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/lock.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/lockall.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/open.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/removekey.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/stopkeosd.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
+      "./src/commands/wallet/unlock.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
       ],
       "./src/index.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts"
@@ -1597,7 +2063,24 @@
       "./node_modules/@oclif/parser/lib/index.d.ts",
       "./node_modules/@oclif/parser/lib/metadata.d.ts",
       "./node_modules/@oclif/parser/lib/parse.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api-interfaces.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-api.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jsonrpc.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-jssig.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-keosd.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key-conversions.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-key.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-numeric.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpc-interfaces.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-rpcerror.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/eosjs-serialize.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/privatekey.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/publickey.d.ts",
+      "./node_modules/@protonprotocol/protonjs/dist/signature.d.ts",
+      "./node_modules/@types/bn.js/index.d.ts",
       "./node_modules/@types/chai/index.d.ts",
+      "./node_modules/@types/elliptic/index.d.ts",
       "./node_modules/@types/eslint-visitor-keys/index.d.ts",
       "./node_modules/@types/glob/index.d.ts",
       "./node_modules/@types/ini/index.d.ts",
@@ -1663,6 +2146,17 @@
       "./node_modules/@types/rimraf/index.d.ts",
       "./node_modules/@types/sinon/index.d.ts",
       "./node_modules/@types/sinonjs__fake-timers/index.d.ts",
+      "./node_modules/cli-ux/lib/action/base.d.ts",
+      "./node_modules/cli-ux/lib/config.d.ts",
+      "./node_modules/cli-ux/lib/exit.d.ts",
+      "./node_modules/cli-ux/lib/index.d.ts",
+      "./node_modules/cli-ux/lib/open.d.ts",
+      "./node_modules/cli-ux/lib/prompt.d.ts",
+      "./node_modules/cli-ux/lib/styled/header.d.ts",
+      "./node_modules/cli-ux/lib/styled/json.d.ts",
+      "./node_modules/cli-ux/lib/styled/progress.d.ts",
+      "./node_modules/cli-ux/lib/styled/table.d.ts",
+      "./node_modules/cli-ux/lib/styled/tree.d.ts",
       "./node_modules/isomorphic-git/http/node/index.d.ts",
       "./node_modules/isomorphic-git/index.d.ts",
       "./node_modules/tslib/tslib.d.ts",
@@ -1701,7 +2195,18 @@
       "./src/commands/boilerplate.ts",
       "./src/commands/install.ts",
       "./src/commands/version.ts",
-      "./src/commands/wallet/index.ts",
+      "./src/commands/wallet/create.ts",
+      "./src/commands/wallet/createkey.ts",
+      "./src/commands/wallet/importkey.ts",
+      "./src/commands/wallet/list.ts",
+      "./src/commands/wallet/listprivatekeys.ts",
+      "./src/commands/wallet/listpublickeys.ts",
+      "./src/commands/wallet/lock.ts",
+      "./src/commands/wallet/lockall.ts",
+      "./src/commands/wallet/open.ts",
+      "./src/commands/wallet/removekey.ts",
+      "./src/commands/wallet/stopkeosd.ts",
+      "./src/commands/wallet/unlock.ts",
       "./src/index.ts",
       "./src/types.d.ts"
     ]
