@@ -12,6 +12,7 @@ export default class LockWallet extends Command {
   async run() {
     const {args} = this.parse(LockWallet)
     await Keosd.wallet_lock(args.name)
+    this.log(`Wallet ${args.name}} is now locked`)
   }
 
   async catch(error: Error) {

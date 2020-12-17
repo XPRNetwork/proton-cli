@@ -1,5 +1,5 @@
 import {Command} from '@oclif/command'
-import {Keosd} from '@protonprotocol/protonjs'
+import {Keosd, Key} from '@protonprotocol/protonjs'
 import cli, {ux} from 'cli-ux'
 
 export default class ImportKeyWallet extends Command {
@@ -16,6 +16,9 @@ export default class ImportKeyWallet extends Command {
       args.private_key = await cli.prompt('Enter private key', {type: 'hide'})
     }
     await Keosd.wallet_import_key(args.name, args.private_key)
+
+    const importedPublicKey = Key.PrivateKey.fromString(args.private_key).getPublicKey()
+    this.log(`Key Successfully Imported: ${importedPublicKey.toString()} (${importedPublicKey.toLegacyString()})`)
   }
 
   async catch(error: any) {

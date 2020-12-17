@@ -13,6 +13,7 @@ export default class UnlockWallet extends Command {
     const {args} = this.parse(UnlockWallet)
     const password = await cli.prompt(`Enter wallet password for wallet '${args.name}'`, {type: 'hide'})
     await Keosd.wallet_unlock(args.name, password)
+    this.log(`Wallet ${args.name} sucessfully unlocked`)
   }
 
   async catch(error: any) {

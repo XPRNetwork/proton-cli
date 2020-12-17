@@ -18,6 +18,7 @@ export default class RemoveKeyWallet extends Command {
     }
     const password = await cli.prompt(`Enter wallet password for wallet '${args.name}'`, {type: 'hide'})
     await Keosd.wallet_remove_key(args.name, password, args.public_key)
+    this.log(`Key ${args.public_key} successfully removed from wallet '${args.name}'`)
   }
 
   async catch(error: Error) {
