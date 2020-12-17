@@ -9,9 +9,25 @@ Proton CLI
 [![License](https://img.shields.io/npm/l/@protonprotocol/cli.svg)](https://github.com/ProtonProtocol/proton-cli/blob/master/package.json)
 
 <!-- toc -->
+* [Installation](#installation)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
+# Installation
+From Scratch
+```
+curl -Ls https://raw.githubusercontent.com/ProtonProtocol/proton-cli/master/install.sh | sh
+```
+
+NPM
+```
+npm i -g @protonprotocol/cli
+```
+
+yarn
+```
+yarn global add @protonprotocol/cli
+```
 # Usage
 <!-- usage -->
 ```sh-session
@@ -19,7 +35,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.6 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.7 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -36,7 +52,7 @@ USAGE
 
 ## `proton bootstrap [FOLDER]`
 
-describe the command here
+Bootstrap a new Proton Project with contract, frontend and tests
 
 ```
 USAGE
@@ -46,7 +62,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/bootstrap.ts)_
+_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.7/src/commands/bootstrap.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -77,18 +93,18 @@ ARGUMENTS
   VERSION  [default: 2.1.0-rc1] EOSIO version
 ```
 
-_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.7/src/commands/install.ts)_
 
 ## `proton version`
 
-describe the command here
+Version of CLI
 
 ```
 USAGE
   $ proton version
 ```
 
-_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/version.ts)_
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.7/src/commands/version.ts)_
 
 ## `proton wallet [FILE]`
 
@@ -104,5 +120,5 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/wallet/index.ts)_
+_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.7/src/commands/wallet/index.ts)_
 <!-- commandsstop -->
