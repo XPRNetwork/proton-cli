@@ -12,6 +12,7 @@ export default class ListPrivateKeys extends Command {
   async run() {
     const {args} = this.parse(ListPrivateKeys)
     const password = await cli.prompt(`Enter wallet password for wallet '${args.name}'`, {type: 'hide'})
+    await Keosd.wallet_unlock(args.name, password)
     const private_keys = await Keosd.wallet_list_private_keys(args.name, password)
 
     ux.styledJSON(
