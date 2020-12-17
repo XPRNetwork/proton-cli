@@ -721,6 +721,11 @@
         "signature": "dbd9ad4cb95408cb9d1913f665906102e6a1bdffc7f38e2225cc8c23c687088f",
         "affectsGlobalScope": false
       },
+      "./src/commands/wallet/index.ts": {
+        "version": "ed42c7c23b44c20e6064b59f3f99da4d17cf78a0c0406d5d2db71695ade1cc69",
+        "signature": "4a6f61e1a9f1826f27becff5b71e9dd620669fc0e17ffa57f70c773a3f992d7e",
+        "affectsGlobalScope": false
+      },
       "./src/commands/wallet/list.ts": {
         "version": "a4a9cc9a4f1bb3f4614c999a9d4d9684abdaadd761d44ee574cf29d285236797",
         "signature": "1792f5b3ece88d8fc7712ac7037374dd77277fbb92059c8fd6919edeecffd4fe",
@@ -1422,6 +1427,9 @@
         "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
         "./node_modules/cli-ux/lib/index.d.ts"
       ],
+      "./src/commands/wallet/index.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts"
+      ],
       "./src/commands/wallet/list.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts",
         "./node_modules/@protonprotocol/protonjs/dist/index.d.ts",
@@ -2005,6 +2013,10 @@
       "./src/commands/wallet/importkey.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts"
       ],
+      "./src/commands/wallet/index.ts": [
+        "./node_modules/@oclif/command/lib/index.d.ts",
+        "./node_modules/@oclif/parser/lib/flags.d.ts"
+      ],
       "./src/commands/wallet/list.ts": [
         "./node_modules/@oclif/command/lib/index.d.ts"
       ],
@@ -2198,6 +2210,7 @@
       "./src/commands/wallet/create.ts",
       "./src/commands/wallet/createkey.ts",
       "./src/commands/wallet/importkey.ts",
+      "./src/commands/wallet/index.ts",
       "./src/commands/wallet/list.ts",
       "./src/commands/wallet/listprivatekeys.ts",
       "./src/commands/wallet/listpublickeys.ts",
