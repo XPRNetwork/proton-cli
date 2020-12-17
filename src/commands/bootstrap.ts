@@ -3,13 +3,16 @@ import git from 'isomorphic-git'
 import http from 'isomorphic-git/http/node'
 import * as path from 'path'
 import * as fs from 'fs'
+import * as rimraf from 'rimraf'
+
+const BOILERPLATE_URL = 'https://github.com/ProtonProtocol/proton-boilerplate.git'
+const BOILERPLATE_BRANCH = 'master'
 
 export default class Bootstrap extends Command {
-  static description = 'describe the command here'
+  static description = 'Bootstrap a new Proton Project with contract, frontend and tests'
 
   static flags = {
     help: flags.help({char: 'h'}),
-    name: flags.string({char: 'n', description: 'name of folder to copy boilerplate to'}),
   }
 
   static args = [
@@ -23,11 +26,15 @@ export default class Bootstrap extends Command {
     const dir = path.join(process.cwd(), name)
 
     this.log(`Bootstrapping to ${name} folder`)
-    git.clone({
+    await git.clone({
       fs,
       http,
       dir,
-      url: 'https://github.com/jafri/proton-boilerplate',
+      url: BOILERPLATE_URL,
+      ref: BOILERPLATE_BRANCH,
+      singleBranch: true,
+      depth: 1,
     })
+    rimraf.sync(path.join(dir, '.git'))
   }
 }
