@@ -15,7 +15,7 @@ export default class ImportKeyWallet extends Command {
     if (!args.private_key) {
       args.private_key = await cli.prompt('Enter private key', {type: 'hide'})
     }
-    await Keosd.wallet_import_key(args.name, args.key)
+    await Keosd.wallet_import_key(args.name, args.private_key)
   }
 
   async catch(error: Error) {
