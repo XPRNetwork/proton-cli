@@ -35,7 +35,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.15 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.17 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -73,7 +73,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/boilerplate.ts)_
+_See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/boilerplate.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -104,7 +104,7 @@ ARGUMENTS
   VERSION  [default: 2.1.0-rc1] EOSIO version
 ```
 
-_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/install.ts)_
 
 ## `proton version`
 
@@ -115,7 +115,7 @@ USAGE
   $ proton version
 ```
 
-_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/version.ts)_
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/version.ts)_
 
 ## `proton wallet:create [NAME]`
 
@@ -126,7 +126,7 @@ USAGE
   $ proton wallet:create [NAME]
 ```
 
-_See code: [src/commands/wallet/create.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/create.ts)_
+_See code: [src/commands/wallet/create.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/create.ts)_
 
 ## `proton wallet:createkey [NAME] [TYPE]`
 
@@ -137,7 +137,7 @@ USAGE
   $ proton wallet:createkey [NAME] [TYPE]
 ```
 
-_See code: [src/commands/wallet/createkey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/createkey.ts)_
+_See code: [src/commands/wallet/createkey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/createkey.ts)_
 
 ## `proton wallet:importkey [NAME] [PRIVATE_KEY]`
 
@@ -148,7 +148,7 @@ USAGE
   $ proton wallet:importkey [NAME] [PRIVATE_KEY]
 ```
 
-_See code: [src/commands/wallet/importkey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/importkey.ts)_
+_See code: [src/commands/wallet/importkey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/importkey.ts)_
 
 ## `proton wallet:list`
 
@@ -159,18 +159,18 @@ USAGE
   $ proton wallet:list
 ```
 
-_See code: [src/commands/wallet/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/list.ts)_
+_See code: [src/commands/wallet/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/list.ts)_
 
 ## `proton wallet:listprivatekeys [NAME]`
 
-List public keys
+List private keys
 
 ```
 USAGE
   $ proton wallet:listprivatekeys [NAME]
 ```
 
-_See code: [src/commands/wallet/listprivatekeys.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/listprivatekeys.ts)_
+_See code: [src/commands/wallet/listprivatekeys.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/listprivatekeys.ts)_
 
 ## `proton wallet:listpublickeys`
 
@@ -181,7 +181,7 @@ USAGE
   $ proton wallet:listpublickeys
 ```
 
-_See code: [src/commands/wallet/listpublickeys.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/listpublickeys.ts)_
+_See code: [src/commands/wallet/listpublickeys.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/listpublickeys.ts)_
 
 ## `proton wallet:lock [NAME]`
 
@@ -192,7 +192,7 @@ USAGE
   $ proton wallet:lock [NAME]
 ```
 
-_See code: [src/commands/wallet/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/lock.ts)_
+_See code: [src/commands/wallet/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/lock.ts)_
 
 ## `proton wallet:lockall`
 
@@ -203,7 +203,7 @@ USAGE
   $ proton wallet:lockall
 ```
 
-_See code: [src/commands/wallet/lockall.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/lockall.ts)_
+_See code: [src/commands/wallet/lockall.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/lockall.ts)_
 
 ## `proton wallet:open [NAME]`
 
@@ -214,7 +214,7 @@ USAGE
   $ proton wallet:open [NAME]
 ```
 
-_See code: [src/commands/wallet/open.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/open.ts)_
+_See code: [src/commands/wallet/open.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/open.ts)_
 
 ## `proton wallet:removekey [NAME] PUBLIC_KEY`
 
@@ -225,7 +225,7 @@ USAGE
   $ proton wallet:removekey [NAME] PUBLIC_KEY
 ```
 
-_See code: [src/commands/wallet/removekey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/removekey.ts)_
+_See code: [src/commands/wallet/removekey.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/removekey.ts)_
 
 ## `proton wallet:stopkeosd`
 
@@ -236,7 +236,7 @@ USAGE
   $ proton wallet:stopkeosd
 ```
 
-_See code: [src/commands/wallet/stopkeosd.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/stopkeosd.ts)_
+_See code: [src/commands/wallet/stopkeosd.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/stopkeosd.ts)_
 
 ## `proton wallet:unlock [NAME]`
 
@@ -247,5 +247,5 @@ USAGE
   $ proton wallet:unlock [NAME]
 ```
 
-_See code: [src/commands/wallet/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.15/src/commands/wallet/unlock.ts)_
+_See code: [src/commands/wallet/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.17/src/commands/wallet/unlock.ts)_
 <!-- commandsstop -->
