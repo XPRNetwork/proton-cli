@@ -19,7 +19,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.5 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.6 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -30,7 +30,7 @@ USAGE
 <!-- commands -->
 * [`proton bootstrap [FOLDER]`](#proton-bootstrap-folder)
 * [`proton help [COMMAND]`](#proton-help-command)
-* [`proton install`](#proton-install)
+* [`proton install [VERSION]`](#proton-install-version)
 * [`proton version`](#proton-version)
 * [`proton wallet [FILE]`](#proton-wallet-file)
 
@@ -46,7 +46,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/bootstrap.ts)_
+_See code: [src/commands/bootstrap.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/bootstrap.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -65,16 +65,19 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.2.1/src/commands/help.ts)_
 
-## `proton install`
+## `proton install [VERSION]`
 
-Install proton software
+Install nodeos, cleos and keosd software
 
 ```
 USAGE
-  $ proton install
+  $ proton install [VERSION]
+
+ARGUMENTS
+  VERSION  [default: 2.1.0-rc1] EOSIO version
 ```
 
-_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/install.ts)_
 
 ## `proton version`
 
@@ -85,7 +88,7 @@ USAGE
   $ proton version
 ```
 
-_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/version.ts)_
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/version.ts)_
 
 ## `proton wallet [FILE]`
 
@@ -101,5 +104,5 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.5/src/commands/wallet/index.ts)_
+_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.6/src/commands/wallet/index.ts)_
 <!-- commandsstop -->
