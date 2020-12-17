@@ -18,7 +18,11 @@ export default class ImportKeyWallet extends Command {
     await Keosd.wallet_import_key(args.name, args.private_key)
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(error: any) {
+    if (error.error.what === 'Key already exists') {
+      this.log(error.error.what)
+    } else {
+      ux.styledJSON(error)
+    }
   }
 }

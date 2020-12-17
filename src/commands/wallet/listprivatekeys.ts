@@ -17,7 +17,12 @@ export default class ListPrivateKeys extends Command {
     ux.styledJSON(
       private_keys.map(
         ([public_key, private_key]: [string, string]) =>
-          [public_key, Key.PublicKey.fromString(public_key).toString(), private_key]
+          [
+            public_key,
+            Key.PublicKey.fromString(public_key).toString(),
+            private_key,
+            Key.PrivateKey.fromString(private_key).toString(),
+          ]
       )
     )
   }
