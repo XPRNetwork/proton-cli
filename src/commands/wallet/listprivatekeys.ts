@@ -3,7 +3,7 @@ import {Keosd, Key} from '@protonprotocol/protonjs'
 import cli, {ux} from 'cli-ux'
 
 export default class ListPrivateKeys extends Command {
-  static description = 'List private keys'
+  static description = 'List private keys for a single wallet'
 
   static args = [
     {name: 'name', default: 'default'},
