@@ -35,7 +35,7 @@ $ npm install -g @protonprotocol/cli
 $ proton COMMAND
 running command...
 $ proton (-v|--version|version)
-@protonprotocol/cli/0.3.9 darwin-x64 node-v12.19.0
+@protonprotocol/cli/0.3.10 darwin-x64 node-v12.19.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -62,7 +62,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.9/src/commands/boilerplate.ts)_
+_See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.10/src/commands/boilerplate.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -93,7 +93,7 @@ ARGUMENTS
   VERSION  [default: 2.1.0-rc1] EOSIO version
 ```
 
-_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.9/src/commands/install.ts)_
+_See code: [src/commands/install.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.10/src/commands/install.ts)_
 
 ## `proton version`
 
@@ -104,7 +104,7 @@ USAGE
   $ proton version
 ```
 
-_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.9/src/commands/version.ts)_
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.10/src/commands/version.ts)_
 
 ## `proton wallet [FILE]`
 
@@ -120,5 +120,5 @@ OPTIONS
   -n, --name=name  name to print
 ```
 
-_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.9/src/commands/wallet/index.ts)_
+_See code: [src/commands/wallet/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.3.10/src/commands/wallet/index.ts)_
 <!-- commandsstop -->
