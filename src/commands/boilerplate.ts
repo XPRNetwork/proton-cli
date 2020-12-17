@@ -8,8 +8,8 @@ import * as rimraf from 'rimraf'
 const BOILERPLATE_URL = 'https://github.com/ProtonProtocol/proton-boilerplate.git'
 const BOILERPLATE_BRANCH = 'master'
 
-export default class Bootstrap extends Command {
-  static description = 'Bootstrap a new Proton Project with contract, frontend and tests'
+export default class Boilerplate extends Command {
+  static description = 'Boilerplate a new Proton Project with contract, frontend and tests'
 
   static flags = {
     help: flags.help({char: 'h'}),
@@ -20,12 +20,12 @@ export default class Bootstrap extends Command {
   ]
 
   async run() {
-    const {args} = this.parse(Bootstrap)
+    const {args} = this.parse(Boilerplate)
 
     const name = args.folder ?? 'proton-boilerplate'
     const dir = path.join(process.cwd(), name)
 
-    this.log(`Bootstrapping to ${name} folder`)
+    this.log(`Boilerplateping to ${name} folder`)
     await git.clone({
       fs,
       http,

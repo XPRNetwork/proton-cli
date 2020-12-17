@@ -13,9 +13,9 @@ const folders = ['atom', 'c++_tests', 'frontend', 'js_tests']
 
 const folderExists = (baseDir: string) => (folder: string) => fs.existsSync(path.join(baseDir, folder))
 
-describe('bootstrap', () => {
+describe('boilerplate', () => {
   test
-  .command(['bootstrap'])
+  .command(['boilerplate'])
   .finally(() => rimraf.sync(DEFAULT_DIR))
   .it('All folders exist', (_: any) => {
     const allExist = folders.every(folderExists(DEFAULT_DIR))
@@ -23,7 +23,7 @@ describe('bootstrap', () => {
   })
 
   // test
-  // .command(['bootstrap', TEST_DIR_NAME])
+  // .command(['boilerplate', TEST_DIR_NAME])
   // .finally(() => rimraf.sync(TEST_DIR))
   // .it('All folders exist', (_: any) => {
   //   const allExist = folders.every(folderExists(TEST_DIR))
