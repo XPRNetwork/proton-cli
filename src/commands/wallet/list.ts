@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd} from '@protonprotocol/protonjs'
 import {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class ListWallets extends Command {
   static description = 'List open wallets'
@@ -13,7 +14,8 @@ export default class ListWallets extends Command {
     ux.styledJSON(wallets)
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd} from '@protonprotocol/protonjs'
 import cli, {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class RemoveKeyWallet extends Command {
   static description = 'Remove private key from wallet'
@@ -21,7 +22,8 @@ export default class RemoveKeyWallet extends Command {
     this.log(`Key ${args.public_key} successfully removed from wallet '${args.name}'`)
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

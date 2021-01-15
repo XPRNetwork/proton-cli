@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd} from '@protonprotocol/protonjs'
 import {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class StopKeos extends Command {
   static description = 'Stops Keosd'
@@ -10,7 +11,8 @@ export default class StopKeos extends Command {
     this.log('Keosd successfully stopped')
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

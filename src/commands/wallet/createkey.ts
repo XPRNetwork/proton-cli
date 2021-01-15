@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd} from '@protonprotocol/protonjs'
 import {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class CreateKeyWallet extends Command {
   static description = 'Create key in wallet'
@@ -16,7 +17,8 @@ export default class CreateKeyWallet extends Command {
     this.log(`Created key in wallet ${args.name} with public key: ${publicKey}`)
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }
