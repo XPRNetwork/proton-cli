@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd} from '@protonprotocol/protonjs'
 import {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class LockAllWallets extends Command {
   static description = 'Lock all local wallets'
@@ -10,7 +11,8 @@ export default class LockAllWallets extends Command {
     this.log('All wallets are locked')
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

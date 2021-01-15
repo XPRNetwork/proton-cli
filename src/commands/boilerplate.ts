@@ -4,6 +4,8 @@ import http from 'isomorphic-git/http/node'
 import * as path from 'path'
 import * as fs from 'fs'
 import * as rimraf from 'rimraf'
+import {ux} from 'cli-ux'
+import {error} from '../debug'
 
 const BOILERPLATE_URL = 'https://github.com/ProtonProtocol/proton-boilerplate.git'
 const BOILERPLATE_BRANCH = 'master'
@@ -36,5 +38,10 @@ export default class Boilerplate extends Command {
       depth: 1,
     })
     rimraf.sync(path.join(dir, '.git'))
+  }
+
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

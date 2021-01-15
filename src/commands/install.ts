@@ -2,8 +2,11 @@ import {Command} from '@oclif/command'
 import * as os from 'os'
 import * as fs from 'fs'
 import * as ini from 'ini'
-import {sync as hasbinSync} from 'hasbin'
 import {execSync} from 'child_process'
+import {ux} from 'cli-ux'
+import {error} from '../debug'
+
+const {sync} = require('hasbin')
 
 export default class Install extends Command {
   static description = 'Install nodeos, cleos and keosd software'
@@ -17,12 +20,12 @@ export default class Install extends Command {
     const {args} = this.parse(Install)
 
     if (type === 'Darwin') {
-      if (hasbinSync('brew')) {
+      if (sync('brew')) {
         this.log('Brew Package Manager Found!')
       } else {
         this.log('Installing Brew Package Manager')
         execSync('/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"')
-        if (!hasbinSync('brew')) {
+        if (!sync('brew')) {
           throw new Error('Brew Installation failed')
         }
       }
@@ -48,7 +51,7 @@ export default class Install extends Command {
 
         this.log('Installing package...')
         execSync(`sudo apt install ./eosio_${args.version}-ubuntu-${releaseConfig.DISTRIB_RELEASE}_amd64.deb`)
-      } else if (hasbinSync('rpm')) {
+      } else if (sync('rpm')) {
         this.log('Fetching package...')
         execSync(`wget https://github.com/eosio/eos/releases/download/v${args.version}/eosio-${args.version}.el7.x86_64.rpm`)
 
@@ -60,5 +63,10 @@ export default class Install extends Command {
     } else {
       throw new Error('Not supported outside of MacOS or Linux. If using Windows, follow this guide to install Ubuntu under WSL: https://docs.microsoft.com/en-us/windows/wsl/install-win10#manual-installation-steps')
     }
+  }
+
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

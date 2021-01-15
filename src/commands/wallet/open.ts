@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd} from '@protonprotocol/protonjs'
 import {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class OpenWallet extends Command {
   static description = 'Open local wallet'
@@ -15,7 +16,8 @@ export default class OpenWallet extends Command {
     this.log(`Wallet ${args.name} successfully opened`)
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }

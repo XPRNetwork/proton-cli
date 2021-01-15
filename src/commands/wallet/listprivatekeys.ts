@@ -1,6 +1,7 @@
 import {Command} from '@oclif/command'
 import {Keosd, Key} from '@protonprotocol/protonjs'
 import cli, {ux} from 'cli-ux'
+import {error} from '../../debug'
 
 export default class ListPrivateKeys extends Command {
   static description = 'List private keys for a single wallet'
@@ -34,7 +35,8 @@ export default class ListPrivateKeys extends Command {
     )
   }
 
-  async catch(error: Error) {
-    ux.styledJSON(error)
+  async catch(e: Error) {
+    error(e)
+    ux.styledJSON(e)
   }
 }
