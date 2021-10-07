@@ -87,11 +87,11 @@ export default class NewAccount extends Command {
         account: 'eosio',
         name: 'newaccount',
         authorization: [{
-          actor: 'proton',
-          permission: 'active',
+          actor: 'wlcm.proton',
+          permission: 'newacc',
         }],
         data: {
-          creator: 'proton',
+          creator: 'wlcm.proton',
           name: args.account,
           owner: parsePermission(args.owner),
           active: parsePermission(args.active),
@@ -99,7 +99,7 @@ export default class NewAccount extends Command {
       },
       {
         account: 'eosio',
-        name: 'buyrambytes',
+        name: 'buyrambsys',
         authorization: [{
           actor: 'wlcm.proton',
           permission: 'newacc',
