@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { Command } from '@oclif/command'
-import {getApi} from '../../networks'
 import {ux} from 'cli-ux'
 import {readdirSync, readFileSync} from 'fs'
 import {join} from 'path'
 import {Serialize} from '@proton/js'
+import { network } from '../../networks'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
@@ -28,7 +28,6 @@ export default class SetContract extends Command {
 
   async run() {
     const {args} = this.parse(SetContract)
-    const {api, transact} = await getApi()
 
     // 0. Get path of WASM and ABI
     const {wasmPath, abiPath} = getDeployableFilesFromDir(args.directory)
@@ -39,7 +38,7 @@ export default class SetContract extends Command {
 
     // 2. Prepare SETABI
     const abiBuffer = new Serialize.SerialBuffer()
-    const abiDefinition = api.abiTypes.get('abi_def')!
+    const abiDefinition = network.api.abiTypes.get('abi_def')!
     abiDefinition.serialize(
       abiBuffer,
       abiDefinition.fields.reduce(
@@ -53,7 +52,7 @@ export default class SetContract extends Command {
 
     // 3. Set code
     try {
-      const wasmRes = await transact([
+      const wasmRes = await network.transact([
         {
           account: 'eosio',
           name: 'setcode',
@@ -77,7 +76,7 @@ export default class SetContract extends Command {
 
     // 4. Set ABI
     try {
-      const abiRes = await transact([
+      const abiRes = await network.transact([
         {
           account: 'eosio',
           name: 'setabi',
