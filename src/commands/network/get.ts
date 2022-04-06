@@ -1,7 +1,7 @@
-import {Command} from '@oclif/command'
-import {ux} from 'cli-ux'
+import { Command } from '@oclif/command'
+import {CliUx} from '@oclif/core'
 import {error} from '../../debug'
-import {currentNetwork} from '../../networks'
+import { network } from '../../networks'
 
 export default class GetNetwork extends Command {
   static description = 'Get Current Network'
@@ -9,12 +9,12 @@ export default class GetNetwork extends Command {
   static aliases = ['network']
 
   async run() {
-    const network = await currentNetwork.get()
-    ux.styledJSON(network)
+    CliUx.ux.log('Current Network:')
+    CliUx.ux.styledJSON(network.network)
   }
 
   async catch(e: Error) {
     error(e)
-    ux.styledJSON(e)
+    CliUx.ux.styledJSON(e)
   }
 }

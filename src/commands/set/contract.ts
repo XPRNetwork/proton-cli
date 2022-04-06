@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
-import {Command} from '@oclif/command'
+import { Command } from '@oclif/command'
 import {getApi} from '../../networks'
 import {ux} from 'cli-ux'
 import {readdirSync, readFileSync} from 'fs'
 import {join} from 'path'
-import {Serialize} from '@protonprotocol/protonjs'
+import {Serialize} from '@proton/js'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
