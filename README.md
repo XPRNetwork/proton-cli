@@ -45,11 +45,18 @@ USAGE
 # Commands
 <!-- commands -->
 * [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
-* [`proton generate:key`](#proton-generatekey)
+* [`proton generate:account`](#proton-generateaccount)
 * [`proton help [COMMAND]`](#proton-help-command)
+* [`proton keys:add [PRIVATEKEY]`](#proton-keysadd-privatekey)
+* [`proton keys:generate`](#proton-keysgenerate)
+* [`proton keys:list`](#proton-keyslist)
+* [`proton keys:lock`](#proton-keyslock)
+* [`proton keys:remove [PRIVATEKEY]`](#proton-keysremove-privatekey)
+* [`proton keys:reset`](#proton-keysreset)
+* [`proton keys:unlock [PASSWORD]`](#proton-keysunlock-password)
 * [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
-* [`proton network:all`](#proton-networkall)
 * [`proton network:get`](#proton-networkget)
+* [`proton network:list`](#proton-networklist)
 * [`proton network:set CHAIN`](#proton-networkset-chain)
 * [`proton set:contract ACCOUNT DIRECTORY`](#proton-setcontract-account-directory)
 * [`proton system:dappreg ACCOUNT`](#proton-systemdappreg-account)
@@ -70,16 +77,16 @@ OPTIONS
 
 _See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/boilerplate.ts)_
 
-## `proton generate:key`
+## `proton generate:account`
 
 Generate Key
 
 ```
 USAGE
-  $ proton generate:key
+  $ proton generate:account
 ```
 
-_See code: [src/commands/generate/key.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/generate/key.ts)_
+_See code: [src/commands/generate/account.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/generate/account.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -98,6 +105,83 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
+## `proton keys:add [PRIVATEKEY]`
+
+Add Key
+
+```
+USAGE
+  $ proton keys:add [PRIVATEKEY]
+```
+
+_See code: [src/commands/keys/add.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/add.ts)_
+
+## `proton keys:generate`
+
+Generate Key
+
+```
+USAGE
+  $ proton keys:generate
+```
+
+_See code: [src/commands/keys/generate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/generate.ts)_
+
+## `proton keys:list`
+
+Generate Key
+
+```
+USAGE
+  $ proton keys:list
+```
+
+_See code: [src/commands/keys/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/list.ts)_
+
+## `proton keys:lock`
+
+Lock Keys with password
+
+```
+USAGE
+  $ proton keys:lock
+```
+
+_See code: [src/commands/keys/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/lock.ts)_
+
+## `proton keys:remove [PRIVATEKEY]`
+
+Remove Key
+
+```
+USAGE
+  $ proton keys:remove [PRIVATEKEY]
+```
+
+_See code: [src/commands/keys/remove.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/remove.ts)_
+
+## `proton keys:reset`
+
+Reset password (CAUTION: deletes all private keys stored)
+
+```
+USAGE
+  $ proton keys:reset
+```
+
+_See code: [src/commands/keys/reset.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/reset.ts)_
+
+## `proton keys:unlock [PASSWORD]`
+
+Unlock Keys with password
+
+```
+USAGE
+  $ proton keys:unlock [PASSWORD]
+```
+
+_See code: [src/commands/keys/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/keys/unlock.ts)_
+
 ## `proton multisig:contract DIRECTORY`
 
 Multisig Contract
@@ -108,17 +192,6 @@ USAGE
 ```
 
 _See code: [src/commands/multisig/contract.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/multisig/contract.ts)_
-
-## `proton network:all`
-
-All Networks
-
-```
-USAGE
-  $ proton network:all
-```
-
-_See code: [src/commands/network/all.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/network/all.ts)_
 
 ## `proton network:get`
 
@@ -134,9 +207,20 @@ ALIASES
 
 _See code: [src/commands/network/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/network/get.ts)_
 
+## `proton network:list`
+
+All Networks
+
+```
+USAGE
+  $ proton network:list
+```
+
+_See code: [src/commands/network/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.7/src/commands/network/list.ts)_
+
 ## `proton network:set CHAIN`
 
-Set Current Network
+Set Network
 
 ```
 USAGE

@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import { Command } from '@oclif/command'
-import {getApi} from '../../networks'
 import {readdirSync, readFileSync} from 'fs'
 import {join} from 'path'
 import {Serialize} from '@proton/js'
+import { network } from '../../networks'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
@@ -26,7 +26,6 @@ export default class MultisigContract extends Command {
 
   async run() {
     const {args} = this.parse(MultisigContract)
-    const {api} = await getApi()
 
     // 0. Get path of WASM and ABI
     const {wasmPath, abiPath} = getDeployableFilesFromDir(args.directory)
@@ -38,12 +37,12 @@ export default class MultisigContract extends Command {
 
     // 2. Prepare SETABI
     const abiBuffer = new Serialize.SerialBuffer()
-    const abiDefinitions = api.abiTypes.get('abi_def')!
+    const abiDefinitions = network.api.abiTypes.get('abi_def')!
 
     let abiJSON = JSON.parse(readFileSync(abiPath, 'utf8'))
 
     abiJSON = abiDefinitions.fields.reduce(
-      (acc, {name: fieldName}) =>
+      (acc: any, {name: fieldName}: any) =>
         Object.assign(acc, {[fieldName]: acc[fieldName] || []}),
       abiJSON
     )

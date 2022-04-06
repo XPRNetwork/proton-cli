@@ -1,6 +1,7 @@
 import { Command } from '@oclif/command'
-import {getApi, currentNetwork} from '../../networks'
+import { network } from '../../networks'
 import cli, {ux} from 'cli-ux'
+import { config } from '../../storage/config'
 
 export default class Dappreg extends Command {
   static description = 'Set Contract'
@@ -11,10 +12,8 @@ export default class Dappreg extends Command {
 
   async run() {
     const {args} = this.parse(Dappreg)
-    const {transact} = await getApi()
-    const {chain} = await currentNetwork.get()
 
-    const res = await transact([
+    const res = await network.transact([
       {
         account: 'eosio.proton',
         name: 'dappreg',
@@ -29,7 +28,7 @@ export default class Dappreg extends Command {
     ])
 
     this.log('Transaction Successful')
-    await cli.url('View Transaction on Bloks.io', `https://${chain}.bloks.io/transaction/${(res as any).transaction_id}`)
+    await cli.url('View Transaction on Bloks.io', `https://${config.get('currentChain')}.bloks.io/transaction/${(res as any).transaction_id}`)
   }
 
   async catch(e: Error) {
