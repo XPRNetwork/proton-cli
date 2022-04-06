@@ -1,68 +1,52 @@
-import cli from 'cli-ux'
-import {JsonRpc, Api} from '@protonprotocol/protonjs'
-import fetch from 'node-fetch'
-import {info} from './debug'
-import {networks, settings} from './constants'
-import {KeosdSignatureProvider} from './keosd-signature-provider'
+import { CliUx } from '@oclif/core'
+import {JsonRpc, Api} from '@proton/js'
+import { networks } from './constants'
+import { config } from './storage/config'
 
-let rpc: JsonRpc
-let api: Api
+class Network {
+  rpc: JsonRpc
+  api: Api
 
-export const setRpc = (endpoints: string[]) => {
-  info('Endpoints:', endpoints)
-  rpc = new JsonRpc(endpoints, {fetch})
-  api = new Api({rpc, signatureProvider: new KeosdSignatureProvider()})
-  return rpc
-}
-
-export const currentNetwork = {
-  get: async () => {
-    let network = settings.get().currentNetwork
-    if (!network) {
-      const chain = await cli.prompt('What network would you like to connect to (proton, proton-test, eos)? You can change this in the future like `proton network:set proton-test`.')
-      network = currentNetwork.set(chain)
-    }
-    return network
-  },
-  set: (chain: string) => {
-    const network = networks.find(network => network.chain === chain)
-    if (!network) {
-      throw new Error('Chain not found, please use proton network:all to find all chains')
-    }
-    settings.merge({currentNetwork: network})
-    setRpc(network.endpoints)
-    return network
-  },
-}
-
-export const getRpc = async () => {
-  if (!rpc) {
-    await currentNetwork.get()
+  constructor () {
+    const endpoint = config.get('currentEndpoint')
+    this.rpc = new JsonRpc(endpoint as string)
+    this.api = new Api({ rpc: this.rpc })
   }
-  return rpc
-}
 
-export const getApi = async () => {
-  if (!api) {
-    await currentNetwork.get()
+  get network () {
+    const chain = config.get('currentChain')
+    const networks = config.get('networks') as any
+    return networks.find((network: any) => network.chain === chain)!
   }
-  return {
-    api,
-    transact: (actions: any[]) => api.transact({actions}, {
+
+  initialize () {
+    const endpoint = config.get('currentEndpoint')
+    this.rpc = new JsonRpc(endpoint as string)
+    this.api = new Api({ rpc: this.rpc })
+  }
+
+  async transact (actions: any[]) {
+    return this.api.transact({actions}, {
       useLastIrreversible: true,
       expireSeconds: 3000,
-    }),
+    })
+  }
+
+  setChain (chain: string) {
+    const foundChain = networks.find(network => network.chain === chain)
+    if (!foundChain) {
+      throw new Error(`No chain with name ${chain} found, use network:all to see available chains.`)
+    }
+    config.set('currentChain', chain)
+    this.initialize()
+    CliUx.ux.log(`Successfully switched to chain ${chain}`)
+  }
+  
+  setEndpoint (endpoint: string) {
+    config.set('currentEndpoint', endpoint)
+    this.initialize()
+    CliUx.ux.log(`Successfully switched to endpoint ${endpoint}`)
   }
 }
 
-// Initialization
-const initialize = () => {
-  if (settings.exists() && settings.get().currentNetwork) {
-    setRpc(settings.get().currentNetwork.endpoints)
-  } else {
-    settings.set({
-      currentNetwork: null,
-    })
-  }
-}
-initialize()
+export const network = new Network()

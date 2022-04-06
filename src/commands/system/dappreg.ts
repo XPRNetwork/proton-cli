@@ -1,4 +1,4 @@
-import {Command} from '@oclif/command'
+import { Command } from '@oclif/command'
 import {getApi, currentNetwork} from '../../networks'
 import cli, {ux} from 'cli-ux'
 
@@ -29,7 +29,7 @@ export default class Dappreg extends Command {
     ])
 
     this.log('Transaction Successful')
-    await cli.url('View Transaction on Bloks.io', `https://${chain}.bloks.io/transaction/${res.transaction_id}`)
+    await cli.url('View Transaction on Bloks.io', `https://${chain}.bloks.io/transaction/${(res as any).transaction_id}`)
   }
 
   async catch(e: Error) {

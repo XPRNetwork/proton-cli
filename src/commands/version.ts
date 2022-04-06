@@ -1,4 +1,4 @@
-import {Command} from '@oclif/command'
+import { Command } from '@oclif/command'
 import {ux} from 'cli-ux'
 import {error} from '../debug'
 
