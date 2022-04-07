@@ -14,7 +14,7 @@
     "@oclif/core": "^1.6.4",
     "@oclif/plugin-help": "^3",
     "@proton/js": "^26.1.15",
-    "@proton/mnemonic": "^0.1.4",
+    "@proton/mnemonic": "^0.5.0",
     "colors": "^1.4.0",
     "conf": "^10.1.2",
     "elliptic": "^6.5.3",
