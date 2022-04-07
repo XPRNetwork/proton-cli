@@ -16,7 +16,7 @@ export default class AddKey extends Command {
 
     // Prompt if needed
     if (!args.privateKey) {
-      args.privateKey = await CliUx.ux.prompt('Enter private key (starts with PVT_K1)', { type: 'mask' })
+      args.privateKey = await CliUx.ux.prompt('Enter private key (starts with PVT_K1)', { type: 'hide' })
     }
 
     await passwordManager.addPrivateKey(args.privateKey)

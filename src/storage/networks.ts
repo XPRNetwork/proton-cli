@@ -1,15 +1,15 @@
 import { CliUx } from '@oclif/core'
 import {JsonRpc, Api} from '@proton/js'
-import { networks } from './constants'
-import { config } from './storage/config'
+import { green } from 'colors'
+import { networks } from '../constants'
+import { config } from './config'
 
 class Network {
   rpc: JsonRpc
   api: Api
 
   constructor () {
-    const endpoint = config.get('currentEndpoint')
-    this.rpc = new JsonRpc(endpoint as string)
+    this.rpc = new JsonRpc(this.network.endpoint)
     this.api = new Api({ rpc: this.rpc })
   }
 
@@ -20,8 +20,7 @@ class Network {
   }
 
   initialize () {
-    const endpoint = config.get('currentEndpoint')
-    this.rpc = new JsonRpc(endpoint as string)
+    this.rpc = new JsonRpc(this.network.endpoint)
     this.api = new Api({ rpc: this.rpc })
   }
 
@@ -39,13 +38,13 @@ class Network {
     }
     config.set('currentChain', chain)
     this.initialize()
-    CliUx.ux.log(`Successfully switched to chain ${chain}`)
+    CliUx.ux.log(`${green('Success:')} Switched to chain ${chain}`)
   }
   
   setEndpoint (endpoint: string) {
     config.set('currentEndpoint', endpoint)
     this.initialize()
-    CliUx.ux.log(`Successfully switched to endpoint ${endpoint}`)
+    CliUx.ux.log(`${green('Success:')} Switched to endpoint ${endpoint}`)
   }
 }
 

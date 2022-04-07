@@ -3,8 +3,8 @@ import {CliUx} from '@oclif/core'
 import { Key } from '@proton/js'
 import passwordManager from '../../storage/passwordManager'
 
-export default class GenerateKey extends Command {
-  static description = 'Generate Key'
+export default class ListAllKeys extends Command {
+  static description = 'List All Key'
 
   async run() {
     const privateKeys = await passwordManager.getPrivateKeys()

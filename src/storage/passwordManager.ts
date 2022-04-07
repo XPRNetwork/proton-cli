@@ -2,15 +2,54 @@ import { Key, Numeric } from '@proton/js'
 import { CliUx } from '@oclif/core'
 import { config } from './config'
 import { encryptor } from './encryptor'
+import { green } from 'colors'
 
 class PasswordManager {
     password: string = ""
+   
+    async lock (password?: string) {
+        // Check if already locked
+        if (config.get('isLocked')) {
+            throw new Error('Wallet is already locked')
+        }
+
+        // Use passed or existing
+        const passwordToLockWith = password || this.password
+
+        // Encrypt and save existing keys
+        const privateKeys = config.get('privateKeys').map(key => encryptor.encrypt(passwordToLockWith, key))
+        config.set('privateKeys', privateKeys)
+
+        // Update config
+        config.set('isLocked', true)
+    }
     
+    async unlock (password?: string) {
+        // Check if already unlocked
+        if (!config.get('isLocked')) {
+            throw new Error('Wallet is already unlocked')
+        }
+    
+        // Use passed or existing
+        const passwordToUnlockWith = password || this.password
+
+        // Decrypt and save existing keys
+        const privateKeys = config.get('privateKeys').map(key => encryptor.decrypt(passwordToUnlockWith, key))
+        config.set('privateKeys', privateKeys)
+
+        // Update local
+        this.password = passwordToUnlockWith
+
+        // Update config
+        config.set('isLocked', false)
+    }
+
     async getPassword() {
         while (!this.password) {
-            const enteredPassword = await CliUx.ux.prompt('Please enter your 32-character password', { type: 'mask' })
+            const enteredPassword = await CliUx.ux.prompt('Please enter your 32 character password', { type: 'hide' })
             this.password = enteredPassword;
         }
+        return this.password
     }
 
     async getPrivateKeys (): Promise<string[]> {
@@ -21,8 +60,8 @@ class PasswordManager {
 
         // If locked
         if (config.get('isLocked')) {
-            await this.getPassword()
-            privateKeys = privateKeys.map(privateKey => encryptor.decrypt(this.password, privateKey))
+            const password = await this.getPassword()
+            privateKeys = privateKeys.map(privateKey => encryptor.decrypt(password, privateKey))
         }
 
         return privateKeys
@@ -40,8 +79,8 @@ class PasswordManager {
         // Encrypt if locked
         privateKeyStr = privateKey.toString()
         if (config.get('isLocked')) {
-            await this.getPassword()
-            privateKeyStr = encryptor.encrypt(this.password, privateKeyStr)
+            const password = await this.getPassword()
+            privateKeyStr = encryptor.encrypt(password, privateKeyStr)
         }
 
         // Validate password
@@ -54,7 +93,7 @@ class PasswordManager {
         config.set("privateKeys", privateKeys.concat(privateKeyStr))
     
         // Log out
-        CliUx.ux.log(`Successfully added new private key for public key: ${privateKeyStr}`)
+        CliUx.ux.log(`${green('Success:')} Added new private key for public key: ${privateKey.getPublicKey().toString()}`)
     }
     
     async removePrivateKey (privateKey: string) {

@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -23,7 +23,6 @@
     "ts-dedent": "^2.2.0"
   },
   "devDependencies": {
-    "@oclif/dev-cli": "^1.26.10",
     "@oclif/test": "^1",
     "@types/chai": "^4.2.14",
     "@types/debug": "^4.1.5",
@@ -71,11 +70,11 @@
     "build": "npm run prepack",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "prepack": "rm -rf lib && tsc -b && npx oclif manifest && npx oclif readme",
     "testbase": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
     "test": "npm run testbase -- \"test/**/*.test.ts\"",
     "testsome": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\" --exclude \"**/boilerplate.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "npx oclif readme && git add README.md"
   },
   "types": "lib/index.d.ts"
 }

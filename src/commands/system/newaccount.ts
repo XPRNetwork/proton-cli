@@ -1,8 +1,8 @@
 import {Command, flags} from '@oclif/command'
-import {network} from '../../networks'
-import cli from 'cli-ux'
-import Dappreg from './dappreg'
+import {network} from '../../storage/networks'
+import { CliUx } from '@oclif/core'
 import { config } from '../../storage/config';
+import { green } from 'colors';
 
 interface Permission {
   threshold: number;
@@ -58,7 +58,6 @@ export default class NewAccount extends Command {
     ram: flags.integer({char: 'r', default: 12288}),
     transfer: flags.boolean({char: 't', default: false}),
     code: flags.boolean({default: false}),
-    dappreg: flags.boolean({char: 'd', default: false}),
   }
 
   static args = [
@@ -74,7 +73,7 @@ export default class NewAccount extends Command {
     try {
       await network.rpc.get_account(args.account)
       this.log(`Account ${args.account} already exists!`)
-      await cli.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
+      await CliUx.ux.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
       return
     } catch (error) {
       // Do nothing
@@ -133,12 +132,7 @@ export default class NewAccount extends Command {
     // Execute
     await network.transact(actions)
 
-    // Dappreg
-    if (flags.dappreg) {
-      await Dappreg.run([args.account])
-    }
-
-    this.log(`Account ${args.account} successfully created!`)
-    await cli.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
+    this.log(`${green('Success:')} Account ${args.account} created!`)
+    await CliUx.ux.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
   }
 }

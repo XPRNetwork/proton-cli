@@ -3,7 +3,7 @@ import { Command } from '@oclif/command'
 import {readdirSync, readFileSync} from 'fs'
 import {join} from 'path'
 import {Serialize} from '@proton/js'
-import { network } from '../../networks'
+import { network } from '../../storage/networks'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)

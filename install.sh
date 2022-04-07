@@ -287,6 +287,6 @@ then
 fi
 
 info "Installing proton CLI"
-npm i -g @protonprotocol/cli
+npm i -g @proton/cli
 
 complete "Done"

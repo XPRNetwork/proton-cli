@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { Command } from '@oclif/command'
-import {ux} from 'cli-ux'
+import { CliUx } from '@oclif/core'
 import {readdirSync, readFileSync} from 'fs'
 import {join} from 'path'
 import {Serialize} from '@proton/js'
-import { network } from '../../networks'
+import { network } from '../../storage/networks'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
@@ -68,10 +68,10 @@ export default class SetContract extends Command {
           },
         },
       ])
-      ux.styledJSON(wasmRes)
+      CliUx.ux.styledJSON(wasmRes)
     } catch (error) {
       console.log('Set WASM failed')
-      ux.styledJSON(error)
+      CliUx.ux.styledJSON(error)
     }
 
     // 4. Set ABI
@@ -90,10 +90,10 @@ export default class SetContract extends Command {
           },
         },
       ])
-      ux.styledJSON(abiRes)
+      CliUx.ux.styledJSON(abiRes)
     } catch (error) {
       console.log('Set abi failed')
-      ux.styledJSON(error)
+      CliUx.ux.styledJSON(error)
     }
   }
 }
