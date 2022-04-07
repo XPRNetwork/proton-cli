@@ -4,7 +4,7 @@ import {error} from '../../debug'
 import { network } from '../../storage/networks'
 
 export default class GetNetwork extends Command {
-  static description = 'Get Current Network'
+  static description = 'Get Current Chain'
 
   static aliases = ['network']
 
