@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -13,11 +13,12 @@
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.6.4",
     "@oclif/plugin-help": "^3",
-    "@proton/js": "^26.1.13",
+    "@proton/js": "^26.1.15",
     "@proton/mnemonic": "^0.1.4",
     "colors": "^1.4.0",
     "conf": "^10.1.2",
     "elliptic": "^6.5.3",
+    "inquirer": "^8.2.2",
     "isomorphic-git": "^1.8.0",
     "rimraf": "^3.0.2",
     "ts-dedent": "^2.2.0"
@@ -28,6 +29,7 @@
     "@types/debug": "^4.1.5",
     "@types/elliptic": "^6.4.12",
     "@types/ini": "^1.3.30",
+    "@types/inquirer": "^8.2.1",
     "@types/mocha": "^9.1.0",
     "@types/node": "^10",
     "@types/rimraf": "^3.0.0",
@@ -39,6 +41,7 @@
     "ini": "^2.0.0",
     "mocha": "^9.2.2",
     "nyc": "^15.1.0",
+    "rxjs": "^7.5.5",
     "ts-node": "^8",
     "tslib": "^1",
     "typescript": "^3.3"
