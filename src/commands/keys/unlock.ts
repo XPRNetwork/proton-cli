@@ -1,11 +1,10 @@
 import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
-import { red } from 'colors'
-import { config } from '../../storage/config'
-import { encryptor } from '../../storage/encryptor'
+import { green, red, yellow } from 'colors'
+import passwordManager from '../../storage/passwordManager'
 
 export default class UnlockKey extends Command {
-  static description = 'Unlock Keys with password'
+  static description = 'Unlock all keys (Caution: Your keys will be stored in plaintext on disk)'
 
   static args = [
     {name: 'password', required: false, mask: true },
@@ -15,25 +14,17 @@ export default class UnlockKey extends Command {
     // Get args
     const {args} = this.parse(UnlockKey)
 
-    // Check if already unlocked
-    if (!config.get('isLocked')) {
-      throw new Error('Wallet is already unlocked')
-    }
-
     // Prompt if needed
     if (!args.password) {
-      args.password = await CliUx.ux.prompt('Enter 32-char password')
+      args.password = await CliUx.ux.prompt('Enter 32 character password', { type: 'hide' })
     }
 
-    // Decrypt and save existing keys
-    const privateKeys = config.get('privateKeys').map(key => encryptor.decrypt(args.password, key))
-    config.set('privateKeys', privateKeys)
-
-    // Update config
-    config.set('isLocked', false)
+    // UnLock
+    await passwordManager.unlock(args.password)
 
     // Print out success
-    CliUx.ux.log(`Successfully unlocked wallet, please note that your private keys are insecure on disk until you call keys:lock again`)
+    CliUx.ux.log(`${green('Success:')} Unlocked wallet`)
+    CliUx.ux.log(`${yellow('Note:')} Your private keys are stored as plaintext on disk until you call keys:lock again`)
   }
 
   async catch(e: Error) {

@@ -1,10 +1,10 @@
 import {expect, test} from '@oclif/test'
-import cli from 'cli-ux'
+import { CliUx } from '@oclif/core'
 import {getRpc, getApi} from '../../src/networks'
 
 describe('network', () => {
   test
-  .stub(cli, 'prompt', () => async () => 'proton-test')
+  .stub(CliUx.ux, 'prompt', () => async () => 'proton-test')
   .stdout()
   .command(['network'])
   .it('RPC and API were set', async ctx => {

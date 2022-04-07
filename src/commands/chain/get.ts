@@ -1,7 +1,7 @@
 import { Command } from '@oclif/command'
 import {CliUx} from '@oclif/core'
 import {error} from '../../debug'
-import { network } from '../../networks'
+import { network } from '../../storage/networks'
 
 export default class GetNetwork extends Command {
   static description = 'Get Current Network'
