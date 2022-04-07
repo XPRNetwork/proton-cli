@@ -1,13 +1,14 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
   },
   "bugs": "https://github.com/ProtonProtocol/proton-cli/issues",
   "dependencies": {
+    "@bloks/numbers": "^26.1.9",
     "@oclif/command": "^1.8.16",
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.6.4",
@@ -27,6 +28,7 @@
     "keytar": "^7.9.0",
     "node-fetch": "^2.6.1",
     "rimraf": "^3.0.2",
+    "ts-dedent": "^2.2.0",
     "tslib": "^1"
   },
   "devDependencies": {
@@ -73,6 +75,7 @@
   },
   "repository": "ProtonProtocol/proton-cli",
   "scripts": {
+    "build": "npm run prepack",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
