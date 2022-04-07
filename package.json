@@ -21,6 +21,7 @@
     "inquirer": "^8.2.2",
     "isomorphic-git": "^1.8.0",
     "rimraf": "^3.0.2",
+    "secure-enclave": "^0.4.1",
     "ts-dedent": "^2.2.0"
   },
   "devDependencies": {

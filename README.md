@@ -14,17 +14,17 @@ Proton CLI
 * [Commands](#commands)
 <!-- tocstop -->
 # Installation
-From Scratch
+Install NodeJS + NPM + CLI
 ```
 curl -Ls https://raw.githubusercontent.com/ProtonProtocol/proton-cli/master/install.sh | sh
 ```
 
-NPM
+Install CLI (NPM)
 ```
 npm i -g @proton/cli
 ```
 
-yarn
+Install CLI (Yarn)
 ```
 yarn global add @proton/cli
 ```
@@ -44,25 +44,29 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`proton account ACCOUNTNAME`](#proton-account-accountname)
-* [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
-* [`proton chain`](#proton-chain)
-* [`proton chain:info`](#proton-chaininfo)
-* [`proton chain:list`](#proton-chainlist)
-* [`proton chain:set`](#proton-chainset)
-* [`proton contract:contract ACCOUNT DIRECTORY`](#proton-contractcontract-account-directory)
-* [`proton help [COMMAND]`](#proton-help-command)
-* [`proton keys:add [PRIVATEKEY]`](#proton-keysadd-privatekey)
-* [`proton keys:generate`](#proton-keysgenerate)
-* [`proton keys:list`](#proton-keyslist)
-* [`proton keys:lock`](#proton-keyslock)
-* [`proton keys:remove [PRIVATEKEY]`](#proton-keysremove-privatekey)
-* [`proton keys:reset`](#proton-keysreset)
-* [`proton keys:unlock [PASSWORD]`](#proton-keysunlock-password)
-* [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
-* [`proton network`](#proton-network)
-* [`proton system:newaccount ACCOUNT OWNER ACTIVE`](#proton-systemnewaccount-account-owner-active)
-* [`proton version`](#proton-version)
+- [@proton/cli](#protoncli)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`proton account ACCOUNTNAME`](#proton-account-accountname)
+  - [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
+  - [`proton chain:get`](#proton-chainget)
+  - [`proton chain:info`](#proton-chaininfo)
+  - [`proton chain:list`](#proton-chainlist)
+  - [`proton chain:set`](#proton-chainset)
+  - [`proton contract:contract ACCOUNT DIRECTORY`](#proton-contractcontract-account-directory)
+  - [`proton help [COMMAND]`](#proton-help-command)
+  - [`proton keys:add [PRIVATEKEY]`](#proton-keysadd-privatekey)
+  - [`proton keys:generate`](#proton-keysgenerate)
+  - [`proton keys:list`](#proton-keyslist)
+  - [`proton keys:lock`](#proton-keyslock)
+  - [`proton keys:remove [PRIVATEKEY]`](#proton-keysremove-privatekey)
+  - [`proton keys:reset`](#proton-keysreset)
+  - [`proton keys:unlock [PASSWORD]`](#proton-keysunlock-password)
+  - [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
+  - [`proton network`](#proton-network)
+  - [`proton system:newaccount ACCOUNT OWNER ACTIVE`](#proton-systemnewaccount-account-owner-active)
+  - [`proton version`](#proton-version)
 
 ## `proton account ACCOUNTNAME`
 
@@ -98,13 +102,13 @@ DESCRIPTION
 
 _See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.13/src/commands/boilerplate.ts)_
 
-## `proton chain`
+## `proton chain:get`
 
 Get Current Chain
 
 ```
 USAGE
-  $ proton chain
+  $ proton chain:get
 
 DESCRIPTION
   Get Current Chain
@@ -113,7 +117,7 @@ ALIASES
   $ proton network
 ```
 
-_See code: [src/commands/chain/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.13/src/commands/chain/index.ts)_
+_See code: [src/commands/chain/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.13/src/commands/chain/get.ts)_
 
 ## `proton chain:info`
 
