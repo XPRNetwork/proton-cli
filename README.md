@@ -24,17 +24,8 @@ Install CLI (Yarn)
 yarn global add @proton/cli
 ```
 
-Install NodeJS + NPM + CLI
-```
-curl -sL install-node.now.sh/lts | sh
-npm i -g @proton/cli
-```
+If you need to install NodeJS, have a look at [INSTALL_NODE.md](INSTALL_NODE.md)
 
-If you get a missing write access error on Mac/Linux, first run:
-```
-sudo chown -R $USER /usr/local/lib/node_modules
-sudo chown -R $USER /usr/local/bin
-```
 # Usage
 <!-- usage -->
 ```sh-session
