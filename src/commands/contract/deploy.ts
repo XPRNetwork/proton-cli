@@ -6,7 +6,7 @@ import { Serialize } from '@proton/js'
 import { network } from '../../storage/networks'
 import { config } from '../../storage/config'
 import { green } from 'colors'
-import { parseDetailsError } from '../../utils/detailsError'
+import { parseDetailsError } from '../../utils/details-error'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
@@ -34,18 +34,18 @@ export default class DeployContract extends Command {
   static description = 'Deploy Contract'
 
   static args = [
-    {name: 'account', required: true, help: 'The account to publish the contract to'},
-    {name: 'directory', required: true, help: 'Path of directory with WASM and ABI'},
+    { name: 'account', required: true, help: 'The account to publish the contract to' },
+    { name: 'directory', required: true, help: 'Path of directory with WASM and ABI' },
   ]
 
   static flags = {
-    clear: flags.boolean({char: 'c', description: 'Removes WASM + ABI from contract'}),
-    abiOnly: flags.boolean({char: 'a', description: 'Only deploy ABI'}),
-    wasmOnly: flags.boolean({char: 'w', description: 'Only deploy WASM'}),
+    clear: flags.boolean({ char: 'c', description: 'Removes WASM + ABI from contract' }),
+    abiOnly: flags.boolean({ char: 'a', description: 'Only deploy ABI' }),
+    wasmOnly: flags.boolean({ char: 'w', description: 'Only deploy WASM' }),
   }
 
   async run() {
-    const {args, flags} = this.parse(DeployContract)
+    const { args, flags } = this.parse(DeployContract)
 
     let wasm: Buffer = Buffer.from('')
     let abi: string = ''
@@ -53,7 +53,7 @@ export default class DeployContract extends Command {
     // If not clearing, find files
     if (!flags.clear) {
       // 0. Get path of WASM and ABI
-      const {wasmPath, abiPath} = getDeployableFilesFromDir(args.directory)
+      const { wasmPath, abiPath } = getDeployableFilesFromDir(args.directory)
 
       // 1. Prepare SETCODE
       // read the file and make a hex string out of it
@@ -65,7 +65,7 @@ export default class DeployContract extends Command {
       abiDefinition.serialize(
         abiBuffer,
         abiDefinition.fields.reduce(
-          (acc: any, {name: fieldName}: any) => {
+          (acc: any, { name: fieldName }: any) => {
             return Object.assign(acc, {
               [fieldName]: acc[fieldName] || [],
             })
