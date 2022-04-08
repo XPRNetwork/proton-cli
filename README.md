@@ -14,11 +14,6 @@ Proton CLI
 * [Commands](#commands)
 <!-- tocstop -->
 # Installation
-Install NodeJS + NPM + CLI
-```
-curl -Ls https://raw.githubusercontent.com/ProtonProtocol/proton-cli/master/install.sh | sh
-```
-
 Install CLI (NPM)
 ```
 npm i -g @proton/cli
@@ -27,6 +22,17 @@ npm i -g @proton/cli
 Install CLI (Yarn)
 ```
 yarn global add @proton/cli
+```
+
+Install NodeJS + NPM + CLI
+```
+curl -Ls https://raw.githubusercontent.com/ProtonProtocol/proton-cli/master/install.sh | sh
+```
+
+If you get a missing write access error on Mac/Linux, run:
+```
+sudo chown -R $USER /usr/local/lib/node_modules
+sudo chown -R $USER /usr/local/bin
 ```
 # Usage
 <!-- usage -->
@@ -44,35 +50,39 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`proton account ACCOUNT`](#proton-account-account)
-* [`proton account:create ACCOUNT`](#proton-accountcreate-account)
-* [`proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`](#proton-action-contract-action-data-authorization)
-* [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
-* [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
-* [`proton chain:get`](#proton-chainget)
-* [`proton chain:info`](#proton-chaininfo)
-* [`proton chain:list`](#proton-chainlist)
-* [`proton chain:set`](#proton-chainset)
-* [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
-* [`proton contract:deploy ACCOUNT DIRECTORY`](#proton-contractdeploy-account-directory)
-* [`proton help [COMMAND]`](#proton-help-command)
-* [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
-* [`proton key:generate`](#proton-keygenerate)
-* [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
-* [`proton key:list`](#proton-keylist)
-* [`proton key:lock`](#proton-keylock)
-* [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
-* [`proton key:reset`](#proton-keyreset)
-* [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
-* [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
-* [`proton network`](#proton-network)
-* [`proton permission ACCOUNT`](#proton-permission-account)
-* [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
-* [`proton permission:unlink ACCOUNT CONTRACT [ACTION]`](#proton-permissionunlink-account-contract-action)
-* [`proton table CONTRACT [TABLE] [SCOPE]`](#proton-table-contract-table-scope)
-* [`proton transaction JSON`](#proton-transaction-json)
-* [`proton transaction:get ID`](#proton-transactionget-id)
-* [`proton version`](#proton-version)
+- [@proton/cli](#protoncli)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`proton account ACCOUNT`](#proton-account-account)
+  - [`proton account:create ACCOUNT`](#proton-accountcreate-account)
+  - [`proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`](#proton-action-contract-action-data-authorization)
+  - [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
+  - [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
+  - [`proton chain:get`](#proton-chainget)
+  - [`proton chain:info`](#proton-chaininfo)
+  - [`proton chain:list`](#proton-chainlist)
+  - [`proton chain:set`](#proton-chainset)
+  - [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
+  - [`proton contract:deploy ACCOUNT DIRECTORY`](#proton-contractdeploy-account-directory)
+  - [`proton help [COMMAND]`](#proton-help-command)
+  - [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
+  - [`proton key:generate`](#proton-keygenerate)
+  - [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
+  - [`proton key:list`](#proton-keylist)
+  - [`proton key:lock`](#proton-keylock)
+  - [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
+  - [`proton key:reset`](#proton-keyreset)
+  - [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
+  - [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
+  - [`proton network`](#proton-network)
+  - [`proton permission ACCOUNT`](#proton-permission-account)
+  - [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
+  - [`proton permission:unlink ACCOUNT CONTRACT [ACTION]`](#proton-permissionunlink-account-contract-action)
+  - [`proton table CONTRACT [TABLE] [SCOPE]`](#proton-table-contract-table-scope)
+  - [`proton transaction JSON`](#proton-transaction-json)
+  - [`proton transaction:get ID`](#proton-transactionget-id)
+  - [`proton version`](#proton-version)
 
 ## `proton account ACCOUNT`
 
