@@ -3,7 +3,7 @@ import { CliUx } from '@oclif/core'
 import { network } from '../../storage/networks'
 
 export default class Transaction extends Command {
-  static description = 'Get Transaction'
+  static description = 'Get Transaction by Transaction ID'
 
   static args = [
     { name: 'transactionId', required: true },
@@ -11,8 +11,12 @@ export default class Transaction extends Command {
 
   async run() {
     const { args } = this.parse(Transaction)
-    const result = await network.rpc.history_get_transaction(args.transactionJson)
+    const result = await network.rpc.history_get_transaction(args.transactionId)
     CliUx.ux.styledJSON(result)
+  }
+
+  async catch(e: Error) {
+    CliUx.ux.styledJSON(e)
   }
 }
 

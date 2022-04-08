@@ -4,6 +4,7 @@ import { network } from '../../storage/networks'
 import dedent from 'ts-dedent'
 import { ABI } from '@greymass/eosio'
 import { red } from 'colors'
+import { parseDetailsError } from '../../utils'
 
 export default class Action extends Command {
   static description = 'Execute Action'
@@ -14,10 +15,6 @@ export default class Action extends Command {
     { name: 'data', required: false },
     { name: 'authorization', required: false, description: 'Account to authorize with' },
   ]
-
-  static flags = {
-    // permission: flags.string({ char: 'p', description: 'An account and permission to authorize, as in account@permission' }),
-  }
 
   async run() {
     const { args } = this.parse(Action)
@@ -95,12 +92,7 @@ export default class Action extends Command {
   }
 
   async catch(e: Error | any) {
-    const error = e && e.details && e.details.length && e.details[0] && e.details[0].message
-    if (error || typeof e === 'object') {
-      CliUx.ux.log('\n' + red(error || e.message))
-    } else {
-      CliUx.ux.styledJSON(e)
-    }
+    parseDetailsError(e)
   }
 }
 

@@ -108,7 +108,7 @@ export default class GetAccount extends Command {
         ${cyan('Resources:')}
         ${generateResourceTable(account)}
 
-        ${account.voter_info
+        ${account.voter_info && account.voter_info.producers && account.voter_info.producers.length
           ? dedent`
             ${cyan('Voting For:')}
             ${account.voter_info.producers.join(', ')}
