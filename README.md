@@ -26,7 +26,7 @@ yarn global add @proton/cli
 
 If you need to install NodeJS, have a look at [INSTALL_NODE.md](INSTALL_NODE.md)
 
-**If you get a missing write access error on Mac/Linux, first run:**
+If you get a missing write access error on Mac/Linux, first run:
 ```
 sudo chown -R $USER /usr/local/lib/node_modules
 sudo chown -R $USER /usr/local/bin
