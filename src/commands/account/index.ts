@@ -6,6 +6,7 @@ import { network } from '../../storage/networks'
 import dedent from 'ts-dedent'
 import { parsePermissions } from '../../utils/permissions'
 import { generateResourceTable } from '../../utils/resources'
+import { getLightAccount, getLightBalances } from '../../apis/lightApi'
 
 export default class GetAccount extends Command {
   static description = 'Get Account Information'
@@ -16,11 +17,17 @@ export default class GetAccount extends Command {
 
   static flags = {
     raw: flags.boolean({ char: 'r', default: false }),
+    tokens: flags.boolean({ char: 't', default: false, description: 'Show token balances' }),
   }
 
   async run() {
     const { args, flags } = this.parse(GetAccount)
-    const account = await network.rpc.get_account(args.accountName)
+
+    const [account, lightAccount, balances] = await Promise.all([
+      network.rpc.get_account(args.accountName),
+      getLightAccount(args.accountName),
+      flags.tokens ? getLightBalances(args.accountName) : undefined
+    ])
 
     if (flags.raw) {
       CliUx.ux.styledJSON(account)
@@ -30,7 +37,7 @@ export default class GetAccount extends Command {
         ${parseUtcTimestamp(account.created)}
 
         ${cyan('Permissions:')}
-        ${parsePermissions(account.permissions)}
+        ${parsePermissions(account.permissions, lightAccount)}
 
         ${cyan('Resources:')}
         ${generateResourceTable(account)}
@@ -42,7 +49,14 @@ export default class GetAccount extends Command {
           `
           : ''
         }
-      `)
+
+        ${balances && flags.tokens
+          ? dedent`
+            ${cyan('Tokens:')} ${balances.map(balance => `\n${balance.amount} ${balance.currency} - ${balance.contract}`).join('')}
+          `
+          : ''
+        }
+      `.trim())
     }
   }
 }

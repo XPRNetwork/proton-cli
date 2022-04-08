@@ -4,6 +4,7 @@ import { Key } from '@proton/js'
 import { GetAccountResult } from '@proton/js/dist/rpc/types'
 import { green, red } from 'colors'
 import { Separator } from 'inquirer'
+import { getLightAccount } from '../../apis/lightApi'
 import { network } from '../../storage/networks'
 import { parsePermissions } from '../../utils/permissions'
 import { promptChoices, promptInteger, promptKey, promptAuthority, promptName } from '../../utils/prompt'
@@ -24,6 +25,7 @@ export default class UpdatePermission extends Command {
 
     // Track
     let account: GetAccountResult
+    let lightAccount: any
     let permissionSnapshot
     let step
     let currentPermission: any
@@ -31,7 +33,8 @@ export default class UpdatePermission extends Command {
     const reset = async () => {
       // Sorts in-place and displays
       account = await network.rpc.get_account(args.accountName)
-      await CliUx.ux.log('\n' + parsePermissions(account.permissions) + '\n')
+      lightAccount = await getLightAccount(args.accountName)
+      await CliUx.ux.log('\n' + parsePermissions(account.permissions, lightAccount) + '\n')
       account.permissions.map(perm => {
         perm.required_auth.keys = perm.required_auth.keys.map(key => {
           key.key = Key.PublicKey.fromString(key.key).toString()
@@ -54,7 +57,7 @@ export default class UpdatePermission extends Command {
       currentPermission.required_auth.waits    = currentPermission.required_auth.waits.sort((a: { wait_sec: any; }, b: { wait_sec: any; }) => a.wait_sec.localeCompare(b.wait_sec))
 
       await CliUx.ux.log(green('\n' + 'Expected Permissions:'))
-      await CliUx.ux.log(parsePermissions(account!.permissions, false) + '\n')
+      await CliUx.ux.log(parsePermissions(account!.permissions, lightAccount, false) + '\n')
 
       const authority = await CliUx.ux.prompt(green(`Please enter signing authority to update account (e.g. ${args.accountName}@owner)`))
       const [actor, permission] = authority.split('@')

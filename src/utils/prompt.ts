@@ -13,11 +13,11 @@ export const promptInteger = async (text: string) => {
     return weight
   }
   
-export const promptAuthority = async () => {
+export const promptAuthority = async (text = 'account authority (e.g. account@active)') => {
   const {account} = await prompt<{ account: string }>({
     name: 'account',
     type: 'input',
-    message: 'Enter new account authority (e.g. account@active)'
+    message: `Enter new ${text}`
   });
   const [actor, permission] = account.split('@')
   return { actor, permission }
@@ -50,7 +50,7 @@ export const promptChoices = async (message: string, choices: string[], def?: st
       message: message,
       choices: choices,
       loop: false,
-      pageSize: 10,
+      pageSize: 20,
       default: def
     },
   ]);

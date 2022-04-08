@@ -214,6 +214,13 @@
     bignumber.js "^9.0.1"
     dayjs "^1.8.18"
 
+"@eoscafe/light-api@^3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@eoscafe/light-api/-/light-api-3.2.18.tgz#eb4ba68d09548f67667fef15ab5fb1180b6bf293"
+  integrity sha512-EwIw6PhtLDS5nrkseTQs9z+UrRf0ijIPaj/W5yXn3jE/CuPFwSIrC2Ad4wTg6zsl4QaaQPdguiPfXmol+i0nuA==
+  dependencies:
+    cross-fetch "^3.1.5"
+
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.3.tgz#9e42981ef035beb3dd49add17acb96e8ff6f394c"
@@ -1350,7 +1357,7 @@ create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-fetch@^3.1.4:
+cross-fetch@^3.1.4, cross-fetch@^3.1.5:
   version "3.1.5"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
   integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
