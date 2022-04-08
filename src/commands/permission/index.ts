@@ -17,7 +17,7 @@ export default class UpdatePermission extends Command {
   static description = 'Add Key'
 
   static args = [
-    {name: 'accountName', required: true, description: 'Account to modify'},
+    {name: 'account', required: true, description: 'Account to modify'},
   ]
 
   async run() {
@@ -32,8 +32,8 @@ export default class UpdatePermission extends Command {
 
     const reset = async () => {
       // Sorts in-place and displays
-      account = await network.rpc.get_account(args.accountName)
-      lightAccount = await getLightAccount(args.accountName)
+      account = await network.rpc.get_account(args.account)
+      lightAccount = await getLightAccount(args.account)
       await CliUx.ux.log('\n' + parsePermissions(account.permissions, lightAccount) + '\n')
       account.permissions.map(perm => {
         perm.required_auth.keys = perm.required_auth.keys.map(key => {
@@ -59,14 +59,14 @@ export default class UpdatePermission extends Command {
       await CliUx.ux.log(green('\n' + 'Expected Permissions:'))
       await CliUx.ux.log(parsePermissions(account!.permissions, lightAccount, false) + '\n')
 
-      const authority = await CliUx.ux.prompt(green(`Please enter signing authority to update account (e.g. ${args.accountName}@owner)`))
+      const authority = await CliUx.ux.prompt(green(`Please enter signing authority to update account (e.g. ${args.account}@owner)`))
       const [actor, permission] = authority.split('@')
       await network.transact({
         actions: [{
           account: 'eosio',
           name: 'updateauth',
           data: {
-            account: args.accountName,
+            account: args.account,
             permission: currentPermission.perm_name,
             parent: currentPermission.parent,
             auth: currentPermission.required_auth
@@ -100,11 +100,11 @@ export default class UpdatePermission extends Command {
           await save()
         } else {
           if (permission === 'Add New Permission') {
-            const permissionName = await promptName('permission')
-            const parentPermissionName = await promptChoices('Choose parent permission:', account!.permissions.map(_ => _.perm_name), 'active')
+            const permission = await promptName('permission')
+            const parentpermission = await promptChoices('Choose parent permission:', account!.permissions.map(_ => _.perm_name), 'active')
             account!.permissions.push({
-              perm_name: permissionName,
-              parent: parentPermissionName,
+              perm_name: permission,
+              parent: parentpermission,
               required_auth: {
                 threshold: 1,
                 keys: [],

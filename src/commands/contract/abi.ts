@@ -6,12 +6,12 @@ export default class GetABI extends Command {
   static description = 'Get Contract ABI'
 
   static args = [
-    { name: 'accountName', required: true },
+    { name: 'account', required: true },
   ]
 
   async run() {
     const { args } = this.parse(GetABI)
-    const abi = await network.rpc.get_abi(args.accountName)
+    const abi = await network.rpc.get_abi(args.account)
     CliUx.ux.styledJSON(abi)
   }
 }

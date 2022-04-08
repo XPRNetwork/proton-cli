@@ -12,7 +12,7 @@ export default class GetAccount extends Command {
   static description = 'Get Account Information'
 
   static args = [
-    { name: 'accountName', required: true },
+    { name: 'account', required: true },
   ]
 
   static flags = {
@@ -24,9 +24,9 @@ export default class GetAccount extends Command {
     const { args, flags } = this.parse(GetAccount)
 
     const [account, lightAccount, balances] = await Promise.all([
-      network.rpc.get_account(args.accountName),
-      getLightAccount(args.accountName),
-      flags.tokens ? getLightBalances(args.accountName) : undefined
+      network.rpc.get_account(args.account),
+      getLightAccount(args.account),
+      flags.tokens ? getLightBalances(args.account) : undefined
     ])
 
     if (flags.raw) {

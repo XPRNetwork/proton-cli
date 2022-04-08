@@ -11,7 +11,7 @@ export default class CreateNewAccount extends Command {
   static description = 'Create New Account'
 
   static args = [
-    { name: 'accountName', required: true },
+    { name: 'account', required: true },
   ]
 
   async run() {
@@ -19,8 +19,8 @@ export default class CreateNewAccount extends Command {
 
     // Check account doesnt exist
     try {
-      await network.rpc.get_account(args.accountName)
-      CliUx.ux.log(`Account ${args.accountName} already exists`)
+      await network.rpc.get_account(args.account)
+      CliUx.ux.log(`Account ${args.account} already exists`)
       return
     } catch (e) {}
 
@@ -41,7 +41,7 @@ export default class CreateNewAccount extends Command {
     const data = {
       email: email,
       name: displayName,
-      chainAccount: args.accountName,
+      chainAccount: args.account,
       ownerPublicKey: publicKey,
       activePublicKey: publicKey,
       verificationCode: undefined
@@ -58,7 +58,7 @@ export default class CreateNewAccount extends Command {
     // Send verification
     res = await createAccount(data)
     if (res.user) {
-      CliUx.ux.log(green(`Account ${args.accountName} successfully created!`))
+      CliUx.ux.log(green(`Account ${args.account} successfully created!`))
     } else {
       throw new Error(`Could not create account with error: ${res.error}`)
     }

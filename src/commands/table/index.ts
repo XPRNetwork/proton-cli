@@ -7,8 +7,8 @@ export default class GetTable extends Command {
   static description = 'Get Table Storage Rows'
 
   static args = [
-    { name: 'contractName', required: true },
-    { name: 'tableName', required: false },
+    { name: 'contract', required: true },
+    { name: 'table', required: false },
     { name: 'scope', required: false },
   ]
 
@@ -26,25 +26,25 @@ export default class GetTable extends Command {
     const { args, flags } = this.parse(GetTable)
 
     // Have user choose table if not present
-    if (!args.tableName) {
-      const { abi: { tables } } = await network.rpc.get_abi(args.contractName)
-      const { tableName } = await prompt<{ tableName: string }>([
+    if (!args.table) {
+      const { abi: { tables } } = await network.rpc.get_abi(args.contract)
+      const { table } = await prompt<{ table: string }>([
         {
-          name: 'tableName',
+          name: 'table',
           type: 'list',
           message: 'Which of these tables would you like to fetch?',
           choices: tables.map((t) => t.name),
         },
       ]);    
-      args.tableName = tableName
+      args.table = table
     }
 
     // Fetch rows
     const rows = await network.rpc.get_table_rows({
       json: true,
-      code: args.contractName,
-      scope: args.scope || args.contractName,
-      table: args.tableName,
+      code: args.contract,
+      scope: args.scope || args.contract,
+      table: args.table,
       lower_bound: flags.lowerBound,
       upper_bound: flags.upperBound,
       index_position: flags.indexPosition,

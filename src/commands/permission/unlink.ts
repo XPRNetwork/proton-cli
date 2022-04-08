@@ -7,9 +7,9 @@ export default class UnlinkAuth extends Command {
   static description = 'Unlink Auth'
 
   static args = [
-    { name: 'accountName', required: true },
-    { name: 'contractName', required: true },
-    { name: 'actionName', required: false, default: '' },
+    { name: 'account', required: true },
+    { name: 'contract', required: true },
+    { name: 'action', required: false, default: '' },
   ]
 
   static flags = {
@@ -26,13 +26,13 @@ export default class UnlinkAuth extends Command {
         account: 'eosio',
         name: 'unlinkauth',
         data: {
-          account: args.accountName,
-          code: args.contractName,
-          type: args.actionName
+          account: args.account,
+          code: args.contract,
+          type: args.action
         },
         authorization: [{
-          actor: actor || args.accountName,
-          permission: permission || args.permissionName
+          actor: actor || args.account,
+          permission: permission || args.permission
         }]
       }]
     })
