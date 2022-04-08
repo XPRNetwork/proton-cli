@@ -9,8 +9,8 @@ export default class Action extends Command {
   static description = 'Execute Action'
 
   static args = [
-    { name: 'contractName', required: true },
-    { name: 'actionName', required: false },
+    { name: 'contract', required: true },
+    { name: 'action', required: false },
     { name: 'data', required: false },
     { name: 'authorization', required: false, description: 'Account to authorize with' },
   ]
@@ -19,11 +19,11 @@ export default class Action extends Command {
     const { args } = this.parse(Action)
 
     // Get ABI
-    const { abi: rawAbi } = await network.rpc.get_abi(args.contractName)
+    const { abi: rawAbi } = await network.rpc.get_abi(args.contract)
     const abi = ABI.from(rawAbi)
 
     // Guided flow
-    if (!args.actionName) {
+    if (!args.action) {
       const availableActions = rawAbi.actions.map((a) => {
         const resolved = abi.resolveType(a.name);
         const fields = resolved.fields!.map(field => `${field.name}: ${field.type.name}`).join(', ')
@@ -38,7 +38,7 @@ export default class Action extends Command {
     }
 
     // Resolved action
-    const resolvedAction = abi.resolveType(args.actionName);
+    const resolvedAction = abi.resolveType(args.action);
 
     // Check data
     if (!args.data) {
@@ -81,8 +81,8 @@ export default class Action extends Command {
     // Fetch rows
     const result = await network.transact({
       actions: [{
-        account: args.contractName,
-        name: args.actionName,
+        account: args.contract,
+        name: args.action,
         data,
         authorization
       }]

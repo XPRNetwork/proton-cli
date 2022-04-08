@@ -6,12 +6,12 @@ export default class Transaction extends Command {
   static description = 'Get Transaction by Transaction ID'
 
   static args = [
-    { name: 'transactionId', required: true },
+    { name: 'id', required: true },
   ]
 
   async run() {
     const { args } = this.parse(Transaction)
-    const result = await network.rpc.history_get_transaction(args.transactionId)
+    const result = await network.rpc.history_get_transaction(args.id)
     CliUx.ux.styledJSON(result)
   }
 
