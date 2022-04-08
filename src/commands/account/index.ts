@@ -52,7 +52,11 @@ export default class GetAccount extends Command {
 
         ${balances && flags.tokens
           ? dedent`
-            ${cyan('Tokens:')} ${balances.map(balance => `\n${balance.amount} ${balance.currency} - ${balance.contract}`).join('')}
+            ${cyan('Tokens:')} ${
+              balances
+                .filter(balance => +balance.amount.split(' ')[0] > 0)
+                .map(balance => `\n${balance.amount} ${balance.currency} - ${balance.contract}`).join('')
+            }
           `
           : ''
         }
