@@ -10,8 +10,8 @@ import { parsePermissions } from '../../utils/permissions'
 import { promptChoices, promptInteger, promptKey, promptAuthority, promptName } from '../../utils/prompt'
 import { wait } from '../../utils/wait'
 
-const parseKey = (key: { weight: number, key: string }) => `🔑 | +${key.weight} | ${key.key}`
-const parseAccount = (acc: { weight: number, permission: { actor: string, permission: string } }) => `👤 | +${acc.weight} | ${acc.permission.actor}@${acc.permission.permission}`
+const parseKey = (key: { weight: number, key: string }) => `+${key.weight} | ${key.key}`
+const parseAccount = (acc: { weight: number, permission: { actor: string, permission: string } }) => `A: | +${acc.weight} | ${acc.permission.actor}@${acc.permission.permission}`
 
 export default class UpdatePermission extends Command {
   static description = 'Add Key'
@@ -59,7 +59,7 @@ export default class UpdatePermission extends Command {
       await CliUx.ux.log(green('\n' + 'Expected Permissions:'))
       await CliUx.ux.log(parsePermissions(account!.permissions, lightAccount, false) + '\n')
 
-      const authority = await CliUx.ux.prompt(green(`Please enter signing authority to update account (e.g. ${args.account}@owner)`))
+      const authority = await CliUx.ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
       const [actor, permission] = authority.split('@')
       await network.transact({
         actions: [{
@@ -75,6 +75,46 @@ export default class UpdatePermission extends Command {
         }]
       })
       await CliUx.ux.log(`${green('Success:')} Permission updated`)
+      step = 'displayPermission'
+      await wait(1000)
+    }
+
+    const deleteCurrentPerm = async () => {
+      const authority = await CliUx.ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
+      const [actor, permission] = authority.split('@')
+
+      const authorization = [{ actor, permission}]
+      const removeLinksActions = lightAccount
+        ? lightAccount.linkauth
+            .filter((_: any) => _.requirement === currentPermission.perm_name)
+            .map((_: any) => ({
+              account: 'eosio',
+              name: 'unlinkauth',
+              data: {
+                account: args.account,
+                code: _.code,
+                type: _.type
+              },
+              authorization
+            }))
+        : []
+
+      const deleteActions = [
+        {
+          account: 'eosio',
+          name: 'deleteauth',
+          data: {
+            account: args.account,
+            permission: currentPermission.perm_name,
+          },
+          authorization: [{ actor, permission}]
+        }
+      ]
+
+      await network.transact({
+        actions: removeLinksActions.concat(deleteActions)
+      })
+      await CliUx.ux.log(`${green('Success:')} Permission deleted`)
       step = 'displayPermission'
       await wait(1000)
     }
@@ -116,7 +156,7 @@ export default class UpdatePermission extends Command {
           } else {
             currentPermission = account!.permissions.find(_ => _.perm_name === permission)
           }
-
+      
           step = 'editPermission'
         }
       }
@@ -146,7 +186,7 @@ export default class UpdatePermission extends Command {
           extraOptions.splice(2, 0, `Edit Threshold (Current: ${currentPermission.required_auth.threshold}, Max: ${maxThreshold})`)
         }
 
-        if (permissionSnapshot !== JSON.stringify(account!.permissions)) {
+        if (permissionSnapshot !== JSON.stringify(account!.permissions) && maxThreshold > 0) {
           extraOptions.unshift(green('Save'))
         }
 
@@ -167,7 +207,7 @@ export default class UpdatePermission extends Command {
         }
         else if (authorization.indexOf('PUB_') !== -1)
         {
-          const rawKey = authorization.split(' | ')[2]
+          const rawKey = authorization.split(' | ')[1]
           const selectedKeyIndex = currentPermission.required_auth.keys.findIndex((key: any) => key.key === rawKey)
           const selectedKey = currentPermission.required_auth.keys[selectedKeyIndex]
 
@@ -190,7 +230,7 @@ export default class UpdatePermission extends Command {
         }
         else if (authorization.indexOf('@') !== -1)
         {
-          const [actor, permission] = authorization.split(' | ')[2].split('@')
+          const [actor, permission] = authorization.split(' | ')[1].split('@')
           const selectedAccountIndex = currentPermission.required_auth.accounts.findIndex((account: any) => account.permission.actor === actor && account.permission.permission === permission)
           const selectedAccount = currentPermission.required_auth.accounts[selectedAccountIndex]
 
@@ -218,9 +258,7 @@ export default class UpdatePermission extends Command {
         }
         else if (authorization === 'Delete Permission')
         {
-          const permissionIndex = account!.permissions.findIndex(permission => permission.perm_name === currentPermission.perm_name)
-          account!.permissions.splice(permissionIndex, 1)
-          step = 'selectPermission'
+          await deleteCurrentPerm()
         }
         else if (authorization.indexOf('Edit Threshold') !== -1)
         {

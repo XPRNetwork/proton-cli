@@ -32,7 +32,7 @@ export default class UnlinkAuth extends Command {
         },
         authorization: [{
           actor: actor || args.account,
-          permission: permission || args.permission
+          permission: permission || 'active'
         }]
       }]
     })
