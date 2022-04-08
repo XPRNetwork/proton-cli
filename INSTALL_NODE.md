@@ -1,25 +1,20 @@
-# Install NodeJS + NPM + CLI
+# 1. Install NVM
+
+### Install MacOS/Linux
 ```
-curl -sL install-node.now.sh/lts | sh
-npm i -g @proton/cli
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
-# Install NodeJS + NPM + CLI (on M1 Mac through brew + NVM)
-```
-softwareupdate --install-rosetta
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install nvm
-```
+### Install NodeJS on Windows
+https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows
 
-Update paths as instructed, then run
+### Install NodeJS on WSL
+https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl
+
+
+# 2. Install NodeJS + CLI
 ```
 nvm install 16
 nvm use 16
 npm i -g @proton/cli
-```
-
-# If you get a missing write access error on Mac/Linux, first run:
-```
-sudo chown -R $USER /usr/local/lib/node_modules
-sudo chown -R $USER /usr/local/bin
 ```
