@@ -1,7 +1,7 @@
 import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
 import { network } from '../../storage/networks'
-import { parseDetailsError } from '../../utils/detailsError'
+import { parseDetailsError } from '../../utils/details-error'
 
 export default class Transaction extends Command {
   static description = 'Execute Transaction'
