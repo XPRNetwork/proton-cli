@@ -1,12 +1,15 @@
 import { Key } from '@proton/js';
 import { prompt } from 'inquirer'
+import AddPrivateKey from '../commands/key/add';
+import GenerateKey from '../commands/key/generate';
 import { isPositiveInteger } from './integer';
 
 export const promptInteger = async (text: string) => {
     const { weight } = await prompt<{ weight: number }>({
       name: 'weight',
       type: 'input',
-      message: `Enter new ${text} (e.g. 1)`,
+      message: `Enter new ${text}:`,
+      default: 1,
       filter: (w: string) => +w,
       validate: (w: any) => isPositiveInteger(String(w))
     });
@@ -27,19 +30,26 @@ export const promptName = async (text: string) => {
   const {name} = await prompt<{ name: string }>({
     name: 'name',
     type: 'input',
-    message: `Enter new ${text} name (e.g. account)`
+    message: `Enter new ${text} name:`,
+    default: 'newperm'
   });
   return name
 }
   
 export const promptKey = async () => {
-  const {key} = await prompt<{ key: string }>({
+  let {publicKey} = await prompt<{ publicKey: string | undefined }>({
     name: 'key',
     type: 'input',
-    message: 'Enter new key (e.g. PUB_K1...)',
-    filter: (key: string) => Key.PublicKey.fromString(key).toString()
+    message: 'Enter new public key (e.g. PUB_K1..., leave empty to create new):',
   });
-  return key
+
+  if (!publicKey) {
+    const privateKey = await GenerateKey.run()
+    await AddPrivateKey.run([privateKey])
+    publicKey = Key.PrivateKey.fromString(privateKey).getPublicKey().toString()
+  }
+
+  return Key.PublicKey.fromString(publicKey).toString()
 }
 
 export const promptChoices = async (message: string, choices: string[], def?: string) => {

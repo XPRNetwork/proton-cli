@@ -90,16 +90,25 @@ class PasswordManager {
         }
 
         // Validate password
-        const privateKeys: string[] = await this.getPrivateKeys()
+        let privateKeys: string[] = await this.getPrivateKeys()
         if (privateKeys.find(privateKey => privateKey === privateKeyStr)) {
           throw new Error('\nPrivate key already exists')
         }
 
+        // Concat
+        privateKeys = privateKeys.concat(privateKey.toString())
+
+        // Encrypt if locked
+        if (config.get('isLocked')) {
+            const password = await this.getPassword()
+            privateKeys = privateKeys.map(key => encryptor.encrypt(password, key))
+        }
+
         // Set new 
-        config.set("privateKeys", privateKeys.concat(privateKeyStr))
+        config.set('privateKeys', privateKeys)
     
         // Log out
-        CliUx.ux.log(`${green('Success:')} Added new private key for public key: ${privateKey.getPublicKey().toString()}`)
+        CliUx.ux.log(`${green('Success:')} Added new private key for public key: ${privateKey.getPublicKey().toString()}\n`)
     }
     
     async removePrivateKey (privateKey: string) {

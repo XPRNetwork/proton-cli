@@ -14,7 +14,7 @@ export default class LinkAuth extends Command {
   ]
 
   static flags = {
-    permission: flags.string({ char: 'p', default: '' })
+    permission: flags.string({ char: 'p', default: '', description: 'Permission to sign with (e.g. account@active)' })
   }
 
   async run() {
@@ -34,7 +34,7 @@ export default class LinkAuth extends Command {
         },
         authorization: [{
           actor: actor || args.account,
-          permission: permission || args.permission
+          permission: permission || 'active'
         }]
       }]
     })
