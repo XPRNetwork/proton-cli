@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -67,7 +67,11 @@
     "bin": "proton",
     "plugins": [
       "@oclif/plugin-help"
-    ]
+    ],
+    "flexibleTaxonomy": true,
+    "hooks": {
+      "command_incomplete": "./lib/hooks/command_incomplete.js"
+    }
   },
   "repository": "ProtonProtocol/proton-cli",
   "scripts": {
