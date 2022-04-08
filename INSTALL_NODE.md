@@ -12,6 +12,9 @@ https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wi
 https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl
 
 
+### Futher information
+If you need more help installing NVM, try out https://github.com/nvm-sh/nvm#install--update-script
+
 # 2. Install NodeJS + CLI
 ```
 nvm install 16
