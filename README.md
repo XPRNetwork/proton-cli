@@ -35,7 +35,7 @@ $ npm install -g @proton/cli
 $ proton COMMAND
 running command...
 $ proton (--version)
-@proton/cli/0.1.21 darwin-arm64 node-v17.6.0
+@proton/cli/0.1.21 darwin-arm64 node-v16.14.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND

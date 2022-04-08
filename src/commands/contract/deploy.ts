@@ -4,9 +4,9 @@ import { readdirSync, readFileSync } from 'fs'
 import { join } from 'path'
 import { Serialize } from '@proton/js'
 import { network } from '../../storage/networks'
-import { parseDetailsError } from '../../utils'
 import { config } from '../../storage/config'
 import { green } from 'colors'
+import { parseDetailsError } from '../../utils/detailsError'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
