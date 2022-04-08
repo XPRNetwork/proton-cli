@@ -18,8 +18,8 @@ function getDeployableFilesFromDir(dir: string) {
   }
 }
 
-export default class SetContract extends Command {
-  static description = 'Set Contract'
+export default class DeployContract extends Command {
+  static description = 'Deploy Contract'
 
   static args = [
     {name: 'account', required: true, help: 'The account to publish the contract to'},
@@ -27,7 +27,7 @@ export default class SetContract extends Command {
   ]
 
   async run() {
-    const {args} = this.parse(SetContract)
+    const {args} = this.parse(DeployContract)
 
     // 0. Get path of WASM and ABI
     const {wasmPath, abiPath} = getDeployableFilesFromDir(args.directory)
@@ -52,22 +52,22 @@ export default class SetContract extends Command {
 
     // 3. Set code
     try {
-      const wasmRes = await network.transact([
-        {
+      const wasmRes = await network.transact({
+        actions: [{
           account: 'eosio',
           name: 'setcode',
-          authorization: [{
-            actor: args.account,
-            permission: 'active',
-          }],
           data: {
             account: args.account,
             vmtype: 0,
             vmversion: 0,
             code: wasm,
           },
-        },
-      ])
+          authorization: [{
+            actor: args.account,
+            permission: 'active',
+          }],
+        }],
+      })
       CliUx.ux.styledJSON(wasmRes)
     } catch (error) {
       console.log('Set WASM failed')
@@ -76,20 +76,20 @@ export default class SetContract extends Command {
 
     // 4. Set ABI
     try {
-      const abiRes = await network.transact([
-        {
+      const abiRes = await network.transact({
+        actions: [{
           account: 'eosio',
           name: 'setabi',
-          authorization: [{
-            actor: args.account,
-            permission: 'active',
-          }],
           data: {
             account: args.account,
             abi: Buffer.from(abiBuffer.asUint8Array()).toString('hex'),
           },
-        },
-      ])
+          authorization: [{
+            actor: args.account,
+            permission: 'active',
+          }],
+        }],
+      })
       CliUx.ux.styledJSON(abiRes)
     } catch (error) {
       console.log('Set abi failed')

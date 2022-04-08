@@ -1,10 +1,11 @@
 import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
 import { red } from 'colors'
-import {error} from '../../debug'
+import { config } from '../../storage/config'
 import passwordManager from '../../storage/passwordManager'
+import LockKey from './lock'
 
-export default class AddKey extends Command {
+export default class AddPrivateKey extends Command {
   static description = 'Add Key'
 
   static args = [
@@ -12,7 +13,15 @@ export default class AddKey extends Command {
   ]
 
   async run() {
-    const {args} = this.parse(AddKey)
+    const {args} = this.parse(AddPrivateKey)
+
+    // Prompt whether to lock
+    if (!config.get('isLocked')) {
+      const toEncrypt = await CliUx.ux.confirm('Would you like to encrypt your stored keys with a password? (yes/no)')
+      if (toEncrypt) {
+        await LockKey.run()
+      }
+    }
 
     // Prompt if needed
     if (!args.privateKey) {
@@ -23,7 +32,6 @@ export default class AddKey extends Command {
   }
 
   async catch(e: Error) {
-    error(e)
     CliUx.ux.error(red(e.message))
   }
 }

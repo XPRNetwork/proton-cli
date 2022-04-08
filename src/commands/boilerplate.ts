@@ -4,7 +4,6 @@ import http from 'isomorphic-git/http/node'
 import * as path from 'path'
 import * as fs from 'fs'
 import * as rimraf from 'rimraf'
-import {error} from '../debug'
 import { CliUx } from '@oclif/core'
 
 const BOILERPLATE_URL = 'https://github.com/ProtonProtocol/proton-boilerplate.git'
@@ -41,7 +40,6 @@ export default class Boilerplate extends Command {
   }
 
   async catch(e: Error) {
-    error(e)
     CliUx.ux.styledJSON(e)
   }
 }

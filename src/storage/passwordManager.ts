@@ -52,6 +52,12 @@ class PasswordManager {
         return this.password
     }
 
+    async getPrivateKey (publicKey: string): Promise<string | undefined> {
+        const privateKeys = await this.getPrivateKeys()
+        const privateKey = privateKeys.find(_ => _ === Key.PublicKey.fromString(publicKey).toString())
+        return privateKey
+    }
+
     async getPrivateKeys (): Promise<string[]> {
         let privateKeys = config.get('privateKeys')
         if (!privateKeys.length) {

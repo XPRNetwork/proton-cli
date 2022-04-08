@@ -1,5 +1,4 @@
 import { Command } from '@oclif/command'
-import {error} from '../../debug'
 import {networks} from '../../constants'
 import { CliUx } from '@oclif/core'
 
@@ -12,7 +11,6 @@ export default class AllNetworks extends Command {
   }
 
   async catch(e: Error) {
-    error(e)
     CliUx.ux.styledJSON(e)
   }
 }

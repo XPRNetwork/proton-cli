@@ -92,7 +92,7 @@ export default class GetAccount extends Command {
   }
 
   async run() {
-    const {args,flags} = this.parse(GetAccount)
+    const { args, flags } = this.parse(GetAccount)
     const account = await network.rpc.get_account(args.accountName)
 
     if (flags.raw) {
