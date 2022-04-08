@@ -35,7 +35,7 @@ $ npm install -g @proton/cli
 $ proton COMMAND
 running command...
 $ proton (--version)
-@proton/cli/0.1.20 darwin-arm64 node-v17.6.0
+@proton/cli/0.1.21 darwin-arm64 node-v17.6.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -86,7 +86,7 @@ DESCRIPTION
   Get Account Information
 ```
 
-_See code: [src/commands/account/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/account/index.ts)_
+_See code: [src/commands/account/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/account/index.ts)_
 
 ## `proton account:create ACCOUNTNAME`
 
@@ -100,7 +100,7 @@ DESCRIPTION
   Create New Account
 ```
 
-_See code: [src/commands/account/create.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/account/create.ts)_
+_See code: [src/commands/account/create.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/account/create.ts)_
 
 ## `proton action CONTRACTNAME [ACTIONNAME] [DATA] [AUTHORIZATION]`
 
@@ -120,7 +120,7 @@ DESCRIPTION
   Execute Action
 ```
 
-_See code: [src/commands/action/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/action/index.ts)_
+_See code: [src/commands/action/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/action/index.ts)_
 
 ## `proton block:get BLOCKNUMBER`
 
@@ -134,7 +134,7 @@ DESCRIPTION
   Get Block
 ```
 
-_See code: [src/commands/block/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/block/get.ts)_
+_See code: [src/commands/block/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/block/get.ts)_
 
 ## `proton boilerplate [FOLDER]`
 
@@ -151,7 +151,7 @@ DESCRIPTION
   Boilerplate a new Proton Project with contract, frontend and tests
 ```
 
-_See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/boilerplate.ts)_
+_See code: [src/commands/boilerplate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/boilerplate.ts)_
 
 ## `proton chain:get`
 
@@ -168,7 +168,7 @@ ALIASES
   $ proton network
 ```
 
-_See code: [src/commands/chain/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/chain/get.ts)_
+_See code: [src/commands/chain/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/chain/get.ts)_
 
 ## `proton chain:info`
 
@@ -182,7 +182,7 @@ DESCRIPTION
   Get Chain Info
 ```
 
-_See code: [src/commands/chain/info.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/chain/info.ts)_
+_See code: [src/commands/chain/info.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/chain/info.ts)_
 
 ## `proton chain:list`
 
@@ -196,7 +196,7 @@ DESCRIPTION
   All Networks
 ```
 
-_See code: [src/commands/chain/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/chain/list.ts)_
+_See code: [src/commands/chain/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/chain/list.ts)_
 
 ## `proton chain:set`
 
@@ -213,7 +213,7 @@ DESCRIPTION
   Set Chain
 ```
 
-_See code: [src/commands/chain/set.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/chain/set.ts)_
+_See code: [src/commands/chain/set.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/chain/set.ts)_
 
 ## `proton contract:abi ACCOUNTNAME`
 
@@ -227,7 +227,7 @@ DESCRIPTION
   Get Contract ABI
 ```
 
-_See code: [src/commands/contract/abi.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/contract/abi.ts)_
+_See code: [src/commands/contract/abi.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/contract/abi.ts)_
 
 ## `proton contract:deploy ACCOUNT DIRECTORY`
 
@@ -246,7 +246,7 @@ DESCRIPTION
   Deploy Contract
 ```
 
-_See code: [src/commands/contract/deploy.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/contract/deploy.ts)_
+_See code: [src/commands/contract/deploy.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/contract/deploy.ts)_
 
 ## `proton help [COMMAND]`
 
@@ -280,7 +280,7 @@ DESCRIPTION
   Add Key
 ```
 
-_See code: [src/commands/keys/add.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/add.ts)_
+_See code: [src/commands/keys/add.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/add.ts)_
 
 ## `proton keys:generate`
 
@@ -294,7 +294,7 @@ DESCRIPTION
   Generate Key
 ```
 
-_See code: [src/commands/keys/generate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/generate.ts)_
+_See code: [src/commands/keys/generate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/generate.ts)_
 
 ## `proton keys:get PUBLICKEY`
 
@@ -308,7 +308,7 @@ DESCRIPTION
   Find private key for public key
 ```
 
-_See code: [src/commands/keys/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/get.ts)_
+_See code: [src/commands/keys/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/get.ts)_
 
 ## `proton keys:list`
 
@@ -322,7 +322,7 @@ DESCRIPTION
   List All Key
 ```
 
-_See code: [src/commands/keys/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/list.ts)_
+_See code: [src/commands/keys/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/list.ts)_
 
 ## `proton keys:lock`
 
@@ -336,7 +336,7 @@ DESCRIPTION
   Lock Keys with password
 ```
 
-_See code: [src/commands/keys/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/lock.ts)_
+_See code: [src/commands/keys/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/lock.ts)_
 
 ## `proton keys:remove [PRIVATEKEY]`
 
@@ -350,7 +350,7 @@ DESCRIPTION
   Remove Key
 ```
 
-_See code: [src/commands/keys/remove.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/remove.ts)_
+_See code: [src/commands/keys/remove.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/remove.ts)_
 
 ## `proton keys:reset`
 
@@ -364,7 +364,7 @@ DESCRIPTION
   Reset password (Caution: deletes all private keys stored)
 ```
 
-_See code: [src/commands/keys/reset.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/reset.ts)_
+_See code: [src/commands/keys/reset.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/reset.ts)_
 
 ## `proton keys:unlock [PASSWORD]`
 
@@ -378,7 +378,7 @@ DESCRIPTION
   Unlock all keys (Caution: Your keys will be stored in plaintext on disk)
 ```
 
-_See code: [src/commands/keys/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/keys/unlock.ts)_
+_See code: [src/commands/keys/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/unlock.ts)_
 
 ## `proton multisig:contract DIRECTORY`
 
@@ -392,7 +392,7 @@ DESCRIPTION
   Multisig Contract
 ```
 
-_See code: [src/commands/multisig/contract.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/multisig/contract.ts)_
+_See code: [src/commands/multisig/contract.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/multisig/contract.ts)_
 
 ## `proton network`
 
@@ -431,7 +431,7 @@ DESCRIPTION
   Get Table Storage Rows
 ```
 
-_See code: [src/commands/table/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/table/index.ts)_
+_See code: [src/commands/table/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/table/index.ts)_
 
 ## `proton transaction JSON`
 
@@ -445,7 +445,7 @@ DESCRIPTION
   Execute Transaction
 ```
 
-_See code: [src/commands/transaction/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/transaction/index.ts)_
+_See code: [src/commands/transaction/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/transaction/index.ts)_
 
 ## `proton transaction:get TRANSACTIONID`
 
@@ -459,7 +459,7 @@ DESCRIPTION
   Get Transaction by Transaction ID
 ```
 
-_See code: [src/commands/transaction/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/transaction/get.ts)_
+_See code: [src/commands/transaction/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/transaction/get.ts)_
 
 ## `proton version`
 
@@ -473,5 +473,5 @@ DESCRIPTION
   Version of CLI
 ```
 
-_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.20/src/commands/version.ts)_
+_See code: [src/commands/version.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/version.ts)_
 <!-- commandsstop -->
