@@ -6,7 +6,7 @@ import { Serialize } from '@proton/js'
 import { network } from '../../storage/networks'
 import { config } from '../../storage/config'
 import { green } from 'colors'
-import { parseDetailsError } from '../../utils/details-error'
+import { parseDetailsError } from '../../utils/detailsError'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
