@@ -3,7 +3,7 @@ import { CliUx } from '@oclif/core'
 import { network } from '../../storage/networks'
 import dedent from 'ts-dedent'
 import { ABI } from '@greymass/eosio'
-import { parseDetailsError } from '../../utils/detailsError'
+import { parseDetailsError } from '../../utils/details-error'
 
 export default class Action extends Command {
   static description = 'Execute Action'

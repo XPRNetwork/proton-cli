@@ -35,7 +35,7 @@ $ npm install -g @proton/cli
 $ proton COMMAND
 running command...
 $ proton (--version)
-@proton/cli/0.1.25 darwin-arm64 node-v16.14.0
+@proton/cli/0.1.25 linux-x64 node-v16.14.2
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -54,6 +54,7 @@ USAGE
 * [`proton chain:list`](#proton-chainlist)
 * [`proton chain:set`](#proton-chainset)
 * [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
+* [`proton contract:create CONTRACTNAME`](#proton-contractcreate-contractname)
 * [`proton contract:deploy ACCOUNT DIRECTORY`](#proton-contractdeploy-account-directory)
 * [`proton help [COMMAND]`](#proton-help-command)
 * [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
@@ -232,6 +233,22 @@ DESCRIPTION
 ```
 
 _See code: [src/commands/contract/abi.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.25/src/commands/contract/abi.ts)_
+
+## `proton contract:create CONTRACTNAME`
+
+```
+USAGE
+  $ proton contract:create [CONTRACTNAME] [-c <value>] [-o <value>]
+
+ARGUMENTS
+  CONTRACTNAME  The name of the contract. 1-12 chars, only lowercase a-z and numbers 1-5 are possible
+
+FLAGS
+  -c, --class=<value>   The name of Typescript class for the contract
+  -o, --output=<value>  The relative path to folder the the contract should be created. Current folder by default.
+```
+
+_See code: [src/commands/contract/create.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.25/src/commands/contract/create.ts)_
 
 ## `proton contract:deploy ACCOUNT DIRECTORY`
 
