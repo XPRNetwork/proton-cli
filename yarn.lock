@@ -254,6 +254,29 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@inquirer/core@^0.0.18-alpha.0":
+  version "0.0.18-alpha.0"
+  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-0.0.18-alpha.0.tgz#811e02d2e6946562dbf10ff05aceb9afcc052faf"
+  integrity sha512-skK1xe87YyIXHDdA4kYzkzEzaUEnndh7ygOQrKHCrIzHy/V8xmJfyDIAJauNZXSBn9RHqxCCqAqTo1ifyIJwCw==
+  dependencies:
+    ansi-escapes "^4.2.1"
+    chalk "^4.1.1"
+    cli-spinners "^2.6.1"
+    cli-width "^3.0.0"
+    lodash "^4.17.21"
+    mute-stream "^0.0.8"
+    run-async "^2.3.0"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+
+"@inquirer/input@^0.0.18-alpha.0":
+  version "0.0.18-alpha.0"
+  resolved "https://registry.yarnpkg.com/@inquirer/input/-/input-0.0.18-alpha.0.tgz#073192fff65e8cd8590b340d87c50a7757ad3faf"
+  integrity sha512-7ahn01HFEYZqaoyBu2qKbyytKw+V+NHrL+5wNGJzX1/SrFUpPEEVDTp77MUWLD/X8r6LQt8PmA6KzZniMbo3IQ==
+  dependencies:
+    "@inquirer/core" "^0.0.18-alpha.0"
+    chalk "^4.1.1"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -1199,7 +1222,7 @@ cli-progress@^3.10.0:
   dependencies:
     string-width "^4.2.0"
 
-cli-spinners@^2.5.0:
+cli-spinners@^2.5.0, cli-spinners@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-2.6.1.tgz#adc954ebe281c37a6319bfa401e6dd2488ffb70d"
   integrity sha512-x/5fWmGMnbKQAaNwN+UZlV79qBLM9JFnJuJ03gIi5whrob0xV0ofNVHy9DhwGdsMJQc2OKv0oGmLzvaqvAVv+g==
@@ -2666,7 +2689,7 @@ multimap@^1.1.0:
   resolved "https://registry.yarnpkg.com/multimap/-/multimap-1.1.0.tgz#5263febc085a1791c33b59bb3afc6a76a2a10ca8"
   integrity sha512-0ZIR9PasPxGXmRsEF8jsDzndzHDj7tIav+JUmvIFB/WHswliFnquxECT/De7GR4yg99ky/NlRKJT82G1y271bw==
 
-mute-stream@0.0.8:
+mute-stream@0.0.8, mute-stream@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.8.tgz#1630c42b2251ff81e2a283de96a5497ea92e5e0d"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
@@ -3178,7 +3201,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-run-async@^2.4.0:
+run-async@^2.3.0, run-async@^2.4.0:
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.4.1.tgz#8440eccf99ea3e70bd409d49aab88e10c189a455"
   integrity sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==

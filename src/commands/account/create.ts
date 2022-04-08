@@ -1,10 +1,10 @@
 import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
 import { network } from '../../storage/networks'
-import GenerateKey from '../keys/generate'
+import GenerateKey from '../key/generate'
 import { Key } from '@proton/js'
 import { createAccount } from '../../apis/createAccount'
-import AddPrivateKey from '../keys/add'
+import AddPrivateKey from '../key/add'
 import { green } from 'colors'
 
 export default class CreateNewAccount extends Command {

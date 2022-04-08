@@ -56,16 +56,17 @@ USAGE
 * [`proton contract:abi ACCOUNTNAME`](#proton-contractabi-accountname)
 * [`proton contract:deploy ACCOUNT DIRECTORY`](#proton-contractdeploy-account-directory)
 * [`proton help [COMMAND]`](#proton-help-command)
-* [`proton keys:add [PRIVATEKEY]`](#proton-keysadd-privatekey)
-* [`proton keys:generate`](#proton-keysgenerate)
-* [`proton keys:get PUBLICKEY`](#proton-keysget-publickey)
-* [`proton keys:list`](#proton-keyslist)
-* [`proton keys:lock`](#proton-keyslock)
-* [`proton keys:remove [PRIVATEKEY]`](#proton-keysremove-privatekey)
-* [`proton keys:reset`](#proton-keysreset)
-* [`proton keys:unlock [PASSWORD]`](#proton-keysunlock-password)
+* [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
+* [`proton key:generate`](#proton-keygenerate)
+* [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
+* [`proton key:list`](#proton-keylist)
+* [`proton key:lock`](#proton-keylock)
+* [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
+* [`proton key:reset`](#proton-keyreset)
+* [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
 * [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
 * [`proton network`](#proton-network)
+* [`proton permission ACCOUNTNAME`](#proton-permission-accountname)
 * [`proton table CONTRACTNAME [TABLENAME] [SCOPE]`](#proton-table-contractname-tablename-scope)
 * [`proton transaction JSON`](#proton-transaction-json)
 * [`proton transaction:get TRANSACTIONID`](#proton-transactionget-transactionid)
@@ -268,117 +269,117 @@ DESCRIPTION
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
-## `proton keys:add [PRIVATEKEY]`
+## `proton key:add [PRIVATEKEY]`
 
 Add Key
 
 ```
 USAGE
-  $ proton keys:add [PRIVATEKEY]
+  $ proton key:add [PRIVATEKEY]
 
 DESCRIPTION
   Add Key
 ```
 
-_See code: [src/commands/keys/add.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/add.ts)_
+_See code: [src/commands/key/add.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/add.ts)_
 
-## `proton keys:generate`
+## `proton key:generate`
 
 Generate Key
 
 ```
 USAGE
-  $ proton keys:generate
+  $ proton key:generate
 
 DESCRIPTION
   Generate Key
 ```
 
-_See code: [src/commands/keys/generate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/generate.ts)_
+_See code: [src/commands/key/generate.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/generate.ts)_
 
-## `proton keys:get PUBLICKEY`
+## `proton key:get PUBLICKEY`
 
 Find private key for public key
 
 ```
 USAGE
-  $ proton keys:get [PUBLICKEY]
+  $ proton key:get [PUBLICKEY]
 
 DESCRIPTION
   Find private key for public key
 ```
 
-_See code: [src/commands/keys/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/get.ts)_
+_See code: [src/commands/key/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/get.ts)_
 
-## `proton keys:list`
+## `proton key:list`
 
 List All Key
 
 ```
 USAGE
-  $ proton keys:list
+  $ proton key:list
 
 DESCRIPTION
   List All Key
 ```
 
-_See code: [src/commands/keys/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/list.ts)_
+_See code: [src/commands/key/list.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/list.ts)_
 
-## `proton keys:lock`
+## `proton key:lock`
 
 Lock Keys with password
 
 ```
 USAGE
-  $ proton keys:lock
+  $ proton key:lock
 
 DESCRIPTION
   Lock Keys with password
 ```
 
-_See code: [src/commands/keys/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/lock.ts)_
+_See code: [src/commands/key/lock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/lock.ts)_
 
-## `proton keys:remove [PRIVATEKEY]`
+## `proton key:remove [PRIVATEKEY]`
 
 Remove Key
 
 ```
 USAGE
-  $ proton keys:remove [PRIVATEKEY]
+  $ proton key:remove [PRIVATEKEY]
 
 DESCRIPTION
   Remove Key
 ```
 
-_See code: [src/commands/keys/remove.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/remove.ts)_
+_See code: [src/commands/key/remove.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/remove.ts)_
 
-## `proton keys:reset`
+## `proton key:reset`
 
 Reset password (Caution: deletes all private keys stored)
 
 ```
 USAGE
-  $ proton keys:reset
+  $ proton key:reset
 
 DESCRIPTION
   Reset password (Caution: deletes all private keys stored)
 ```
 
-_See code: [src/commands/keys/reset.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/reset.ts)_
+_See code: [src/commands/key/reset.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/reset.ts)_
 
-## `proton keys:unlock [PASSWORD]`
+## `proton key:unlock [PASSWORD]`
 
 Unlock all keys (Caution: Your keys will be stored in plaintext on disk)
 
 ```
 USAGE
-  $ proton keys:unlock [PASSWORD]
+  $ proton key:unlock [PASSWORD]
 
 DESCRIPTION
   Unlock all keys (Caution: Your keys will be stored in plaintext on disk)
 ```
 
-_See code: [src/commands/keys/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/keys/unlock.ts)_
+_See code: [src/commands/key/unlock.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/key/unlock.ts)_
 
 ## `proton multisig:contract DIRECTORY`
 
@@ -408,6 +409,23 @@ DESCRIPTION
 ALIASES
   $ proton network
 ```
+
+## `proton permission ACCOUNTNAME`
+
+Add Key
+
+```
+USAGE
+  $ proton permission [ACCOUNTNAME]
+
+ARGUMENTS
+  ACCOUNTNAME  Account to modify
+
+DESCRIPTION
+  Add Key
+```
+
+_See code: [src/commands/permission/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.21/src/commands/permission/index.ts)_
 
 ## `proton table CONTRACTNAME [TABLENAME] [SCOPE]`
 

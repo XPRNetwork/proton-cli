@@ -54,7 +54,7 @@ class PasswordManager {
 
     async getPrivateKey (publicKey: string): Promise<string | undefined> {
         const privateKeys = await this.getPrivateKeys()
-        const privateKey = privateKeys.find(_ => _ === Key.PublicKey.fromString(publicKey).toString())
+        const privateKey = privateKeys.find(_ => Key.PrivateKey.fromString(_).getPublicKey().toString() === Key.PublicKey.fromString(publicKey).toString())
         return privateKey
     }
 
