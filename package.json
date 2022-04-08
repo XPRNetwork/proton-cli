@@ -10,6 +10,7 @@
   "dependencies": {
     "@bloks/numbers": "^26.1.9",
     "@greymass/eosio": "^0.5.5",
+    "@inquirer/input": "^0.0.18-alpha.0",
     "@oclif/command": "^1.8.16",
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.6.4",

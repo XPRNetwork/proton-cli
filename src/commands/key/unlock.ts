@@ -7,7 +7,7 @@ export default class UnlockKey extends Command {
   static description = 'Unlock all keys (Caution: Your keys will be stored in plaintext on disk)'
 
   static args = [
-    {name: 'password', required: false, mask: true },
+    {name: 'password', required: false, hide: true },
   ]
 
   async run() {

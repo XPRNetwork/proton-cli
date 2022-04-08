@@ -1,7 +1,7 @@
 import { CliUx } from '@oclif/core'
 import { JsonRpc, Api, JsSignatureProvider } from '@proton/js'
 import { green } from 'colors'
-import GetPrivateKey from '../commands/keys/get'
+import GetPrivateKey from '../commands/key/get'
 import { networks } from '../constants'
 import { config } from './config'
 import passwordManager from './passwordManager'
