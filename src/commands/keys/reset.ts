@@ -12,6 +12,11 @@ export default class ResetKey extends Command {
       return
     }
 
+    const doubleConfirmed = await CliUx.ux.confirm(`${red('Caution:')} Are you REALLY sure? There is no coming back from this (yes/no)`)
+    if (!doubleConfirmed) {
+      return
+    }
+
     config.reset('privateKeys', 'isLocked')
     CliUx.ux.log(`${green('Success:')} Reset password and deleted all stored private keys.`)
   }
