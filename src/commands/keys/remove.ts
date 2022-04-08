@@ -2,7 +2,6 @@ import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
 import { Key } from '@proton/js'
 import { green, red } from 'colors'
-import {error} from '../../debug'
 import passwordManager from '../../storage/passwordManager'
 
 export default class RemoveKey extends Command {
@@ -34,7 +33,6 @@ export default class RemoveKey extends Command {
   }
 
   async catch(e: Error) {
-    error(e)
     CliUx.ux.error(red(e.message))
   }
 }

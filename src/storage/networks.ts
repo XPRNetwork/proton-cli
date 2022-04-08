@@ -1,8 +1,10 @@
 import { CliUx } from '@oclif/core'
-import {JsonRpc, Api} from '@proton/js'
+import { JsonRpc, Api, JsSignatureProvider } from '@proton/js'
 import { green } from 'colors'
+import GetPrivateKey from '../commands/keys/get'
 import { networks } from '../constants'
 import { config } from './config'
+import passwordManager from './passwordManager'
 
 class Network {
   rpc: JsonRpc
@@ -24,8 +26,10 @@ class Network {
     this.api = new Api({ rpc: this.rpc })
   }
 
-  async transact (actions: any[]) {
-    return this.api.transact({actions}, {
+  async transact (transaction: any) {
+    const signatureProvider = new JsSignatureProvider(await passwordManager.getPrivateKeys())
+    const api = new Api({ rpc: this.rpc, signatureProvider })
+    return api.transact(transaction, {
       useLastIrreversible: true,
       expireSeconds: 3000,
     })

@@ -18,6 +18,8 @@ export default class GenerateKey extends Command {
       private: privateKey.toString(),
       mnemonic: mnemonic.phrase 
     })
+
+    return privateKey
   }
 
   async catch(e: Error) {

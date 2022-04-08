@@ -130,7 +130,7 @@ export default class NewAccount extends Command {
     }
 
     // Execute
-    await network.transact(actions)
+    await network.transact({ actions })
 
     this.log(`${green('Success:')} Account ${args.account} created!`)
     await CliUx.ux.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
