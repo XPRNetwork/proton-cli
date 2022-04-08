@@ -1,10 +1,9 @@
-import { Command, flags } from '@oclif/command'
+import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
 import { network } from '../../storage/networks'
 import dedent from 'ts-dedent'
 import { ABI } from '@greymass/eosio'
-import { red } from 'colors'
-import { parseDetailsError } from '../../utils'
+import { parseDetailsError } from '../../utils/detailsError'
 
 export default class Action extends Command {
   static description = 'Execute Action'
