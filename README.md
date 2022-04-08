@@ -47,6 +47,7 @@ USAGE
 * [`proton account ACCOUNTNAME`](#proton-account-accountname)
 * [`proton account:create ACCOUNTNAME`](#proton-accountcreate-accountname)
 * [`proton action CONTRACTNAME [ACTIONNAME] [DATA] [AUTHORIZATION]`](#proton-action-contractname-actionname-data-authorization)
+* [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
 * [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
 * [`proton chain:get`](#proton-chainget)
 * [`proton chain:info`](#proton-chaininfo)
@@ -65,9 +66,8 @@ USAGE
 * [`proton keys:unlock [PASSWORD]`](#proton-keysunlock-password)
 * [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
 * [`proton network`](#proton-network)
-* [`proton system:newaccount ACCOUNT OWNER ACTIVE`](#proton-systemnewaccount-account-owner-active)
 * [`proton table CONTRACTNAME [TABLENAME] [SCOPE]`](#proton-table-contractname-tablename-scope)
-* [`proton transaction TRANSACTIONJSON`](#proton-transaction-transactionjson)
+* [`proton transaction JSON`](#proton-transaction-json)
 * [`proton transaction:get TRANSACTIONID`](#proton-transactionget-transactionid)
 * [`proton version`](#proton-version)
 
@@ -121,6 +121,20 @@ DESCRIPTION
 ```
 
 _See code: [src/commands/action/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.18/src/commands/action/index.ts)_
+
+## `proton block:get BLOCKNUMBER`
+
+Get Block
+
+```
+USAGE
+  $ proton block:get [BLOCKNUMBER]
+
+DESCRIPTION
+  Get Block
+```
+
+_See code: [src/commands/block/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.18/src/commands/block/get.ts)_
 
 ## `proton boilerplate [FOLDER]`
 
@@ -221,7 +235,12 @@ Deploy Contract
 
 ```
 USAGE
-  $ proton contract:deploy [ACCOUNT] [DIRECTORY]
+  $ proton contract:deploy [ACCOUNT] [DIRECTORY] [-c] [-a] [-w]
+
+FLAGS
+  -a, --abiOnly   Only deploy ABI
+  -c, --clear     Removes WASM + ABI from contract
+  -w, --wasmOnly  Only deploy WASM
 
 DESCRIPTION
   Deploy Contract
@@ -390,28 +409,6 @@ ALIASES
   $ proton network
 ```
 
-## `proton system:newaccount ACCOUNT OWNER ACTIVE`
-
-System NewAccount
-
-```
-USAGE
-  $ proton system:newaccount [ACCOUNT] [OWNER] [ACTIVE] [-h] [-n <value>] [-c <value>] [-r <value>] [-t] [--code]
-
-FLAGS
-  -c, --cpu=<value>  [default: 10.0000 SYS]
-  -h, --help         show CLI help
-  -n, --net=<value>  [default: 10.0000 SYS]
-  -r, --ram=<value>  [default: 12288]
-  -t, --transfer
-  --code
-
-DESCRIPTION
-  System NewAccount
-```
-
-_See code: [src/commands/system/newaccount.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.18/src/commands/system/newaccount.ts)_
-
 ## `proton table CONTRACTNAME [TABLENAME] [SCOPE]`
 
 Get Table Storage Rows
@@ -436,13 +433,13 @@ DESCRIPTION
 
 _See code: [src/commands/table/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.18/src/commands/table/index.ts)_
 
-## `proton transaction TRANSACTIONJSON`
+## `proton transaction JSON`
 
 Execute Transaction
 
 ```
 USAGE
-  $ proton transaction [TRANSACTIONJSON]
+  $ proton transaction [JSON]
 
 DESCRIPTION
   Execute Transaction
@@ -452,14 +449,14 @@ _See code: [src/commands/transaction/index.ts](https://github.com/ProtonProtocol
 
 ## `proton transaction:get TRANSACTIONID`
 
-Get Transaction
+Get Transaction by Transaction ID
 
 ```
 USAGE
   $ proton transaction:get [TRANSACTIONID]
 
 DESCRIPTION
-  Get Transaction
+  Get Transaction by Transaction ID
 ```
 
 _See code: [src/commands/transaction/get.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.18/src/commands/transaction/get.ts)_
