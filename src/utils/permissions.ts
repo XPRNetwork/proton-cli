@@ -1,6 +1,5 @@
 import { Key } from "@proton/js"
-import { cyan, green } from "colors"
-import dedent from "ts-dedent"
+import { green, underline } from "colors"
 
 export const parsePermissions = (permissions: any, lightAccount: any, sort: boolean = true) => {
   // Links
@@ -34,11 +33,12 @@ export const parsePermissions = (permissions: any, lightAccount: any, sort: bool
       text += '\n\n'
     }
     text += '  '.repeat(lastIndent) + `${green(permission.perm_name)} (=${permission.required_auth.threshold}):    `
-    text += permission.required_auth.keys.map((key: any) => '\n' + '  '.repeat(lastIndent) + ` 🔑 +${key.weight} ${Key.PublicKey.fromString(key.key).toString()}`).join('')
-    text += permission.required_auth.accounts.map((account: any) => '\n' + '  '.repeat(lastIndent) + ` 👤 +${account.weight} ${account.permission.actor}@${account.permission.permission}`).join('')
+    text += permission.required_auth.keys.map((key: any) => '\n' + '  '.repeat(lastIndent) + ` +${key.weight} ${Key.PublicKey.fromString(key.key).toString()}`).join('')
+    text += permission.required_auth.accounts.map((account: any) => '\n' + '  '.repeat(lastIndent) + ` +${account.weight} ${account.permission.actor}@${account.permission.permission}`).join('')
     
     if (permissionLinks.length) {
-      text += permissionLinks.map((_: any) => '\n' + '  '.repeat(lastIndent) + ` 🔗    ${_.contract}@${_.action}`).join('')
+      text += '\n\n' + '  '.repeat(lastIndent) + ` ` + underline(`Links:`)
+      text += permissionLinks.map((_: any) => '\n' + '  '.repeat(lastIndent) + ` ${_.contract || '*'}@${_.action || '*'}`).join('')
     }
   }
 
