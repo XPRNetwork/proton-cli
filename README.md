@@ -276,23 +276,23 @@ _See code: [src/commands/contract/deploy.ts](https://github.com/ProtonProtocol/p
 
 ## `proton help [COMMAND]`
 
-Display help for proton.
+display help for proton
 
 ```
 USAGE
-  $ proton help [COMMAND] [-n]
+  $ proton help [COMMAND] [--all]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMAND  command to show help for
 
 FLAGS
-  -n, --nested-commands  Include all nested commands in the output.
+  --all  see all commands in CLI
 
 DESCRIPTION
-  Display help for proton.
+  display help for proton
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v5.1.12/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1/src/commands/help.ts)_
 
 ## `proton key:add [PRIVATEKEY]`
 
