@@ -16,7 +16,7 @@
     "@oclif/command": "^1.8.16",
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.6.4",
-    "@oclif/plugin-help": "^5.1.12",
+    "@oclif/plugin-help": "^3",
     "@proton/js": "^26.1.15",
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
