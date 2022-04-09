@@ -72,6 +72,11 @@ class PasswordManager {
 
         return privateKeys
     }
+
+    async getPublicKeys (): Promise<string[]> {
+        const privateKeys = await this.getPrivateKeys()
+        return privateKeys.map((_: string) => Key.PrivateKey.fromString(_).getPublicKey().toString())
+    }
     
     async addPrivateKey (privateKeyStr?: string) {
         // Validate key
