@@ -26,9 +26,16 @@ class Network {
     this.api = new Api({ rpc: this.rpc })
   }
 
+  async getSignatureProvider () {
+    const privateKeys = await passwordManager.getPrivateKeys()
+    return new JsSignatureProvider(privateKeys)
+  }
+
   async transact (transaction: any) {
-    const signatureProvider = new JsSignatureProvider(await passwordManager.getPrivateKeys())
-    const api = new Api({ rpc: this.rpc, signatureProvider })
+    const api = new Api({
+      rpc: this.rpc,
+      signatureProvider: await this.getSignatureProvider()
+    })
     return api.transact(transaction, {
       useLastIrreversible: true,
       expireSeconds: 3000,
