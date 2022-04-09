@@ -9,13 +9,13 @@ import {
 } from '@proton/signing-request'
 import { Authority } from '@bloks/api'
 import { ABI, Name } from '@greymass/eosio'
-import { ApiInterfaces, Key } from '@proton/js'
+import { Key } from '@proton/js'
 import { fetchWithTimeout } from './fetch'
 import { network } from '../../storage/networks'
 import { ProtonLinkSessionManager, ProtonLinkSessionManagerSession } from '../esr'
 import passwordManager from '../../storage/passwordManager'
 
-const SUPPORTED_SCHEMES = ['proton', 'proton-dev']
+const SUPPORTED_SCHEMES = ['proton', 'proton-dev', 'esr']
 const WALLET_NAME = 'Proton CLI'
 
 function detectPlaceholders(req: any) {
@@ -109,7 +109,7 @@ export async function parseURI(
 		throw new Error('No handleable URI')
 	}
 
-	const [scheme] = uri.split(':')
+	let [scheme] = uri.split(':')
 	if (!SUPPORTED_SCHEMES.includes(scheme)) {
 		throw new Error(`Scheme must be ${SUPPORTED_SCHEMES.join(' or ')}`)
 	}
