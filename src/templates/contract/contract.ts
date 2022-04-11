@@ -1,9 +1,9 @@
-import { contract, action, Contract } from 'as-chain'
+import { Contract } from 'as-chain'
 
 @contract
 export class <%= className %> extends Contract {
-  @action("action")
-  doAction(): void {
+  @action("action1")
+  action1(): void {
     // Add here a code of your contract
   }
 }

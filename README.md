@@ -250,7 +250,7 @@ ARGUMENTS
 
 FLAGS
   -c, --class=<value>   The name of Typescript class for the contract
-  -o, --output=<value>  The relative path to folder the the contract should be created. Current folder by default.
+  -o, --output=<value>  The relative path to folder the the contract should be located. Current folder by default.
 ```
 
 _See code: [src/commands/contract/create.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.33/src/commands/contract/create.ts)_
