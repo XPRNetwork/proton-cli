@@ -1,4 +1,4 @@
-import { Contract } from 'as-chain'
+import { Contract } from 'proton-tsc'
 
 @contract
 export class <%= className %> extends Contract {
