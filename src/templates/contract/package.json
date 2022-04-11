@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "npx eosio-asc <%= contractName %>.contract.ts",
+    "build": "npx proton-asc <%= contractName %>.contract.ts",
     "playground": "LOG_LEVEL=debug npx ts-node ./playground.ts"
   },
   "dependencies": {
-    "eosio-asc": "^0.2.73"
+    "proton-tsc": "latest"
   },
   "engines": {
     "npm": ">=7.0.0",
