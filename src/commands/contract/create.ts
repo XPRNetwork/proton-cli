@@ -1,17 +1,14 @@
 import { CliUx, Command, Flags } from '@oclif/core';
-import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
 import * as path from 'path';
-import { green } from 'colors';
+import { green, red } from 'colors';
+import * as shell from 'shelljs';
+
+import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
+import { destinationFolder } from '../../core/flags';
 
 export const contractClass = Flags.build({
   char: 'c',
   description: 'The name of Typescript class for the contract',
-});
-
-export const destinationFolder = Flags.build({
-  char: 'o',
-  description: 'The relative path to folder the the contract should be created. Current folder by default.',
-  default: ''
 });
 
 export default class ContractCreateCommand extends Command {
@@ -45,7 +42,7 @@ export default class ContractCreateCommand extends Command {
     const templatePath = path.join(__dirname, '../..', 'templates', 'contract');
 
     //@ts-ignore
-    const targetPath = path.join(CURR_DIR, flags.output);
+    const targetPath = path.join(CURR_DIR, flags.output || args.contractName);
 
     createRootFolder(targetPath);
 
@@ -58,6 +55,33 @@ export default class ContractCreateCommand extends Command {
         return file
       }
     });
+    if (!postProcessNode(targetPath)) {
+      CliUx.ux.log(red('Failed to install dependencies. Try to install manually.'));
+    }
     CliUx.ux.log(green(`Contract ${args.contractName} successfully created!`));
   }
+}
+
+function postProcessNode(targetPath: string) {
+  shell.cd(targetPath);
+
+  let cmd = '';
+
+  if (shell.which('yarn')) {
+    cmd = 'yarn';
+  } else if (shell.which('npm')) {
+    cmd = 'npm install';
+  }
+
+  if (cmd) {
+    const result = shell.exec(cmd);
+
+    if (result.code !== 0) {
+      return false;
+    }
+  } else {
+    CliUx.ux.log(red('No yarn or npm found. Cannot run installation.'));
+  }
+
+  return true;
 }
