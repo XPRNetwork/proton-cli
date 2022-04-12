@@ -52,11 +52,11 @@ export default class Action extends Command {
     }
 
     // Create authorization
-    let [actor, permission] = args.authorization.split('@')
-    if (!permission) {
-      permission = 'active'
-    }
-    const authorization = [{ actor, permission }]
+    const [actor, permission] = args.authorization.split('@')
+    const authorization = [{
+      actor,
+      permission: permission || 'active'
+    }]
 
     // Set data
     const data: any = {}
