@@ -24,33 +24,30 @@ Install CLI (Yarn)
 yarn global add @proton/cli
 ```
 
+If you get a missing write access error on Mac/Linux, first run:
+```
+sudo chown -R $USER /usr/local/lib/node_modules
+sudo chown -R $USER /usr/local/bin
+```
 
-If you need to install NodeJS:
+# Install NodeJS (if not installed)
 
-### 1. Install NVM
-
-**MacOS/Linux/WSL:**
+**1. Install NVM**
+MacOS/Linux/WSL:
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
-**Windows:**
+Windows:
 Download nvm-setup.zip and run it from:
 https://github.com/coreybutler/nvm-windows/releases
 
 After installation, open a new PowerShell window
 
-### 2. Install NodeJS
+**2. Install NodeJS**
 ```
 nvm install 16
 nvm use 16
-```
-
-
-If you get a missing write access error on Mac/Linux, first run:
-```
-sudo chown -R $USER /usr/local/lib/node_modules
-sudo chown -R $USER /usr/local/bin
 ```
 
 # Usage
@@ -71,8 +68,7 @@ USAGE
 <!-- commands -->
 - [@proton/cli](#protoncli)
 - [Install CLI](#install-cli)
-    - [1. Install NVM](#1-install-nvm)
-    - [2. Install NodeJS](#2-install-nodejs)
+- [Install NodeJS (if not installed)](#install-nodejs-if-not-installed)
 - [Usage](#usage)
 - [Commands](#commands)
   - [`proton account ACCOUNT`](#proton-account-account)
