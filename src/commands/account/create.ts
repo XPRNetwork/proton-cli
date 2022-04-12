@@ -17,6 +17,14 @@ export default class CreateNewAccount extends Command {
   async run() {
     const { args } = this.parse(CreateNewAccount)
 
+    // Validate account
+    if (!RegExp('^[a-zA-Z12345.]+$').test(args.account)) {
+      throw new Error('Account names can only contain the characters a-z and numbers 1-5.')
+    }
+    if (args.account.length > 12 || args.account.length < 4) {
+      throw new Error('Account names must be between 4-12 characters long.')
+    }
+
     // Check account doesnt exist
     try {
       await network.rpc.get_account(args.account)
