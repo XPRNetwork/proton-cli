@@ -39,7 +39,7 @@ export default class CreateNewAccount extends Command {
 
     // Send request
     const data = {
-      email: email,
+      email: email.trim(),
       name: displayName,
       chainAccount: args.account,
       ownerPublicKey: publicKey,
