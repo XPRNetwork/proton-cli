@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.37",
+  "version": "0.1.38",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -21,6 +21,7 @@
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
     "@proton/signing-request": "^4.1.10",
+    "bignumber.js": "^9.0.2",
     "colors": "^1.4.0",
     "conf": "^10.1.2",
     "ejs": "^3.1.6",
