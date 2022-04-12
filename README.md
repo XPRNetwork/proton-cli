@@ -33,16 +33,16 @@ sudo chown -R $USER /usr/local/bin
 # Install NodeJS (if not installed)
 
 **1. Install NVM**
+
 MacOS/Linux/WSL:
+
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 ```
 
-Windows:
-Download nvm-setup.zip and run it from:
-https://github.com/coreybutler/nvm-windows/releases
+Windows 7/10/11:
 
-After installation, open a new PowerShell window
+Download nvm-setup.zip and run it [here](https://github.com/coreybutler/nvm-windows/releases). After installation, open a new PowerShell window.
 
 **2. Install NodeJS**
 ```
