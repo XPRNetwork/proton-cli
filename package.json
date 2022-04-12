@@ -1,12 +1,44 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.45",
+  "version": "0.1.47",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
   },
   "bugs": "https://github.com/ProtonProtocol/proton-cli/issues",
+  "files": [
+    "/bin",
+    "/lib",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/ProtonProtocol/proton-cli",
+  "keywords": [
+    "oclif"
+  ],
+  "license": "MIT",
+  "main": "lib/index.js",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "proton",
+    "plugins": [
+      "@oclif/plugin-help"
+    ],
+    "flexibleTaxonomy": true
+  },
+  "repository": "ProtonProtocol/proton-cli",
+  "scripts": {
+    "build": "npm run prepack && npm run postpack",
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint . --ext .ts --config .eslintrc",
+    "prepack": "rm -rf lib && tsc -b && npx oclif manifest && npx oclif readme && shx cp -r src/templates lib",
+    "testbase": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
+    "test": "npm run testbase -- \"test/**/*.test.ts\"",
+    "testsome": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\" --exclude \"**/boilerplate.test.ts\"",
+    "version": "npx oclif readme && git add README.md"
+  },
+  "types": "lib/index.d.ts",
   "dependencies": {
     "@bloks/api": "^26.1.15",
     "@bloks/numbers": "^26.1.9",
@@ -15,7 +47,7 @@
     "@inquirer/input": "^0.0.18-alpha.0",
     "@oclif/command": "^1.8.16",
     "@oclif/config": "^1.18.3",
-    "@oclif/core": "^1.6.4",
+    "@oclif/core": "^1.7.0",
     "@oclif/plugin-help": "^3",
     "@proton/js": "^26.1.15",
     "@proton/link": "^4.1.10",
@@ -66,42 +98,16 @@
     "tslib": "^1",
     "typescript": "^3.3"
   },
-  "engines": {
-    "node": ">=8.0.0"
-  },
-  "files": [
-    "/bin",
-    "/lib",
-    "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
-  ],
-  "homepage": "https://github.com/ProtonProtocol/proton-cli",
-  "keywords": [
-    "oclif"
-  ],
-  "license": "MIT",
-  "main": "lib/index.js",
-  "oclif": {
-    "commands": "./lib/commands",
-    "bin": "proton",
-    "plugins": [
-      "@oclif/plugin-help"
-    ],
-    "flexibleTaxonomy": true,
-    "hooks": {
-      "command_incomplete": "./lib/hooks/command_incomplete.js"
+  "overrides": {
+    "@oclif/core": {
+      "ejs": {
+        "jake": {
+          "async": "3.2.3"
+        }
+      }
     }
   },
-  "repository": "ProtonProtocol/proton-cli",
-  "scripts": {
-    "build": "npm run prepack && npm run postpack",
-    "postpack": "rm -f oclif.manifest.json",
-    "posttest": "eslint . --ext .ts --config .eslintrc",
-    "prepack": "rm -rf lib && tsc -b && npx oclif manifest && npx oclif readme && shx cp -r src/templates lib",
-    "testbase": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
-    "test": "npm run testbase -- \"test/**/*.test.ts\"",
-    "testsome": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\" --exclude \"**/boilerplate.test.ts\"",
-    "version": "npx oclif readme && git add README.md"
-  },
-  "types": "lib/index.d.ts"
+  "engines": {
+    "node": ">=8.0.0"
+  }
 }
