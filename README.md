@@ -13,7 +13,7 @@ Proton CLI
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Install CLI
+# Installation
 Install CLI (NPM)
 ```
 npm i -g @proton/cli
@@ -30,7 +30,9 @@ sudo chown -R $USER /usr/local/lib/node_modules
 sudo chown -R $USER /usr/local/bin
 ```
 
-# Install NodeJS (if not installed)
+# Install NodeJS
+
+> You can skip this step if you already have NodeJS installed
 
 **1. Install NVM**
 
@@ -67,8 +69,8 @@ USAGE
 # Commands
 <!-- commands -->
 - [@proton/cli](#protoncli)
-- [Install CLI](#install-cli)
-- [Install NodeJS (if not installed)](#install-nodejs-if-not-installed)
+- [Installation](#installation)
+- [Install NodeJS](#install-nodejs)
 - [Usage](#usage)
 - [Commands](#commands)
   - [`proton account ACCOUNT`](#proton-account-account)
