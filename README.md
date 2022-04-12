@@ -44,7 +44,7 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 Windows 7/10/11:
 
-Download nvm-setup.zip and run it [here](https://github.com/coreybutler/nvm-windows/releases). After installation, open a new PowerShell window.
+Download nvm-setup.zip and run it [here](https://github.com/coreybutler/nvm-windows/releases). After installation, open a new PowerShell window as administrator.
 
 **2. Install NodeJS**
 ```
