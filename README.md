@@ -13,7 +13,7 @@ Proton CLI
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
-# Installation
+# Install CLI
 Install CLI (NPM)
 ```
 npm i -g @proton/cli
@@ -24,7 +24,28 @@ Install CLI (Yarn)
 yarn global add @proton/cli
 ```
 
-If you need to install NodeJS, have a look at [INSTALL_NODE.md](INSTALL_NODE.md)
+
+If you need to install NodeJS:
+
+### 1. Install NVM
+
+**MacOS/Linux/WSL:**
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+**Windows:**
+Download nvm-setup.zip and run it from:
+https://github.com/coreybutler/nvm-windows/releases
+
+After installation, open a new PowerShell window
+
+### 2. Install NodeJS
+```
+nvm install 16
+nvm use 16
+```
+
 
 If you get a missing write access error on Mac/Linux, first run:
 ```
@@ -48,41 +69,47 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`proton account ACCOUNT`](#proton-account-account)
-* [`proton account:create ACCOUNT`](#proton-accountcreate-account)
-* [`proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`](#proton-action-contract-action-data-authorization)
-* [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
-* [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
-* [`proton chain:get`](#proton-chainget)
-* [`proton chain:info`](#proton-chaininfo)
-* [`proton chain:list`](#proton-chainlist)
-* [`proton chain:set [CHAIN]`](#proton-chainset-chain)
-* [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
-* [`proton contract:create CONTRACTNAME`](#proton-contractcreate-contractname)
-* [`proton contract:deploy ACCOUNT DIRECTORY`](#proton-contractdeploy-account-directory)
-* [`proton faucet`](#proton-faucet)
-* [`proton faucet:claim SYMBOL AUTHORIZATION`](#proton-faucetclaim-symbol-authorization)
-* [`proton help [COMMAND]`](#proton-help-command)
-* [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
-* [`proton key:generate`](#proton-keygenerate)
-* [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
-* [`proton key:list`](#proton-keylist)
-* [`proton key:lock`](#proton-keylock)
-* [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
-* [`proton key:reset`](#proton-keyreset)
-* [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
-* [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
-* [`proton network`](#proton-network)
-* [`proton permission ACCOUNT`](#proton-permission-account)
-* [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
-* [`proton permission:unlink ACCOUNT CONTRACT [ACTION]`](#proton-permissionunlink-account-contract-action)
-* [`proton psr URI`](#proton-psr-uri)
-* [`proton ram`](#proton-ram)
-* [`proton ram:buy BUYER RECEIVER BYTES`](#proton-rambuy-buyer-receiver-bytes)
-* [`proton table CONTRACT [TABLE] [SCOPE]`](#proton-table-contract-table-scope)
-* [`proton transaction JSON`](#proton-transaction-json)
-* [`proton transaction:get ID`](#proton-transactionget-id)
-* [`proton version`](#proton-version)
+- [@proton/cli](#protoncli)
+- [Install CLI](#install-cli)
+    - [1. Install NVM](#1-install-nvm)
+    - [2. Install NodeJS](#2-install-nodejs)
+- [Usage](#usage)
+- [Commands](#commands)
+  - [`proton account ACCOUNT`](#proton-account-account)
+  - [`proton account:create ACCOUNT`](#proton-accountcreate-account)
+  - [`proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`](#proton-action-contract-action-data-authorization)
+  - [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
+  - [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
+  - [`proton chain:get`](#proton-chainget)
+  - [`proton chain:info`](#proton-chaininfo)
+  - [`proton chain:list`](#proton-chainlist)
+  - [`proton chain:set [CHAIN]`](#proton-chainset-chain)
+  - [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
+  - [`proton contract:create CONTRACTNAME`](#proton-contractcreate-contractname)
+  - [`proton contract:deploy ACCOUNT DIRECTORY`](#proton-contractdeploy-account-directory)
+  - [`proton faucet`](#proton-faucet)
+  - [`proton faucet:claim SYMBOL AUTHORIZATION`](#proton-faucetclaim-symbol-authorization)
+  - [`proton help [COMMAND]`](#proton-help-command)
+  - [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
+  - [`proton key:generate`](#proton-keygenerate)
+  - [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
+  - [`proton key:list`](#proton-keylist)
+  - [`proton key:lock`](#proton-keylock)
+  - [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
+  - [`proton key:reset`](#proton-keyreset)
+  - [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
+  - [`proton multisig:contract DIRECTORY`](#proton-multisigcontract-directory)
+  - [`proton network`](#proton-network)
+  - [`proton permission ACCOUNT`](#proton-permission-account)
+  - [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
+  - [`proton permission:unlink ACCOUNT CONTRACT [ACTION]`](#proton-permissionunlink-account-contract-action)
+  - [`proton psr URI`](#proton-psr-uri)
+  - [`proton ram`](#proton-ram)
+  - [`proton ram:buy BUYER RECEIVER BYTES`](#proton-rambuy-buyer-receiver-bytes)
+  - [`proton table CONTRACT [TABLE] [SCOPE]`](#proton-table-contract-table-scope)
+  - [`proton transaction JSON`](#proton-transaction-json)
+  - [`proton transaction:get ID`](#proton-transactionget-id)
+  - [`proton version`](#proton-version)
 
 ## `proton account ACCOUNT`
 

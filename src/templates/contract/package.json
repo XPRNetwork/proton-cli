@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npx proton-asc <%= contractName %>.contract.ts",
-    "playground": "LOG_LEVEL=debug npx ts-node ./playground.ts"
+    "playground": "npm run build && LOG_LEVEL=debug npx ts-node ./playground.ts"
   },
   "dependencies": {
     "proton-tsc": "latest"
