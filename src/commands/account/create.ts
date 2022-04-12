@@ -31,7 +31,7 @@ export default class CreateNewAccount extends Command {
       await AddPrivateKey.run([privateKey])
     }
     privateKey = Key.PrivateKey.fromString(privateKey).toString()
-    const publicKey = Key.PrivateKey.fromString(privateKey).getPublicKey().toLegacyString()
+    const publicKey = Key.PrivateKey.fromString(privateKey).getPublicKey().toString()
 
     // Get some data
     const email = await CliUx.ux.prompt('Enter email for verification code', { required: true })
