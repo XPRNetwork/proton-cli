@@ -7,27 +7,30 @@ import { networks } from '../../constants'
 export default class SetChain extends Command {
   static description = 'Set Chain'
 
-  static args = []
-  
-  static flags = {
-    chain: Flags.string({
-      options: networks.map(_ => _.chain)
-    })
-  }
+  static args = [
+    { name: 'chain', required: false, description: 'Specific chain' },
+  ]
 
   async run() {
-    const {flags} = this.parse(SetChain as any) as any
-    let chain = flags.stage
-    if (!chain) {
+    const {args} = this.parse(SetChain)
+
+    if (!args.chain) {
       let responses: any = await inquirer.prompt([{
         name: 'chain',
         message: 'Select a chain',
         type: 'list',
         choices: networks.map(_ => _.chain),
       }])
-      chain = responses.chain
+      args.chain = responses.chain
     }
-    network.setChain(chain)
+
+    // Check chain is right
+    const existingNetwork = networks.find(_ => _.chain === args.chain)
+    if (!existingNetwork) {
+      throw new Error(`No chain found with ${args.chain}`)
+    }
+
+    network.setChain(args.chain)
   }
 
   async catch(e: Error) {
