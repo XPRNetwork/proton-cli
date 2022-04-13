@@ -6,7 +6,7 @@ import passwordManager from '../../storage/passwordManager'
 import LockKey from './lock'
 
 export default class AddPrivateKey extends Command {
-  static description = 'Add Key'
+  static description = 'Manage Keys'
 
   static args = [
     {name: 'privateKey', required: false},
