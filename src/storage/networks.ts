@@ -1,18 +1,16 @@
 import { CliUx } from '@oclif/core'
 import { JsonRpc, Api, JsSignatureProvider } from '@proton/js'
 import { green } from 'colors'
-import GetPrivateKey from '../commands/key/get'
 import { networks } from '../constants'
 import { config } from './config'
 import passwordManager from './passwordManager'
 
 class Network {
-  rpc: JsonRpc
-  api: Api
+  rpc!: JsonRpc
+  api!: Api
 
   constructor () {
-    this.rpc = new JsonRpc(this.network.endpoint)
-    this.api = new Api({ rpc: this.rpc })
+    this.initialize()
   }
 
   get network () {
