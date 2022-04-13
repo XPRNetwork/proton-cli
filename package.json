@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.51",
+  "version": "0.1.52",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -49,7 +49,7 @@
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.7.0",
     "@oclif/plugin-help": "^3",
-    "@proton/js": "^26.1.15",
+    "@proton/js": "^26.1.16",
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
     "@proton/signing-request": "^4.1.10",
@@ -92,6 +92,7 @@
     "ini": "^2.0.0",
     "mocha": "^9.2.2",
     "nyc": "^15.1.0",
+    "oclif": "^3.0.0",
     "rxjs": "^7.5.5",
     "shx": "^0.3.4",
     "ts-node": "^8",
