@@ -30,8 +30,8 @@ function getDeployableFilesFromDir(dir: string) {
   }
 }
 
-export default class DeployContract extends Command {
-  static description = 'Deploy Contract'
+export default class SetContract extends Command {
+  static description = 'Set Contract'
 
   static args = [
     { name: 'account', required: true, help: 'The account to publish the contract to' },
@@ -45,7 +45,7 @@ export default class DeployContract extends Command {
   }
 
   async run() {
-    const { args, flags } = this.parse(DeployContract)
+    const { args, flags } = this.parse(SetContract)
 
     let wasm: Buffer = Buffer.from('')
     let abi: string = ''
