@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.49",
+  "version": "0.1.50",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -108,6 +108,6 @@
     }
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=14.0.0"
   }
 }
