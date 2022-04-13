@@ -353,14 +353,14 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v3.3.1
 
 ## `proton key:add [PRIVATEKEY]`
 
-Add Key
+Manage Keys
 
 ```
 USAGE
   $ proton key:add [PRIVATEKEY]
 
 DESCRIPTION
-  Add Key
+  Manage Keys
 ```
 
 _See code: [src/commands/key/add.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.54/src/commands/key/add.ts)_
@@ -494,7 +494,7 @@ ALIASES
 
 ## `proton permission ACCOUNT`
 
-Add Key
+Update Permission
 
 ```
 USAGE
@@ -504,7 +504,7 @@ ARGUMENTS
   ACCOUNT  Account to modify
 
 DESCRIPTION
-  Add Key
+  Update Permission
 ```
 
 _See code: [src/commands/permission/index.ts](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.54/src/commands/permission/index.ts)_

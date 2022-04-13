@@ -14,7 +14,7 @@ const parseKey = (key: { weight: number, key: string }) => `+${key.weight} | ${k
 const parseAccount = (acc: { weight: number, permission: { actor: string, permission: string } }) => `A: | +${acc.weight} | ${acc.permission.actor}@${acc.permission.permission}`
 
 export default class UpdatePermission extends Command {
-  static description = 'Add Key'
+  static description = 'Update Permission'
 
   static args = [
     {name: 'account', required: true, description: 'Account to modify'},
