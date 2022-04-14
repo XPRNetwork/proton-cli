@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.55",
+  "version": "0.1.56",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -63,6 +63,7 @@
     "elliptic": "^6.5.4",
     "inquirer": "^8.2.2",
     "isomorphic-git": "^1.8.0",
+    "open": "^8.4.0",
     "pako": "^2.0.4",
     "qrcode": "^1.5.0",
     "rimraf": "^3.0.2",
