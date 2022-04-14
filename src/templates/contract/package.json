@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "npx proton-asc <%= contractName %>.contract.ts",
-    "playground": "npm run build && LOG_LEVEL=debug npx ts-node ./playground.ts"
+    "playground": "npm run build && cross-env LOG_LEVEL=debug ts-node ./playground.ts"
   },
   "dependencies": {
     "proton-tsc": "latest"
@@ -17,6 +17,7 @@
   "devDependencies": {
     "@greymass/abi2core": "^1.1.0",
     "@greymass/eosio": "^0.5.5",
+    "cross-env": "^7.0.3",
     "@proton/js": "^26.1.2",
     "@proton/vert": "latest",
     "@types/chai": "^4.3.0",
