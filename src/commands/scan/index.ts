@@ -1,5 +1,6 @@
 import { Command } from '@oclif/command'
 import open from 'open'
+import { getExplorer } from '../../apis/getExplorer'
 
 export default class Scan extends Command {
   static description = 'Open Account in Proton Scan'
@@ -10,7 +11,9 @@ export default class Scan extends Command {
 
   async run() {
     const { args } = this.parse(Scan)
-    open(`https://protonscan.io/account/${args.account}`)
+
+    const explorer: string = getExplorer()
+    open(`${explorer}/account/${args.account}`)
   }
 }
 

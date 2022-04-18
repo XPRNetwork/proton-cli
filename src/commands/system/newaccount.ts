@@ -3,6 +3,7 @@ import { network } from '../../storage/networks'
 import { CliUx } from '@oclif/core'
 import { config } from '../../storage/config';
 import { green } from 'colors';
+import { getExplorer } from '../../apis/getExplorer';
 
 interface Permission {
   threshold: number;
@@ -74,7 +75,7 @@ export default class NewAccount extends Command {
     try {
       await network.rpc.get_account(args.account)
       this.log(`Account ${args.account} already exists!`)
-      await CliUx.ux.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
+      await CliUx.ux.url('View Account on Bloks.io', `${getExplorer()}/account/${args.account}#keys`)
       return
     } catch (error) {
       // Do nothing
@@ -134,6 +135,6 @@ export default class NewAccount extends Command {
     await network.transact({ actions })
 
     this.log(`${green('Success:')} Account ${args.account} created!`)
-    await CliUx.ux.url('View Account on Bloks.io', `https://${config.get('currentChain')}.bloks.io/account/${args.account}#keys`)
+    await CliUx.ux.url('View Account on Bloks.io', `${getExplorer()}/account/${args.account}#keys`)
   }
 }
