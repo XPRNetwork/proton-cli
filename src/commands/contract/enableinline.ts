@@ -1,8 +1,9 @@
-import { Command } from '@oclif/command'
+import { Command, flags } from '@oclif/command'
 import { CliUx } from '@oclif/core'
 import { GetAccountResult } from '@proton/js/dist/rpc/types'
 import { green, red } from 'colors'
 import { network } from '../../storage/networks'
+import { sortRequiredAuth } from '../../utils/sortRequiredAuth'
 
 export default class ContractEnableInline extends Command {
   static description = 'Enable Inline Actions on a Contract'
@@ -11,8 +12,12 @@ export default class ContractEnableInline extends Command {
     {name: 'account', required: true, description: 'Contract account to enable'},
   ]
 
+  static flags = {
+    authorization: flags.string({ char: 'p', description: 'Use a specific authorization other than contract@active' }),
+  }
+
   async run() {
-    const {args} = this.parse(ContractEnableInline)
+    const {args, flags} = this.parse(ContractEnableInline)
 
     // Get active perm
     const account: GetAccountResult = await network.rpc.get_account(args.account)
@@ -32,10 +37,10 @@ export default class ContractEnableInline extends Command {
       },
       weight: activePerm.required_auth.threshold
     })
+    sortRequiredAuth(activePerm?.required_auth!)
 
     // Get signer
-    const authority = await CliUx.ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
-    const [actor, permission] = authority.split('@')
+    const [actor, permission] = flags.authorization ? flags.authorization.split('@') : [args.account, 'active']
 
     await network.transact({
       actions: [{

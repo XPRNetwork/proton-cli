@@ -8,6 +8,7 @@ import { getLightAccount } from '../../apis/lightApi'
 import { network } from '../../storage/networks'
 import { parsePermissions } from '../../utils/permissions'
 import { promptChoices, promptInteger, promptKey, promptAuthority, promptName } from '../../utils/prompt'
+import { sortRequiredAuth } from '../../utils/sortRequiredAuth'
 import { wait } from '../../utils/wait'
 
 const parseKey = (key: { weight: number, key: string }) => `+${key.weight} | ${key.key}`
@@ -52,9 +53,7 @@ export default class UpdatePermission extends Command {
 
     // Save
     const save = async () => {
-      currentPermission.required_auth.keys     = currentPermission.required_auth.keys.sort((a: { key: any; }, b: { key: any; }) => a.key.localeCompare(b.key))
-      currentPermission.required_auth.accounts = currentPermission.required_auth.accounts.sort((a: { permission: { actor: any; }; }, b: { permission: { actor: any; }; }) => a.permission.actor.localeCompare(b.permission.actor))
-      currentPermission.required_auth.waits    = currentPermission.required_auth.waits.sort((a: { wait_sec: any; }, b: { wait_sec: any; }) => a.wait_sec.localeCompare(b.wait_sec))
+      sortRequiredAuth(currentPermission.required_auth)
 
       await CliUx.ux.log(green('\n' + 'Expected Permissions:'))
       await CliUx.ux.log(parsePermissions(account!.permissions, lightAccount, false) + '\n')
