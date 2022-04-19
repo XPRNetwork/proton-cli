@@ -8,6 +8,7 @@ import { config } from '../../storage/config'
 import { green } from 'colors'
 import { parseDetailsError } from '../../utils/detailsError'
 import { getExplorer } from '../../apis/getExplorer'
+import ContractEnableInline from './enableinline'
 
 function getDeployableFilesFromDir(dir: string) {
   const dirCont = readdirSync(dir)
@@ -32,7 +33,7 @@ function getDeployableFilesFromDir(dir: string) {
 }
 
 export default class SetContract extends Command {
-  static description = 'Set Contract'
+  static description = 'Deploy Contract (WASM + ABI)'
 
   static args = [
     { name: 'account', required: true, help: 'The account to publish the contract to' },
@@ -43,6 +44,7 @@ export default class SetContract extends Command {
     clear: flags.boolean({ char: 'c', description: 'Removes WASM + ABI from contract' }),
     abiOnly: flags.boolean({ char: 'a', description: 'Only deploy ABI' }),
     wasmOnly: flags.boolean({ char: 'w', description: 'Only deploy WASM' }),
+    enableInline: flags.boolean({ char: 'i', description: 'Enable inline' }),
   }
 
   async run() {
@@ -126,6 +128,11 @@ export default class SetContract extends Command {
       } catch (e) {
         parseDetailsError(e)
       }
+    }
+
+    // 5. Enable inline
+    if (flags.enableInline) {
+      await ContractEnableInline.run([args.account])
     }
   }
 }
