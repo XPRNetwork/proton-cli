@@ -3,8 +3,6 @@ import { yellow } from 'colors';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { render } from './template';
-
 export function createRootFolder(folderPath: string) {
   if (!fs.existsSync(folderPath)) {
     CliUx.ux.log(yellow(`${folderPath} is not found. Creating.`))
@@ -18,8 +16,7 @@ export interface IFilePreprocess {
 }
 
 export interface IFolderContentOptions {
-  data: { [name: string]: any },
-  filePreprocess?: (data: IFilePreprocess) => IFilePreprocess
+  filePreprocess?: (data: IFilePreprocess) => IFilePreprocess,
 }
 
 export function createFolderContent(templatePath: string, targetPath: string, options: IFolderContentOptions) {
@@ -41,10 +38,10 @@ export function createFolderContent(templatePath: string, targetPath: string, op
         fileName = result.fileName;
         content = result.content;
       }
-      content = render(content, options.data);
-      // write file to destination folder
       const writePath = path.join(targetPath, fileName);
-      fs.writeFileSync(writePath, content, 'utf8');
+      // write file to destination folder
+
+      writeFile(writePath, content);
     } else if (stats.isDirectory()) {
       // create folder in destination folder
       fs.mkdirSync(path.join(targetPath, file));
@@ -52,4 +49,17 @@ export function createFolderContent(templatePath: string, targetPath: string, op
       createFolderContent(path.join(templatePath, file), targetPath, options);
     }
   });
+}
+
+export function buildContractFileName(contractName: string, type: string = 'contract'): string {
+  return `${contractName}.${type}.ts`;
+}
+
+export function checkFileExists(targetPath: string): boolean {
+  const contractPath = path.join(targetPath);
+  return fs.existsSync(contractPath);
+}
+
+export function writeFile(targetPath: string, content: string): void {
+  fs.writeFileSync(targetPath, content, 'utf8');
 }
