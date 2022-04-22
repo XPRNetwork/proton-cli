@@ -1,7 +1,7 @@
 import { Contract } from 'proton-tsc'
 
 @contract
-export class <%= className %> extends Contract {
+export class ContractTemplate extends Contract {
   @action("action1")
   action1(): void {
     // Add here a code of your contract
