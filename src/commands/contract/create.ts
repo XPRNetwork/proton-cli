@@ -1,15 +1,13 @@
-import { CliUx, Command, Flags } from '@oclif/core';
+import { CliUx, Command } from '@oclif/core';
 import * as path from 'path';
 import { green, red } from 'colors';
 import * as shell from 'shelljs';
+import ts from 'typescript';
+import { render } from 'ejs';
 
 import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
 import { destinationFolder } from '../../core/flags';
-
-export const contractClass = Flags.build({
-  char: 'c',
-  description: 'The name of Typescript class for the contract',
-});
+import { contractTemplateTransformerFactory } from '../../core/transformers';
 
 export default class ContractCreateCommand extends Command {
   static args = [
@@ -21,7 +19,6 @@ export default class ContractCreateCommand extends Command {
   ]
 
   static flags = {
-    class: contractClass(),
     output: destinationFolder(),
   }
 
@@ -33,8 +30,7 @@ export default class ContractCreateCommand extends Command {
     }
 
     const data = {
-      contractName: args.contractName,
-      className: flags.class || args.contractName
+      contractName: args.contractName
     }
 
     const CURR_DIR = process.cwd();
@@ -46,11 +42,22 @@ export default class ContractCreateCommand extends Command {
 
     createRootFolder(targetPath);
 
+    const printer = ts.createPrinter();
+
     createFolderContent(templatePath, targetPath, {
-      data,
       filePreprocess: (file: IFilePreprocess) => {
         if (file.fileName === 'contract.ts') {
           file.fileName = `${args.contractName}.${file.fileName}`;
+
+          const source = ts.createSourceFile(file.fileName, file.content, ts.ScriptTarget.Latest)
+
+          if (source) {
+            const result = ts.transform(source, [contractTemplateTransformerFactory(data)]);
+            const transformedSourceFile = result.transformed[0];
+            file.content = printer.printFile(transformedSourceFile);
+          }
+        } else {
+          file.content = render(file.content, data);
         }
         return file
       }
