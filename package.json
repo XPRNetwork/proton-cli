@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.63",
+  "version": "0.1.64",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -69,8 +69,8 @@
     "rimraf": "^3.0.2",
     "shelljs": "^0.8.5",
     "text-encoding-shim": "^1.0.5",
-    "typescript": "^3.3",
     "ts-dedent": "^2.2.0",
+    "typescript": "^3.3",
     "uuid": "^8.3.2",
     "ws": "^8.5.0"
   },
