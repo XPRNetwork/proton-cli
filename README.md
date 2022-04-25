@@ -60,7 +60,7 @@ $ npm install -g @proton/cli
 $ proton COMMAND
 running command...
 $ proton (--version)
-@proton/cli/0.1.65 darwin-arm64 node-v16.14.0
+@proton/cli/0.1.66 darwin-arm64 node-v16.14.0
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -83,6 +83,8 @@ USAGE
 * [`proton contract:enableinline ACCOUNT`](#proton-contractenableinline-account)
 * [`proton contract:set ACCOUNT DIRECTORY`](#proton-contractset-account-directory)
 * [`proton contract:table TABLENAME CONTRACTNAME`](#proton-contracttable-tablename-contractname)
+* [`proton encode:name ACCOUNT`](#proton-encodename-account)
+* [`proton encode:symbol SYMBOL PRECISION`](#proton-encodesymbol-symbol-precision)
 * [`proton faucet`](#proton-faucet)
 * [`proton faucet:claim SYMBOL AUTHORIZATION`](#proton-faucetclaim-symbol-authorization)
 * [`proton help [COMMAND]`](#proton-help-command)
@@ -126,7 +128,7 @@ DESCRIPTION
   Get Account Information
 ```
 
-_See code: [lib/commands/account/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/account/index.js)_
+_See code: [lib/commands/account/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/account/index.js)_
 
 ## `proton account:create ACCOUNT`
 
@@ -140,7 +142,7 @@ DESCRIPTION
   Create New Account
 ```
 
-_See code: [lib/commands/account/create.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/account/create.js)_
+_See code: [lib/commands/account/create.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/account/create.js)_
 
 ## `proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`
 
@@ -160,7 +162,7 @@ DESCRIPTION
   Execute Action
 ```
 
-_See code: [lib/commands/action/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/action/index.js)_
+_See code: [lib/commands/action/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/action/index.js)_
 
 ## `proton block:get BLOCKNUMBER`
 
@@ -174,7 +176,7 @@ DESCRIPTION
   Get Block
 ```
 
-_See code: [lib/commands/block/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/block/get.js)_
+_See code: [lib/commands/block/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/block/get.js)_
 
 ## `proton boilerplate [FOLDER]`
 
@@ -191,7 +193,7 @@ DESCRIPTION
   Boilerplate a new Proton Project with contract, frontend and tests
 ```
 
-_See code: [lib/commands/boilerplate.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/boilerplate.js)_
+_See code: [lib/commands/boilerplate.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/boilerplate.js)_
 
 ## `proton chain:get`
 
@@ -208,7 +210,7 @@ ALIASES
   $ proton network
 ```
 
-_See code: [lib/commands/chain/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/chain/get.js)_
+_See code: [lib/commands/chain/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/chain/get.js)_
 
 ## `proton chain:info`
 
@@ -222,7 +224,7 @@ DESCRIPTION
   Get Chain Info
 ```
 
-_See code: [lib/commands/chain/info.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/chain/info.js)_
+_See code: [lib/commands/chain/info.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/chain/info.js)_
 
 ## `proton chain:list`
 
@@ -236,7 +238,7 @@ DESCRIPTION
   All Networks
 ```
 
-_See code: [lib/commands/chain/list.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/chain/list.js)_
+_See code: [lib/commands/chain/list.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/chain/list.js)_
 
 ## `proton chain:set [CHAIN]`
 
@@ -253,7 +255,7 @@ DESCRIPTION
   Set Chain
 ```
 
-_See code: [lib/commands/chain/set.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/chain/set.js)_
+_See code: [lib/commands/chain/set.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/chain/set.js)_
 
 ## `proton contract:abi ACCOUNT`
 
@@ -267,7 +269,7 @@ DESCRIPTION
   Get Contract ABI
 ```
 
-_See code: [lib/commands/contract/abi.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/contract/abi.js)_
+_See code: [lib/commands/contract/abi.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/contract/abi.js)_
 
 ## `proton contract:create CONTRACTNAME`
 
@@ -282,7 +284,7 @@ FLAGS
   -o, --output=<value>  The relative path to folder the the contract should be located. Current folder by default.
 ```
 
-_See code: [lib/commands/contract/create.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/contract/create.js)_
+_See code: [lib/commands/contract/create.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/contract/create.js)_
 
 ## `proton contract:enableinline ACCOUNT`
 
@@ -302,7 +304,7 @@ DESCRIPTION
   Enable Inline Actions on a Contract
 ```
 
-_See code: [lib/commands/contract/enableinline.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/contract/enableinline.js)_
+_See code: [lib/commands/contract/enableinline.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/contract/enableinline.js)_
 
 ## `proton contract:set ACCOUNT DIRECTORY`
 
@@ -322,7 +324,7 @@ DESCRIPTION
   Deploy Contract (WASM + ABI)
 ```
 
-_See code: [lib/commands/contract/set.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/contract/set.js)_
+_See code: [lib/commands/contract/set.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/contract/set.js)_
 
 ## `proton contract:table TABLENAME CONTRACTNAME`
 
@@ -340,7 +342,35 @@ FLAGS
   -t, --class=<value>   The name of Typescript class for the table
 ```
 
-_See code: [lib/commands/contract/table.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/contract/table.js)_
+_See code: [lib/commands/contract/table.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/contract/table.js)_
+
+## `proton encode:name ACCOUNT`
+
+Encode Name
+
+```
+USAGE
+  $ proton encode:name [ACCOUNT]
+
+DESCRIPTION
+  Encode Name
+```
+
+_See code: [lib/commands/encode/name.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/encode/name.js)_
+
+## `proton encode:symbol SYMBOL PRECISION`
+
+Encode Symbol
+
+```
+USAGE
+  $ proton encode:symbol [SYMBOL] [PRECISION]
+
+DESCRIPTION
+  Encode Symbol
+```
+
+_See code: [lib/commands/encode/symbol.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/encode/symbol.js)_
 
 ## `proton faucet`
 
@@ -354,7 +384,7 @@ DESCRIPTION
   List all faucets
 ```
 
-_See code: [lib/commands/faucet/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/faucet/index.js)_
+_See code: [lib/commands/faucet/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/faucet/index.js)_
 
 ## `proton faucet:claim SYMBOL AUTHORIZATION`
 
@@ -372,7 +402,7 @@ DESCRIPTION
   Claim faucet
 ```
 
-_See code: [lib/commands/faucet/claim.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/faucet/claim.js)_
+_See code: [lib/commands/faucet/claim.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/faucet/claim.js)_
 
 ## `proton help [COMMAND]`
 
@@ -406,7 +436,7 @@ DESCRIPTION
   Manage Keys
 ```
 
-_See code: [lib/commands/key/add.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/add.js)_
+_See code: [lib/commands/key/add.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/add.js)_
 
 ## `proton key:generate`
 
@@ -420,7 +450,7 @@ DESCRIPTION
   Generate Key
 ```
 
-_See code: [lib/commands/key/generate.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/generate.js)_
+_See code: [lib/commands/key/generate.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/generate.js)_
 
 ## `proton key:get PUBLICKEY`
 
@@ -434,7 +464,7 @@ DESCRIPTION
   Find private key for public key
 ```
 
-_See code: [lib/commands/key/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/get.js)_
+_See code: [lib/commands/key/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/get.js)_
 
 ## `proton key:list`
 
@@ -448,7 +478,7 @@ DESCRIPTION
   List All Key
 ```
 
-_See code: [lib/commands/key/list.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/list.js)_
+_See code: [lib/commands/key/list.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/list.js)_
 
 ## `proton key:lock`
 
@@ -462,7 +492,7 @@ DESCRIPTION
   Lock Keys with password
 ```
 
-_See code: [lib/commands/key/lock.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/lock.js)_
+_See code: [lib/commands/key/lock.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/lock.js)_
 
 ## `proton key:remove [PRIVATEKEY]`
 
@@ -476,7 +506,7 @@ DESCRIPTION
   Remove Key
 ```
 
-_See code: [lib/commands/key/remove.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/remove.js)_
+_See code: [lib/commands/key/remove.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/remove.js)_
 
 ## `proton key:reset`
 
@@ -490,7 +520,7 @@ DESCRIPTION
   Reset password (Caution: deletes all private keys stored)
 ```
 
-_See code: [lib/commands/key/reset.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/reset.js)_
+_See code: [lib/commands/key/reset.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/reset.js)_
 
 ## `proton key:unlock [PASSWORD]`
 
@@ -504,7 +534,7 @@ DESCRIPTION
   Unlock all keys (Caution: Your keys will be stored in plaintext on disk)
 ```
 
-_See code: [lib/commands/key/unlock.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/key/unlock.js)_
+_See code: [lib/commands/key/unlock.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/key/unlock.js)_
 
 ## `proton multisig:contract DIRECTORY`
 
@@ -518,7 +548,7 @@ DESCRIPTION
   Multisig Contract
 ```
 
-_See code: [lib/commands/multisig/contract.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/multisig/contract.js)_
+_See code: [lib/commands/multisig/contract.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/multisig/contract.js)_
 
 ## `proton network`
 
@@ -550,7 +580,7 @@ DESCRIPTION
   Update Permission
 ```
 
-_See code: [lib/commands/permission/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/permission/index.js)_
+_See code: [lib/commands/permission/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/permission/index.js)_
 
 ## `proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`
 
@@ -567,7 +597,7 @@ DESCRIPTION
   Link Auth
 ```
 
-_See code: [lib/commands/permission/link.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/permission/link.js)_
+_See code: [lib/commands/permission/link.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/permission/link.js)_
 
 ## `proton permission:unlink ACCOUNT CONTRACT [ACTION]`
 
@@ -584,7 +614,7 @@ DESCRIPTION
   Unlink Auth
 ```
 
-_See code: [lib/commands/permission/unlink.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/permission/unlink.js)_
+_See code: [lib/commands/permission/unlink.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/permission/unlink.js)_
 
 ## `proton psr URI`
 
@@ -598,7 +628,7 @@ DESCRIPTION
   Create Session
 ```
 
-_See code: [lib/commands/psr/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/psr/index.js)_
+_See code: [lib/commands/psr/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/psr/index.js)_
 
 ## `proton ram`
 
@@ -612,7 +642,7 @@ DESCRIPTION
   List Ram price
 ```
 
-_See code: [lib/commands/ram/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/ram/index.js)_
+_See code: [lib/commands/ram/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/ram/index.js)_
 
 ## `proton ram:buy BUYER RECEIVER BYTES`
 
@@ -634,7 +664,7 @@ DESCRIPTION
   Claim faucet
 ```
 
-_See code: [lib/commands/ram/buy.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/ram/buy.js)_
+_See code: [lib/commands/ram/buy.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/ram/buy.js)_
 
 ## `proton rpc:accountsbyauthorizers AUTHORIZATIONS [KEYS]`
 
@@ -648,7 +678,7 @@ DESCRIPTION
   Get Accounts by Authorization
 ```
 
-_See code: [lib/commands/rpc/accountsbyauthorizers.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/rpc/accountsbyauthorizers.js)_
+_See code: [lib/commands/rpc/accountsbyauthorizers.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/rpc/accountsbyauthorizers.js)_
 
 ## `proton scan ACCOUNT`
 
@@ -662,7 +692,7 @@ DESCRIPTION
   Open Account in Proton Scan
 ```
 
-_See code: [lib/commands/scan/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/scan/index.js)_
+_See code: [lib/commands/scan/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/scan/index.js)_
 
 ## `proton table CONTRACT [TABLE] [SCOPE]`
 
@@ -686,7 +716,7 @@ DESCRIPTION
   Get Table Storage Rows
 ```
 
-_See code: [lib/commands/table/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/table/index.js)_
+_See code: [lib/commands/table/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/table/index.js)_
 
 ## `proton transaction JSON`
 
@@ -700,7 +730,7 @@ DESCRIPTION
   Execute Transaction
 ```
 
-_See code: [lib/commands/transaction/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/transaction/index.js)_
+_See code: [lib/commands/transaction/index.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/transaction/index.js)_
 
 ## `proton transaction:get ID`
 
@@ -714,7 +744,7 @@ DESCRIPTION
   Get Transaction by Transaction ID
 ```
 
-_See code: [lib/commands/transaction/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/transaction/get.js)_
+_See code: [lib/commands/transaction/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/transaction/get.js)_
 
 ## `proton transaction:push TRANSACTION`
 
@@ -728,7 +758,7 @@ DESCRIPTION
   Push Transaction
 ```
 
-_See code: [lib/commands/transaction/push.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/transaction/push.js)_
+_See code: [lib/commands/transaction/push.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/transaction/push.js)_
 
 ## `proton version`
 
@@ -742,5 +772,5 @@ DESCRIPTION
   Version of CLI
 ```
 
-_See code: [lib/commands/version.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.65/lib/commands/version.js)_
+_See code: [lib/commands/version.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.66/lib/commands/version.js)_
 <!-- commandsstop -->
