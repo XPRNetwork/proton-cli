@@ -2,8 +2,6 @@
 export class TableTemplate extends Table {
   constructor(
     public account: Name = new Name(),
-    public tokens: ExtendedAsset[] = [],
-    public nfts: u64[] = [],
   ) {
     super();
   }
