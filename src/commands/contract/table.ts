@@ -1,12 +1,14 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import ts from "typescript";
 import * as path from 'path';
-import { green, red } from 'colors';
+import * as fs from 'fs';
+import globby from 'globby';
+import { green } from 'colors';
 
 import { destinationFolder } from '../../core/flags';
 import { buildContractFileName, checkFileExists, createFolderContent, IFilePreprocess, validateName, writeFile } from '../../utils';
 
-import { contractAddTableTransformerFactory, tableTemplateTransformerFactory } from '../../core/transformers';
+import { contractAddTableTransformerFactory, tableBasicImportTransformerFactory, tableExtendTransformerFactory, tableTemplateTransformerFactory } from '../../core/transformers';
 
 export const tableClass = Flags.string({
   char: 't',
@@ -19,6 +21,11 @@ export const isSingleton = Flags.boolean({
   default: false
 });
 
+export const contractName = Flags.string({
+  char: 'c',
+  description: 'The name of the contract for table. 1-12 chars, only lowercase a-z and numbers 1-5 are possible',
+});
+
 export default class ContractTableCreateCommand extends Command {
   static args = [
     {
@@ -26,56 +33,66 @@ export default class ContractTableCreateCommand extends Command {
       required: true,
       description: 'The name of the contract\'s table. 1-12 chars, only lowercase a-z and numbers 1-5 are possible',
     },
-    {
-      name: 'contractName',
-      required: true,
-      description: 'The name of the contract for table. 1-12 chars, only lowercase a-z and numbers 1-5 are possible',
-    },
   ]
 
   static flags = {
     class: tableClass,
     singleton: isSingleton,
     output: destinationFolder(),
+    contract: contractName,
   }
 
   async run() {
     const { flags, args } = await this.parse(ContractTableCreateCommand);
 
     if (!validateName(args.tableName)) {
-      return this.error(`The provided contract name ${args.contractName} is wrong. Check --help information for more info`);
+      return this.error(`The provided table name ${args.tableName} is wrong. Check --help information for more info`);
     }
 
-    if (!validateName(args.contractName)) {
-      return this.error(`The provided contract name ${args.contractName} is wrong. Check --help information for more info`);
+    if (flags.contract && !validateName(flags.contract)) {
+      return this.error(`The provided contract name ${flags.contract} is wrong. Check --help information for more info`);
     }
 
     const CURR_DIR = process.cwd();
 
     const targetPath = path.join(CURR_DIR, flags.output || '');
-    const contractFileName = buildContractFileName(args.contractName);
+    let contractFilePath = '';
+    let contractName = '';
 
-
-    const contractFilePath = path.join(targetPath, contractFileName);
-    if (!checkFileExists(contractFilePath)) {
-      return this.error(`The contract file ${contractFileName} does not exits. May be you forgot to create the contract first?`);
+    if (flags.contract) {
+      contractName = flags.contract;
+      const contractFileName = buildContractFileName(contractName);
+      contractFilePath = path.join(targetPath, contractFileName);
+      if (!checkFileExists(contractFilePath)) {
+        return this.error(`The contract file ${contractFileName} does not exits. May be you forgot to create the contract first?`);
+      }
+    } else {
+      const paths = await globby([path.join(targetPath, '*.contract.ts')])
+      if (!paths.length) {
+        return this.error(`The contract file is not found. May be you forgot to create the contract first?`);
+      }
+      if (paths.length > 1) {
+        return this.error(`Several contracts are found. Please provide a contract name explicitly. Check --help information for more info`);
+      }
+      contractFilePath = paths[0];
+      const res = contractFilePath.match(/^.+\/(.+)?\.contract\.ts$/);
+      if (res) {
+        contractName = res[1];
+      }
     }
 
     const data = {
       tableName: args.tableName,
-      contractName: args.contractName,
+      contractName: contractName,
       className: flags.class || args.tableName,
       isSingleton: flags.singleton,
-      tableFileName: `${args.tableName}.table`,
-      tableFileNameWithExt: `${args.tableName}.table.ts`
+      tableFileName: `${contractName}.tables`,
+      tableFileNameWithExt: `${contractName}.tables.ts`,
+      tablesAlreadyExists: false
     }
+    data.className = data.className.charAt(0).toUpperCase() + data.className.slice(1);
 
     const tableFilePath = path.join(targetPath, data.tableFileNameWithExt);
-    if (checkFileExists(tableFilePath)) {
-      return this.error(red(`The table file ${tableFilePath} already exist.`));
-    }
-
-    data.className = data.className.charAt(0).toUpperCase() + data.className.slice(1);
 
     const templatePath = path.join(__dirname, '../..', 'templates', 'table');
 
@@ -91,14 +108,28 @@ export default class ContractTableCreateCommand extends Command {
           if (source) {
             const result = ts.transform(source, [tableTemplateTransformerFactory(data)]);
             const transformedSourceFile = result.transformed[0];
-            file.content = printer.printFile(transformedSourceFile);
+
+            if (checkFileExists(tableFilePath)) {
+              let content = fs.readFileSync(tableFilePath, 'utf8');
+              const sourceExisting = ts.createSourceFile(file.fileName, content, ts.ScriptTarget.Latest);
+              if (sourceExisting) {
+                data.tablesAlreadyExists = true;
+                const result = ts.transform(sourceExisting, [tableExtendTransformerFactory(transformedSourceFile)]);
+                const fullFile = result.transformed[0];
+                file.content = printer.printFile(fullFile);
+              }
+            } else {
+              const result = ts.transform(transformedSourceFile, [tableBasicImportTransformerFactory()]);
+              const newTableSourceFile = result.transformed[0];
+              file.content = printer.printFile(newTableSourceFile);
+            }
           }
         }
         return file
       },
     });
     CliUx.ux.log(`Table ${args.tableName} successfully created`);
-    CliUx.ux.log(`Adding the table to the contract ${args.contractName}`);
+    CliUx.ux.log(`Adding the table to the contract ${contractName}`);
 
     // Adding table to contract file
     const program = ts.createProgram([contractFilePath], {});
@@ -108,6 +139,6 @@ export default class ContractTableCreateCommand extends Command {
       writeFile(contractFilePath, printer.printFile(result.transformed[0]))
     }
 
-    CliUx.ux.log(green(`Contract ${args.contractName} was successfully updated`));
+    CliUx.ux.log(green(`Contract ${contractName} was successfully updated`));
   }
 }

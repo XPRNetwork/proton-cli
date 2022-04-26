@@ -6,6 +6,7 @@ export interface IContractAddTableData {
   tableName: string;
   tableFileName: string;
   className: string;
+  tablesAlreadyExists: boolean;
 }
 
 export function contractAddTableTransformerFactory(data: IContractAddTableData) {
@@ -14,6 +15,8 @@ export function contractAddTableTransformerFactory(data: IContractAddTableData) 
       const visitor = (node: ts.Node): ts.Node => {
         if (ts.isImportDeclaration(node) && isProtonImport(node)) {
           return handleImports(node, data) as ts.Node;
+        } else if (ts.isImportDeclaration(node) && isTablesImport(node, data) && data.tablesAlreadyExists) {
+          return handleImportAddTable(node, data) as ts.Node;
         } else if (ts.isClassDeclaration(node)) {
           return handleAddTable(node, data);
         }
@@ -40,19 +43,39 @@ function handleImports(node: ts.ImportDeclaration, data: IContractAddTableData) 
     }
   }
 
-  return [node,
-    ts.createImportDeclaration(
-      undefined,
-      undefined,
-      ts.createImportClause(
+  if (!data.tablesAlreadyExists) {
+    return [node,
+      ts.createImportDeclaration(
         undefined,
-        ts.createNamedImports([
-          ts.createImportSpecifier(undefined, ts.createIdentifier(data.className)),
-        ])
-      ),
-      ts.createLiteral(`./${data.tableFileName}`)
-    )
-  ];
+        undefined,
+        ts.createImportClause(
+          undefined,
+          ts.createNamedImports([
+            ts.createImportSpecifier(undefined, ts.createIdentifier(data.className)),
+          ])
+        ),
+        ts.createLiteral(`./${data.tableFileName}`)
+      )
+    ];
+  }
+}
+
+function handleImportAddTable(node: ts.ImportDeclaration, data: IContractAddTableData) {
+  if (!node.importClause || !ts.isImportClause(node.importClause))
+    return node;
+  if (node.importClause.namedBindings && ts.isNamedImports(node.importClause.namedBindings)) {
+    const hasTableStore = node.importClause.namedBindings.elements.find((element) => {
+      return element.name.escapedText === data.className;
+    });
+    if (!hasTableStore) {
+      node.importClause.namedBindings.elements = ts.createNodeArray([
+        ...node.importClause.namedBindings.elements,
+        ts.createImportSpecifier(undefined, ts.createIdentifier(data.className))
+      ]);
+    }
+  }
+
+  return node
 }
 
 function handleAddTable(node: ts.ClassDeclaration, data: IContractAddTableData) {
@@ -94,4 +117,8 @@ function handleAddTable(node: ts.ClassDeclaration, data: IContractAddTableData) 
 
 function isProtonImport(node: ts.ImportDeclaration) {
   return ts.isStringLiteral(node.moduleSpecifier) && node.moduleSpecifier.text === 'proton-tsc';
+}
+
+function isTablesImport(node: ts.ImportDeclaration, data: IContractAddTableData) {
+  return ts.isStringLiteral(node.moduleSpecifier) && node.moduleSpecifier.text === `./${data.tableFileName}`;
 }
