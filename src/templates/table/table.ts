@@ -1,5 +1,3 @@
-import { ExtendedAsset, Name, Table, TableStore } from "proton-tsc";
-
 @table("table_template")
 export class TableTemplate extends Table {
   constructor(
