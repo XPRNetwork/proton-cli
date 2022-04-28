@@ -2,12 +2,11 @@ import { CliUx, Command } from '@oclif/core';
 import * as path from 'path';
 import { green, red } from 'colors';
 import * as shell from 'shelljs';
-import ts from 'typescript';
 import { render } from 'ejs';
+import { Project, ScriptTarget } from "ts-morph";
 
 import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
 import { destinationFolder } from '../../core/flags';
-import { contractTemplateTransformerFactory } from '../../core/transformers';
 
 export default class ContractCreateCommand extends Command {
   static args = [
@@ -42,20 +41,23 @@ export default class ContractCreateCommand extends Command {
 
     createRootFolder(targetPath);
 
-    const printer = ts.createPrinter();
-
     createFolderContent(templatePath, targetPath, {
       filePreprocess: (file: IFilePreprocess) => {
         if (file.fileName === 'contract.ts') {
           file.fileName = `${args.contractName}.${file.fileName}`;
+          const project = new Project({
+            compilerOptions: {
+              target: ScriptTarget.Latest
+            },
+          });
 
-          const source = ts.createSourceFile(file.fileName, file.content, ts.ScriptTarget.Latest)
-
-          if (source) {
-            const result = ts.transform(source, [contractTemplateTransformerFactory(data)]);
-            const transformedSourceFile = result.transformed[0];
-            file.content = printer.printFile(transformedSourceFile);
+          const sourceFile = project.createSourceFile(file.fileName, file.content);
+          const contractClass = sourceFile.getClass('ContractTemplate');
+          if (contractClass) {
+            contractClass.rename(data.contractName);
           }
+          sourceFile.formatText();
+          file.content = sourceFile.getText();
         } else {
           file.content = render(file.content, data);
         }
@@ -63,7 +65,7 @@ export default class ContractCreateCommand extends Command {
       }
     });
     if (!postProcessNode(targetPath)) {
-      CliUx.ux.log(red('Failed to install dependencies. Try to install manually.'));
+      return this.error(red('Failed to install dependencies. Try to install manually.'));
     }
     CliUx.ux.log(green(`Contract ${args.contractName} successfully created!`));
   }

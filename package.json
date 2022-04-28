@@ -70,6 +70,7 @@
     "shelljs": "^0.8.5",
     "text-encoding-shim": "^1.0.5",
     "ts-dedent": "^2.2.0",
+    "ts-morph": "^14.0.0",
     "typescript": "^3.3",
     "uuid": "^8.3.2",
     "ws": "^8.5.0"

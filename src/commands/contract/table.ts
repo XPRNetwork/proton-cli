@@ -1,14 +1,13 @@
 import { CliUx, Command, Flags } from '@oclif/core'
-import ts from "typescript";
 import * as path from 'path';
-import * as fs from 'fs';
 import globby from 'globby';
-import { green } from 'colors';
+import { green, red } from 'colors';
 
 import { destinationFolder } from '../../core/flags';
-import { buildContractFileName, checkFileExists, createFolderContent, IFilePreprocess, validateName, writeFile } from '../../utils';
+import { buildContractFileName, checkFileExists, validateName } from '../../utils';
 
-import { contractAddTableTransformerFactory, tableBasicImportTransformerFactory, tableExtendTransformerFactory, tableTemplateTransformerFactory } from '../../core/transformers';
+import { Project, ScriptTarget, SourceFile } from 'ts-morph';
+import { FORMAT_SETTINGS, tableAddGetStorageMethod, tableAddParameter, tableAddPrimaryParameter } from '../../core/generators';
 
 export const tableClass = Flags.string({
   char: 't',
@@ -41,6 +40,9 @@ export default class ContractTableCreateCommand extends Command {
     output: destinationFolder(),
     contract: contractName,
   }
+
+  private data: any = {}
+  private project?: Project;
 
   async run() {
     const { flags, args } = await this.parse(ContractTableCreateCommand);
@@ -81,64 +83,161 @@ export default class ContractTableCreateCommand extends Command {
       }
     }
 
-    const data = {
+    this.data = {
       tableName: args.tableName,
       contractName: contractName,
       className: flags.class || args.tableName,
       isSingleton: flags.singleton,
       tableFileName: `${contractName}.tables`,
-      tableFileNameWithExt: `${contractName}.tables.ts`,
-      tablesAlreadyExists: false
+      tableFileNameWithExt: `${contractName}.tables.ts`
     }
-    data.className = data.className.charAt(0).toUpperCase() + data.className.slice(1);
+    this.data.className = this.data.className.charAt(0).toUpperCase() + this.data.className.slice(1);
 
-    const tableFilePath = path.join(targetPath, data.tableFileNameWithExt);
+    const tableFilePath = path.join(targetPath, this.data.tableFileNameWithExt);
 
-    const templatePath = path.join(__dirname, '../..', 'templates', 'table');
-
-    const printer = ts.createPrinter();
-
-    createFolderContent(templatePath, targetPath, {
-      filePreprocess: (file: IFilePreprocess) => {
-        if (file.fileName === 'table.ts') {
-          file.fileName = data.tableFileNameWithExt;
-
-          const source = ts.createSourceFile(file.fileName, file.content, ts.ScriptTarget.Latest)
-
-          if (source) {
-            const result = ts.transform(source, [tableTemplateTransformerFactory(data)]);
-            const transformedSourceFile = result.transformed[0];
-
-            if (checkFileExists(tableFilePath)) {
-              let content = fs.readFileSync(tableFilePath, 'utf8');
-              const sourceExisting = ts.createSourceFile(file.fileName, content, ts.ScriptTarget.Latest);
-              if (sourceExisting) {
-                data.tablesAlreadyExists = true;
-                const result = ts.transform(sourceExisting, [tableExtendTransformerFactory(transformedSourceFile)]);
-                const fullFile = result.transformed[0];
-                file.content = printer.printFile(fullFile);
-              }
-            } else {
-              const result = ts.transform(transformedSourceFile, [tableBasicImportTransformerFactory()]);
-              const newTableSourceFile = result.transformed[0];
-              file.content = printer.printFile(newTableSourceFile);
-            }
-          }
-        }
-        return file
+    this.project = new Project({
+      compilerOptions: {
+        target: ScriptTarget.Latest
       },
     });
-    CliUx.ux.log(`Table ${args.tableName} successfully created`);
-    CliUx.ux.log(`Adding the table to the contract ${contractName}`);
 
-    // Adding table to contract file
-    const program = ts.createProgram([contractFilePath], {});
-    const source = program.getSourceFile(contractFilePath);
-    if (source) {
-      const result = ts.transform(source, [contractAddTableTransformerFactory(data)]);
-      writeFile(contractFilePath, printer.printFile(result.transformed[0]))
+    try {
+      this.createTable(tableFilePath);
+    } catch (e: any) {
+      return this.error(red(e));
     }
 
-    CliUx.ux.log(green(`Contract ${contractName} was successfully updated`));
+    try {
+      this.updateContract(contractFilePath);
+    } catch (e: any) {
+      return this.error(red(e));
+    }
+  }
+
+  private createTable(tableFilePath: string) {
+    let sourceTables: SourceFile | undefined;
+    if (this.project) {
+      if (checkFileExists(tableFilePath)) {
+        this.project.addSourceFilesAtPaths([tableFilePath]);
+        sourceTables = this.project.getSourceFile(tableFilePath);
+      } else {
+        sourceTables = this.project.createSourceFile(tableFilePath);
+      }
+
+      if (sourceTables) {
+        const classExists = sourceTables.getClass(this.data.className);
+        if (!classExists) {
+
+          const table = sourceTables.addClass({
+            name: this.data.className,
+            isExported: true,
+            extends: 'Table',
+          });
+
+          const decorator = table.addDecorator({
+            name: "table"
+          });
+          decorator.addArgument(`"${this.data.tableName}"`);
+
+          if (this.data.isSingleton) {
+            decorator.addArgument('singleton');
+          }
+
+          const tableContructor = table.addConstructor(
+            {
+              statements: ['super()']
+            }
+          );
+
+          // TODO Extend this part with fields that user prompts
+
+          tableAddParameter(tableContructor, {
+            name: 'account',
+            type: 'Name'
+          });
+
+          tableAddPrimaryParameter(table, {
+            name: 'account',
+            type: 'Name'
+          });
+
+          tableAddGetStorageMethod(table);
+
+          const protonImports = sourceTables.getImportDeclaration('proton-tsc');
+          if (protonImports) {
+            const importToAdd = (this.data.isSingleton ? "Singleton" : "TableStore")
+            const importExists = protonImports.getNamedImports().find((item) => item.getText() === importToAdd);
+            if (!importExists) {
+              protonImports.addNamedImport(importToAdd);
+            }
+          } else {
+            sourceTables.addImportDeclaration({
+              namedImports: ["Name", "Table", (this.data.isSingleton ? "Singleton" : "TableStore")],
+              moduleSpecifier: "proton-tsc",
+            });
+          }
+
+          sourceTables.formatText(FORMAT_SETTINGS);
+          sourceTables.saveSync();
+          CliUx.ux.log(`Table ${this.data.tableName} successfully created`);
+        } else {
+          throw `The table ${this.data.className} already exists. Try changing the name.`;
+        }
+      }
+    }
+  }
+
+  private updateContract(contractFilePath: string) {
+    CliUx.ux.log(`Adding the table to the contract ${this.data.contractName}`);
+    if (this.project) {
+      this.project.addSourceFilesAtPaths([contractFilePath])
+      const contractSource = this.project.getSourceFile(contractFilePath);
+      if (contractSource) {
+        const protonImportClass = this.data.isSingleton ? 'Singleton' : 'TableStore';
+        const importProton = contractSource.getImportDeclaration('proton-tsc');
+        if (importProton) {
+          const importExists = importProton.getNamedImports().find((item) => item.getText() === protonImportClass);
+          if (!importExists) {
+            importProton.addNamedImports([protonImportClass]);
+          }
+        }
+
+        const importTable = contractSource.getImportDeclaration(`./${this.data.tableFileName}`);
+        if (importTable) {
+          const importExists = importTable.getNamedImports().find((item) => item.getText() === this.data.className);
+          if (!importExists) {
+            importTable.addNamedImport(this.data.className);
+          }
+        } else {
+          contractSource.addImportDeclaration({
+            namedImports: [this.data.className],
+            moduleSpecifier: `./${this.data.tableFileName}`,
+          });
+        }
+        const contractClass = contractSource.getClass(this.data.contractName);
+        if (contractClass) {
+          let methodSuffix = 'Table';
+          if (this.data.isSingleton) {
+            methodSuffix = 'Singleton';
+          }
+          const methodName = `${this.data.className.toLowerCase()}${methodSuffix}`;
+          const methodExists = contractClass.getProperty(methodName);
+          if (!methodExists) {
+            const maxIdx = contractClass.getProperties().length;
+            contractClass.insertProperty(maxIdx, {
+              name: methodName,
+              type: `${protonImportClass}<${this.data.className}>`,
+              initializer: `${this.data.className}.get${methodSuffix}(this.receiver)`
+            });
+          }
+        }
+
+        contractSource.formatText(FORMAT_SETTINGS);
+        contractSource.saveSync();
+        CliUx.ux.log(green(`Contract ${this.data.contractName} was successfully updated`));
+      } else {
+        throw `Not contract ${this.data.contractName} found`;
+      }
+    }
   }
 }
