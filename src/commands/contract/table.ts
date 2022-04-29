@@ -7,7 +7,7 @@ import { destinationFolder } from '../../core/flags';
 import { buildContractFileName, checkFileExists, validateName } from '../../utils';
 
 import { Project, ScriptTarget, SourceFile } from 'ts-morph';
-import { FORMAT_SETTINGS, tableAddGetStorageMethod, tableAddParameter, tableAddPrimaryParameter } from '../../core/generators';
+import { addNamedImports, FORMAT_SETTINGS, tableAddGetStorageMethod, tableAddParameter, tableAddPrimaryParameter } from '../../core/generators';
 
 export const tableClass = Flags.string({
   char: 't',
@@ -163,19 +163,7 @@ export default class ContractTableCreateCommand extends Command {
 
           tableAddGetStorageMethod(table);
 
-          const protonImports = sourceTables.getImportDeclaration('proton-tsc');
-          if (protonImports) {
-            const importToAdd = (this.data.isSingleton ? "Singleton" : "TableStore")
-            const importExists = protonImports.getNamedImports().find((item) => item.getText() === importToAdd);
-            if (!importExists) {
-              protonImports.addNamedImport(importToAdd);
-            }
-          } else {
-            sourceTables.addImportDeclaration({
-              namedImports: ["Name", "Table", (this.data.isSingleton ? "Singleton" : "TableStore")],
-              moduleSpecifier: "proton-tsc",
-            });
-          }
+          addNamedImports(sourceTables, 'proton-tsc', ["Name", "Table", (this.data.isSingleton ? "Singleton" : "TableStore")]);
 
           sourceTables.formatText(FORMAT_SETTINGS);
           sourceTables.saveSync();
@@ -194,26 +182,10 @@ export default class ContractTableCreateCommand extends Command {
       const contractSource = this.project.getSourceFile(contractFilePath);
       if (contractSource) {
         const protonImportClass = this.data.isSingleton ? 'Singleton' : 'TableStore';
-        const importProton = contractSource.getImportDeclaration('proton-tsc');
-        if (importProton) {
-          const importExists = importProton.getNamedImports().find((item) => item.getText() === protonImportClass);
-          if (!importExists) {
-            importProton.addNamedImports([protonImportClass]);
-          }
-        }
 
-        const importTable = contractSource.getImportDeclaration(`./${this.data.tableFileName}`);
-        if (importTable) {
-          const importExists = importTable.getNamedImports().find((item) => item.getText() === this.data.className);
-          if (!importExists) {
-            importTable.addNamedImport(this.data.className);
-          }
-        } else {
-          contractSource.addImportDeclaration({
-            namedImports: [this.data.className],
-            moduleSpecifier: `./${this.data.tableFileName}`,
-          });
-        }
+        addNamedImports(contractSource, 'proton-tsc', [protonImportClass])
+        addNamedImports(contractSource, `./${this.data.tableFileName}`, [this.data.className])
+
         const contractClass = contractSource.getClass(this.data.contractName);
         if (contractClass) {
           let methodSuffix = 'Table';
