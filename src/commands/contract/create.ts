@@ -3,7 +3,7 @@ import * as path from 'path';
 import { green, red } from 'colors';
 import * as shell from 'shelljs';
 import { render } from 'ejs';
-import { CallExpression, Project, ScriptTarget, SyntaxKind } from "ts-morph";
+import { Project, PropertyAccessExpression, ScriptTarget, SyntaxKind } from "ts-morph";
 
 import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
 import { destinationFolder } from '../../core/flags';
@@ -71,42 +71,39 @@ export default class ContractCreateCommand extends Command {
 
           sourceFile.formatText(FORMAT_SETTINGS);
           file.content = sourceFile.getText();
-          // } else if (file.fileName === 'playground.ts') {
-          //   const sourceFile = project.createSourceFile(file.fileName, file.content);
-          //   // console.log(sourceFile.getStructure());
-          //   const mainFunction = sourceFile.getFunction('main');
-          //   if (mainFunction) {
-          //     mainFunction.getDescendantsOfKind(SyntaxKind.CallExpression).forEach((item) => {
-          //       console.log(item.getExpressionIfKind(SyntaxKind.PropertyAccessExpression));
-          //     });
-          //     // const contract1 = mainFunction.getVariableDeclaration('contract');
-          //     // if (contract1) {
-          //     // contract1.getDescendantsOfKind(SyntaxKind.PropertyAccessExpression).forEach((item) => {
-          //     // console.log(item..getArguments());
-          //     // item.getArg
-          //     // item.getChildren().forEach((child) => {
-          //     //   console.log(child.getText());
-          //     // });
-          //     // });
-          //     // console.log(contract1.getStructure());
-          //     // contract1.getInitializer()?.replaceWithText();
+        } else if (file.fileName === 'playground.ts') {
+          const sourceFile = project.createSourceFile(file.fileName, file.content);
+          const mainFunction = sourceFile.getFunction('main');
+          if (mainFunction) {
+            mainFunction.getDescendantsOfKind(SyntaxKind.CallExpression).forEach((item) => {
+              const child = item.getFirstDescendant((item) => item.getKind() === SyntaxKind.PropertyAccessExpression)
+              if (child && (child as PropertyAccessExpression).getName() === 'createContract') {
+                item.getArguments().forEach((arg, idx) => {
+                  if (idx === 0) {
+                    arg.replaceWithText(`'${data.contractName}'`)
+                  } else if (idx === 1) {
+                    arg.replaceWithText(`'target/${data.contractName}.contract'`)
+                  }
+                });
+              }
+            });
 
-
-          //     // mainFunction.getStatement((func) => {
-          //     //   console.log(func)
-          //     //   return false;
-          //     // })
-          //   }
-
+            mainFunction.addStatements([
+              `await contract.actions.action([]).send('${data.contractName}@active');`
+            ]);
+          }
+          sourceFile.formatText(FORMAT_SETTINGS);
+          console.log(sourceFile.getText());
+          file.content = sourceFile.getText();
         } else {
           file.content = render(file.content, data);
         }
         return file
       }
     });
-    // if (!postProcessNode(targetPath)) {
-    //   return this.error(red('Failed to install dependencies. Try to install manually.'));
-    // }
+    if (!postProcessNode(targetPath)) {
+      return this.error(red('Failed to install dependencies. Try to install manually.'));
+    }
     CliUx.ux.log(green(`Contract ${args.contractName} successfully created!`));
   }
 }
