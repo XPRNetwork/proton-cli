@@ -6,13 +6,12 @@ async function wait(ms: number) {
   });
 }
 
-const main = async () => {
+async function main() {
   const blockchain = new Blockchain();
-  const contract = blockchain.createContract('<%= contractName %>', 'target/<%= contractName %>.contract');
+  const contract = blockchain.createContract('contractName', 'target/contractName.contract');
   await wait(0);
 
   // Put you actions calls here
-  await contract.actions.action1([]).send('<%= contractName %>@active')
 }
 
 main()
