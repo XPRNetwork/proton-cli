@@ -1,13 +1,12 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import * as path from 'path';
-import globby from 'globby';
 import { green, red } from 'colors';
 
 import { destinationFolder } from '../../core/flags';
-import { buildContractFileName, checkFileExists, validateName } from '../../utils';
+import { checkFileExists, extractContract, validateName } from '../../utils';
 
 import { Project, ScriptTarget, SourceFile } from 'ts-morph';
-import { addNamedImports, FORMAT_SETTINGS, tableAddGetStorageMethod, tableAddParameter, tableAddPrimaryParameter } from '../../core/generators';
+import { addNamedImports, constructorAddParameter, FORMAT_SETTINGS, tableAddGetStorageMethod, tableAddPrimaryParameter } from '../../core/generators';
 
 export const tableClass = Flags.string({
   char: 't',
@@ -60,27 +59,10 @@ export default class ContractTableCreateCommand extends Command {
     const targetPath = path.join(CURR_DIR, flags.output || '');
     let contractFilePath = '';
     let contractName = '';
-
-    if (flags.contract) {
-      contractName = flags.contract;
-      const contractFileName = buildContractFileName(contractName);
-      contractFilePath = path.join(targetPath, contractFileName);
-      if (!checkFileExists(contractFilePath)) {
-        return this.error(`The contract file ${contractFileName} does not exits. May be you forgot to create the contract first?`);
-      }
-    } else {
-      const paths = await globby([path.join(targetPath, '*.contract.ts')])
-      if (!paths.length) {
-        return this.error(`The contract file is not found. May be you forgot to create the contract first?`);
-      }
-      if (paths.length > 1) {
-        return this.error(`Several contracts are found. Please provide a contract name explicitly. Check --help information for more info`);
-      }
-      contractFilePath = paths[0];
-      const res = contractFilePath.match(/^.+\/(.+)?\.contract\.ts$/);
-      if (res) {
-        contractName = res[1];
-      }
+    try {
+      [contractName, contractFilePath] = await extractContract(targetPath, flags.contract);
+    } catch (err: any) {
+      return this.error(red(err));
     }
 
     this.data = {
@@ -151,7 +133,7 @@ export default class ContractTableCreateCommand extends Command {
 
           // TODO Extend this part with fields that user prompts
 
-          tableAddParameter(tableContructor, {
+          constructorAddParameter(tableContructor, {
             name: 'account',
             type: 'Name'
           });

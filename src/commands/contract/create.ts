@@ -7,7 +7,7 @@ import { Project, PropertyAccessExpression, ScriptTarget, SyntaxKind } from "ts-
 
 import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
 import { destinationFolder } from '../../core/flags';
-import { addNamedImports, contractAddAction, FORMAT_SETTINGS } from '../../core/generators';
+import { addNamedImports, contractAddActions, FORMAT_SETTINGS } from '../../core/generators';
 
 export default class ContractCreateCommand extends Command {
   static args = [
@@ -48,8 +48,8 @@ export default class ContractCreateCommand extends Command {
 
     createRootFolder(targetPath);
 
-    createFolderContent(templatePath, targetPath, {
-      filePreprocess: (file: IFilePreprocess) => {
+    await createFolderContent(templatePath, targetPath, {
+      filePreprocess: async (file: IFilePreprocess) => {
         if (file.fileName === 'contract.ts') {
           file.fileName = `${args.contractName}.${file.fileName}`;
 
@@ -67,7 +67,9 @@ export default class ContractCreateCommand extends Command {
 
           addNamedImports(sourceFile, 'proton-tsc', ["Contract"]);
 
-          contractAddAction(contract, 'action');
+          CliUx.ux.log("Let's add some actions to the class");
+
+          await contractAddActions(contract)
 
           sourceFile.formatText(FORMAT_SETTINGS);
           file.content = sourceFile.getText();
@@ -93,7 +95,6 @@ export default class ContractCreateCommand extends Command {
             ]);
           }
           sourceFile.formatText(FORMAT_SETTINGS);
-          console.log(sourceFile.getText());
           file.content = sourceFile.getText();
         } else {
           file.content = render(file.content, data);

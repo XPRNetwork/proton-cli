@@ -6,7 +6,9 @@ export function addNamedImports(sourceFile: SourceFile, lib: string, importsToAd
     const namedImports = libImports.getNamedImports().map((item) => item.getText());
     const importsNotExist = importsToAdd.reduce((accum: string[], importItem: string) => {
       if (namedImports.indexOf(importItem) < 0) {
-        accum.push(importItem);
+        if (accum.indexOf(importItem) < 0) {
+          accum.push(importItem);
+        }
       }
       return accum;
     }, [])
