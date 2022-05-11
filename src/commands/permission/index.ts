@@ -18,11 +18,11 @@ export default class UpdatePermission extends Command {
   static description = 'Update Permission'
 
   static args = [
-    {name: 'account', required: true, description: 'Account to modify'},
+    { name: 'account', required: true, description: 'Account to modify' },
   ]
 
   async run() {
-    const {args} = this.parse(UpdatePermission)
+    const { args } = this.parse(UpdatePermission)
 
     // Track
     let account: GetAccountResult
@@ -70,7 +70,7 @@ export default class UpdatePermission extends Command {
             parent: currentPermission.parent,
             auth: currentPermission.required_auth
           },
-          authorization: [{ actor, permission}]
+          authorization: [{ actor, permission }]
         }]
       })
       await CliUx.ux.log(`${green('Success:')} Permission updated`)
@@ -82,20 +82,20 @@ export default class UpdatePermission extends Command {
       const authority = await CliUx.ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
       const [actor, permission] = authority.split('@')
 
-      const authorization = [{ actor, permission}]
+      const authorization = [{ actor, permission }]
       const removeLinksActions = lightAccount
         ? lightAccount.linkauth
-            .filter((_: any) => _.requirement === currentPermission.perm_name)
-            .map((_: any) => ({
-              account: 'eosio',
-              name: 'unlinkauth',
-              data: {
-                account: args.account,
-                code: _.code,
-                type: _.type
-              },
-              authorization
-            }))
+          .filter((_: any) => _.requirement === currentPermission.perm_name)
+          .map((_: any) => ({
+            account: 'eosio',
+            name: 'unlinkauth',
+            data: {
+              account: args.account,
+              code: _.code,
+              type: _.type
+            },
+            authorization
+          }))
         : []
 
       const deleteActions = [
@@ -106,7 +106,7 @@ export default class UpdatePermission extends Command {
             account: args.account,
             permission: currentPermission.perm_name,
           },
-          authorization: [{ actor, permission}]
+          authorization: [{ actor, permission }]
         }
       ]
 
@@ -128,18 +128,18 @@ export default class UpdatePermission extends Command {
         if (permissionSnapshot !== JSON.stringify(account!.permissions)) {
           extraOptions.unshift(green('Save'))
         }
-        
+
         const choices = account!.permissions.map(_ => _.perm_name)
-                          .concat([new Separator() as any])
-                          .concat(extraOptions)
-      
+          .concat([new Separator() as any])
+          .concat(extraOptions)
+
         const permission = await promptChoices('Choose permission to edit:', choices)
 
         if (permission === green('Save')) {
           await save()
         } else {
           if (permission === 'Add New Permission') {
-            const permission = await promptName('permission')
+            const permission = await promptName('permission', { default: 'newperm' })
             const parentpermission = await promptChoices('Choose parent permission:', account!.permissions.map(_ => _.perm_name), 'active')
             account!.permissions.push({
               perm_name: permission,
@@ -155,7 +155,7 @@ export default class UpdatePermission extends Command {
           } else {
             currentPermission = account!.permissions.find(_ => _.perm_name === permission)
           }
-      
+
           step = 'editPermission'
         }
       }
@@ -190,22 +190,20 @@ export default class UpdatePermission extends Command {
         }
 
         const choices = keys.concat(accounts)
-                            .concat([new Separator() as any])
-                            .concat(extraOptions)
+          .concat([new Separator() as any])
+          .concat(extraOptions)
         let authorization = await promptChoices(
           `Choose permission ${currentPermission.perm_name}'s authorization to edit:`,
           choices,
           permissionSnapshot !== JSON.stringify(account!.permissions) ? green('Save') : undefined
         )
 
-        if (authorization === 'Go Back')
-        {
+        if (authorization === 'Go Back') {
           step = 'selectPermission'
           currentPermission = undefined
           account!.permissions = JSON.parse(permissionSnapshot as any)
         }
-        else if (authorization.indexOf('PUB_') !== -1)
-        {
+        else if (authorization.indexOf('PUB_') !== -1) {
           const rawKey = authorization.split(' | ')[1]
           const selectedKeyIndex = currentPermission.required_auth.keys.findIndex((key: any) => key.key === rawKey)
           const selectedKey = currentPermission.required_auth.keys[selectedKeyIndex]
@@ -227,8 +225,7 @@ export default class UpdatePermission extends Command {
             }
           }
         }
-        else if (authorization.indexOf('@') !== -1)
-        {
+        else if (authorization.indexOf('@') !== -1) {
           const [actor, permission] = authorization.split(' | ')[1].split('@')
           const selectedAccountIndex = currentPermission.required_auth.accounts.findIndex((account: any) => account.permission.actor === actor && account.permission.permission === permission)
           const selectedAccount = currentPermission.required_auth.accounts[selectedAccountIndex]
@@ -255,30 +252,25 @@ export default class UpdatePermission extends Command {
             }
           }
         }
-        else if (authorization === 'Delete Permission')
-        {
+        else if (authorization === 'Delete Permission') {
           await deleteCurrentPerm()
         }
-        else if (authorization.indexOf('Edit Threshold') !== -1)
-        {
+        else if (authorization.indexOf('Edit Threshold') !== -1) {
           currentPermission.required_auth.threshold = await promptInteger('threshold')
         }
-        else if (authorization === 'Add New Key')
-        {
+        else if (authorization === 'Add New Key') {
           currentPermission.required_auth.keys.push({
             weight: await promptInteger('key weight'),
             key: await promptKey()
           })
         }
-        else if (authorization === 'Add New Account')
-        {
+        else if (authorization === 'Add New Account') {
           currentPermission.required_auth.accounts.push({
             weight: await promptInteger('account weight'),
             permission: await promptAuthority()
           })
         }
-        else if (authorization === green('Save'))
-        {
+        else if (authorization === green('Save')) {
           await save()
         }
       }
