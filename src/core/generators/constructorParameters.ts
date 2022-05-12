@@ -1,19 +1,8 @@
 import { ConstructorDeclaration, ParameterDeclaration, Scope } from 'ts-morph';
-
-export interface IConstructorParameter {
-  name: string;
-  type: string;
-  isNullable?: boolean;
-  isArray?: boolean;
-}
+import { fixParameterType, IParameter } from './common';
+import { parameterAdd, parametersCollect, parameterToDeclaration } from './parameters';
 
 export const CONSTRUCTOR_PARAMETER_TYPES = new Map([
-  ['Name', {
-    initializer: 'new Name()',
-  }],
-  ['string', {
-    initializer: '""',
-  }],
   ['u64', {
     initializer: '0',
   }],
@@ -28,17 +17,36 @@ export const CONSTRUCTOR_PARAMETER_TYPES = new Map([
   }],
   ['i8', {
     initializer: '0',
-  }]
+  }],
+  ['Name', {
+    initializer: 'new Name()',
+  }],
+  ['string', {
+    initializer: '""',
+  }],
 ]);
+
+export async function constructorAddParameters(tableContructor: ConstructorDeclaration, existingParameters: IParameter[] = []) {
+  const parametersToAdd: IParameter[] = await parametersCollect(existingParameters);
+
+  if (parametersToAdd.length > 0) {
+    parametersToAdd.forEach((property) => {
+      constructorAddParameter(tableContructor, property);
+    });
+  }
+
+  return parametersToAdd.length > 0
+}
 
 export function constructorAddParameter(
   contructor: ConstructorDeclaration,
-  parameter: IConstructorParameter
+  parameter: IParameter
 ): ParameterDeclaration {
   const fixedType = fixParameterType(parameter.type);
 
+  const declaration = parameterToDeclaration(parameter);
+
   const paramType = CONSTRUCTOR_PARAMETER_TYPES.get(fixedType);
-  const type = `${fixedType}${parameter.isArray ? '[]' : ''}${parameter.isNullable ? ' | null' : ''}`;
   let initializer = '';
   if (paramType) {
     if (parameter.isNullable) {
@@ -50,23 +58,11 @@ export function constructorAddParameter(
     }
   }
 
-  const hasParameters = contructor.getParameters().length > 0;
-  const result = contructor.addParameter({
-    name: parameter.name,
-    type,
+  const result = parameterAdd(contructor, {
+    ...declaration,
     scope: Scope.Public,
     initializer
   });
-  result.prependWhitespace(writer => writer.newLine());
-  if (!hasParameters) {
-    result.appendWhitespace(writer => writer.newLine());
-  }
   return result;
 }
 
-export function fixParameterType(type: string): string {
-  if (!CONSTRUCTOR_PARAMETER_TYPES.has(type)) {
-    return 'u64';
-  }
-  return type;
-}

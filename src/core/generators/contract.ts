@@ -1,10 +1,17 @@
 import { ClassDeclaration, MethodDeclaration } from 'ts-morph';
 import { prompt } from 'inquirer'
 import { promptName, validateName } from '../../utils';
+import { IParameter } from './common';
+import { parameterAdd, parametersCollect, parameterToDeclaration } from './parameters';
 
 export interface IContractAction {
   methodName: string;
   name: string;
+}
+
+export interface IContractActionToAdd {
+  name: string;
+  parameters: IParameter[];
 }
 
 export function contractGetActions(contractClass: ClassDeclaration): IContractAction[] {
@@ -46,11 +53,30 @@ export async function contractPromptAction(actionsToAdd: string[], existingActio
 export async function contractAddActions(contractClass: ClassDeclaration) {
   const existingActions = contractGetActions(contractClass);
 
-  const actionsToAdd: string[] = [];
+  const actionsToAdd: IContractActionToAdd[] = [];
+  const actionsNamesToAdd: string[] = [];
   let stop = false
   while (!stop) {
-    const name = await contractPromptAction(actionsToAdd, existingActions);
-    actionsToAdd.push(name);
+    const name = await contractPromptAction(actionsNamesToAdd, existingActions);
+    actionsNamesToAdd.push(name);
+
+    const { addParameters } = await prompt<{ addParameters: boolean }>([
+      {
+        name: 'addParameters',
+        type: 'confirm',
+        message: 'Do you want to add parameters to the action?',
+        default: false,
+      },
+    ]);
+    let parametersToAdd: IParameter[] = []
+    if (addParameters) {
+      parametersToAdd = await parametersCollect();
+    }
+
+    actionsToAdd.push({
+      name: name,
+      parameters: parametersToAdd
+    });
 
     const { next } = await prompt<{ next: boolean }>([
       {
@@ -69,19 +95,24 @@ export async function contractAddActions(contractClass: ClassDeclaration) {
     });
   }
 
-  return actionsToAdd.length > 0
+  return actionsNamesToAdd.length > 0
 }
 
-export function contractAddAction(contractClass: ClassDeclaration, actionName: string): MethodDeclaration {
+export function contractAddAction(contractClass: ClassDeclaration, action: IContractActionToAdd): MethodDeclaration {
   const existingActions = contractGetActions(contractClass);
   const methods = contractClass.getMethods();
-  if (contractIsActionExists(actionName, existingActions)) {
-    throw `Method with the name ${actionName} already exists in the class`;
+  if (contractIsActionExists(action.name, existingActions)) {
+    throw `Method with the name ${action.name} already exists in the class`;
   }
+
   const method = contractClass.addMethod({
-    name: actionName,
+    name: action.name,
     parameters: [],
     returnType: 'void',
+  });
+
+  action.parameters.map((param) => parameterToDeclaration(param)).forEach((declaration) => {
+    parameterAdd(method, declaration);
   });
 
   method.addStatements([writer =>
@@ -90,7 +121,7 @@ export function contractAddAction(contractClass: ClassDeclaration, actionName: s
 
   method.addDecorator({
     name: 'action',
-    arguments: [`"${actionName}"`]
+    arguments: [`"${action.name}"`]
   });
 
   if (methods.length === 0) {

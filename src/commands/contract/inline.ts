@@ -6,7 +6,7 @@ import { destinationFolder } from '../../core/flags';
 import { checkFileExists, extractContract, validateName } from '../../utils';
 
 import { Project, ScriptTarget, SourceFile } from 'ts-morph';
-import { addNamedImports, constructorAddParameter, FORMAT_SETTINGS } from '../../core/generators';
+import { addNamedImports, constructorAddParameters, FORMAT_SETTINGS } from '../../core/generators';
 
 export const contractName = Flags.string({
   char: 'c',
@@ -67,14 +67,13 @@ export default class ContractInlineActionCreateCommand extends Command {
     });
 
     try {
-      this.createInlineAction(inlineFilePath);
+      await this.createInlineAction(inlineFilePath);
     } catch (e: any) {
       return this.error(red(e));
     }
-
   }
 
-  private createInlineAction(inlineFilePath: string) {
+  private async createInlineAction(inlineFilePath: string) {
     let sourceInlineActions: SourceFile | undefined;
     if (this.project) {
       if (checkFileExists(inlineFilePath)) {
@@ -104,12 +103,7 @@ export default class ContractInlineActionCreateCommand extends Command {
             }
           );
 
-          // TODO Extend this part with fields that user prompts
-
-          constructorAddParameter(inlineActionContructor, {
-            name: 'account',
-            type: 'Name'
-          });
+          await constructorAddParameters(inlineActionContructor);
 
           addNamedImports(sourceInlineActions, 'proton-tsc', ["InlineAction", "Name"]);
 

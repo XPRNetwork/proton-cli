@@ -1,12 +1,13 @@
 import { CliUx, Command, Flags } from '@oclif/core'
 import * as path from 'path';
 import { green, red } from 'colors';
+import { prompt } from 'inquirer'
 
 import { destinationFolder } from '../../core/flags';
 import { checkFileExists, extractContract, validateName } from '../../utils';
 
 import { Project, ScriptTarget, SourceFile } from 'ts-morph';
-import { addNamedImports, constructorAddParameter, FORMAT_SETTINGS, tableAddGetStorageMethod, tableAddPrimaryParameter } from '../../core/generators';
+import { addNamedImports, constructorAddParameter, FORMAT_SETTINGS, IParameter, tableAddGetStorageMethod, tableAddPrimaryParameter, constructorAddParameters, constructorPromptParameter } from '../../core/generators';
 
 export const tableClass = Flags.string({
   char: 't',
@@ -84,7 +85,7 @@ export default class ContractTableCreateCommand extends Command {
     });
 
     try {
-      this.createTable(tableFilePath);
+      await this.createTable(tableFilePath);
     } catch (e: any) {
       return this.error(red(e));
     }
@@ -96,7 +97,7 @@ export default class ContractTableCreateCommand extends Command {
     }
   }
 
-  private createTable(tableFilePath: string) {
+  private async createTable(tableFilePath: string) {
     let sourceTables: SourceFile | undefined;
     if (this.project) {
       if (checkFileExists(tableFilePath)) {
@@ -131,17 +132,33 @@ export default class ContractTableCreateCommand extends Command {
             }
           );
 
-          // TODO Extend this part with fields that user prompts
+          const primaryProperty = await constructorPromptParameter(
+            [],
+            {
+              preset: {
+                isArray: false,
+                isNullable: false
+              },
+              type: 'primary parameter'
+            }
+          );
 
-          constructorAddParameter(tableContructor, {
-            name: 'account',
-            type: 'Name'
-          });
+          constructorAddParameter(tableContructor, primaryProperty);
+          tableAddPrimaryParameter(table, primaryProperty);
 
-          tableAddPrimaryParameter(table, {
-            name: 'account',
-            type: 'Name'
-          });
+          const { addMore } = await prompt<{ addMore: boolean }>([
+            {
+              name: 'addMore',
+              type: 'confirm',
+              message: 'Do you want to one more parameters?',
+              default: false,
+            },
+          ]);
+
+          if (addMore) {
+            const existingProperties: IParameter[] = [primaryProperty];
+            await constructorAddParameters(tableContructor, existingProperties)
+          }
 
           tableAddGetStorageMethod(table);
 
