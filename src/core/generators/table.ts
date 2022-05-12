@@ -1,5 +1,5 @@
 import { ClassDeclaration, GetAccessorDeclaration } from 'ts-morph';
-import { fixParameterType, IConstructorParameter } from './constructorParameters';
+import { fixParameterType, IParameter } from './common';
 
 export const TABLE_PARAMETER_TYPES = new Map([
   ['Name', {
@@ -39,7 +39,7 @@ export const TABLE_PARAMETER_TYPES = new Map([
   }]
 ])
 
-export function tableAddPrimaryParameter(table: ClassDeclaration, parameter: IConstructorParameter): GetAccessorDeclaration | undefined {
+export function tableAddPrimaryParameter(table: ClassDeclaration, parameter: IParameter): GetAccessorDeclaration | undefined {
   const fixedType = fixParameterType(parameter.type);
   const paramType = TABLE_PARAMETER_TYPES.get(fixedType);
   if (paramType) {
