@@ -46,7 +46,7 @@ export function tableAddPrimaryParameter(table: ClassDeclaration, parameter: IPa
     const result = table.addGetAccessor({
       name: 'primary',
       returnType: 'u64',
-      statements: [paramType.getPrimary(parameter.name)],
+      statements: [`return ${paramType.getPrimary(parameter.name)}`],
     });
     result.addDecorator({
       name: 'primary'
