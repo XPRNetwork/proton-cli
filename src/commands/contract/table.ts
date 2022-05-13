@@ -7,7 +7,11 @@ import { destinationFolder } from '../../core/flags';
 import { checkFileExists, extractContract, validateName } from '../../utils';
 
 import { Project, ScriptTarget, SourceFile } from 'ts-morph';
-import { addNamedImports, constructorAddParameter, FORMAT_SETTINGS, IParameter, tableAddGetStorageMethod, tableAddPrimaryParameter, constructorAddParameters, constructorPromptParameter } from '../../core/generators';
+import {
+  addNamedImports, constructorAddParameter, FORMAT_SETTINGS,
+  IParameter, tableAddGetStorageMethod, tableAddPrimaryParameter,
+  constructorAddParameters, parameterPrompt
+} from '../../core/generators';
 
 export const tableClass = Flags.string({
   char: 't',
@@ -132,7 +136,7 @@ export default class ContractTableCreateCommand extends Command {
             }
           );
 
-          const primaryProperty = await constructorPromptParameter(
+          const primaryProperty = await parameterPrompt(
             [],
             {
               preset: {
