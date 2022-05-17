@@ -14,6 +14,9 @@ export const contractName = Flags.string({
 });
 
 export default class ContractInlineActionCreateCommand extends Command {
+
+  static description = 'Add inline action for the smart contract';
+
   static args = [
     {
       name: 'actionName',

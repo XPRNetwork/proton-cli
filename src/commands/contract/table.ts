@@ -30,6 +30,9 @@ export const contractName = Flags.string({
 });
 
 export default class ContractTableCreateCommand extends Command {
+
+  static description = 'Add table for the smart contract';
+
   static args = [
     {
       name: 'tableName',
@@ -74,10 +77,23 @@ export default class ContractTableCreateCommand extends Command {
       tableName: args.tableName,
       contractName: contractName,
       className: flags.class || args.tableName,
-      isSingleton: flags.singleton,
+      isSingleton: false,
       tableFileName: `${contractName}.tables`,
       tableFileNameWithExt: `${contractName}.tables.ts`
     }
+
+    if (!flags.singleton) {
+      const { isSingleton } = await prompt<{ isSingleton: boolean }>([
+        {
+          name: 'isSingleton',
+          type: 'confirm',
+          message: 'Is the table singleton?',
+          default: false,
+        },
+      ]);
+      this.data.isSingleton = isSingleton;
+    }
+
     this.data.className = this.data.className.charAt(0).toUpperCase() + this.data.className.slice(1);
 
     const tableFilePath = path.join(targetPath, this.data.tableFileNameWithExt);
@@ -136,6 +152,8 @@ export default class ContractTableCreateCommand extends Command {
             }
           );
 
+          CliUx.ux.log(`Let's add a primary parameter for the table`);
+
           const primaryProperty = await parameterPrompt(
             [],
             {
@@ -150,11 +168,13 @@ export default class ContractTableCreateCommand extends Command {
           constructorAddParameter(tableContructor, primaryProperty);
           tableAddPrimaryParameter(table, primaryProperty);
 
+          CliUx.ux.log(`————————————`);
+
           const { addMore } = await prompt<{ addMore: boolean }>([
             {
               name: 'addMore',
               type: 'confirm',
-              message: 'Do you want to one more parameters?',
+              message: 'Do you want to one more parameter?',
               default: false,
             },
           ]);

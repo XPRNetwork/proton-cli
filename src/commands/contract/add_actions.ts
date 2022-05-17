@@ -15,6 +15,8 @@ export const contractName = Flags.string({
 
 export default class ContractActionsAddCommand extends Command {
 
+  static description = 'Add extra actions to the smart contract';
+
   static flags = {
     output: destinationFolder(),
     contract: contractName,

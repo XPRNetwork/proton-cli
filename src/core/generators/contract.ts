@@ -3,6 +3,7 @@ import { prompt } from 'inquirer'
 import { promptName, validateName } from '../../utils';
 import { IParameter } from './common';
 import { parameterAdd, parametersCollect, parameterToDeclaration } from './parameters';
+import { CliUx } from '@oclif/core';
 
 export interface IContractAction {
   methodName: string;
@@ -72,6 +73,7 @@ export async function contractAddActions(contractClass: ClassDeclaration) {
     if (addParameters) {
       parametersToAdd = await parametersCollect();
     }
+    CliUx.ux.log(`————————————`);
 
     actionsToAdd.push({
       name: name,
