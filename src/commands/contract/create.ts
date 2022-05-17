@@ -10,6 +10,8 @@ import { destinationFolder } from '../../core/flags';
 import { addNamedImports, contractAddActions, FORMAT_SETTINGS } from '../../core/generators';
 
 export default class ContractCreateCommand extends Command {
+  static description = 'Create new smart contract';
+
   static args = [
     {
       name: 'contractName',
