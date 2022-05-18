@@ -2,7 +2,7 @@ import { CliUx } from '@oclif/core';
 import { prompt } from 'inquirer'
 import { OptionalKind, ParameterDeclarationStructure, ParameteredNode } from 'ts-morph';
 import { promptChoices, promptName } from '../../utils';
-import { fixParameterType, IParameter, PARAMETER_TYPES } from './common';
+import { fixParameterType, IParameter, PARAMETER_TYPES, PARAMETER_TYPES_TO_IMPORT } from './common';
 
 export async function parameterPrompt(existingParameters: IParameter[],
   opts: {
@@ -66,6 +66,15 @@ export async function parameterPrompt(existingParameters: IParameter[],
     isNullable: isNullable,
     isArray: isArray
   };
+}
+
+export function parametersExtractImports(parameters: IParameter[]): string[] {
+  return parameters.reduce((accum: string[], param) => {
+    if (PARAMETER_TYPES_TO_IMPORT.has(param.type)) {
+      accum.push(param.type);
+    }
+    return accum;
+  }, []);
 }
 
 export async function parametersCollect(existingParameters: IParameter[] = []) {

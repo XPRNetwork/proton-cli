@@ -10,7 +10,7 @@ import { Project, ScriptTarget, SourceFile } from 'ts-morph';
 import {
   addNamedImports, constructorAddParameter, FORMAT_SETTINGS,
   IParameter, tableAddGetStorageMethod, tableAddPrimaryParameter,
-  constructorAddParameters, parameterPrompt
+  constructorAddParameters, parameterPrompt, parametersExtractImports
 } from '../../core/generators';
 
 export const tableClass = Flags.string({
@@ -152,6 +152,8 @@ export default class ContractTableCreateCommand extends Command {
             }
           );
 
+          const namedImports = ["Name", "Table", (this.data.isSingleton ? "Singleton" : "TableStore")];
+
           CliUx.ux.log(`Let's add a primary parameter for the table`);
 
           const primaryProperty = await parameterPrompt(
@@ -164,6 +166,11 @@ export default class ContractTableCreateCommand extends Command {
               type: 'primary parameter'
             }
           );
+
+          const typesToImport = parametersExtractImports([primaryProperty]);
+          if (typesToImport.length > 0) {
+            namedImports.push(...typesToImport);
+          }
 
           constructorAddParameter(tableContructor, primaryProperty);
           tableAddPrimaryParameter(table, primaryProperty);
@@ -179,14 +186,19 @@ export default class ContractTableCreateCommand extends Command {
             },
           ]);
 
+
+
           if (addMore) {
             const existingProperties: IParameter[] = [primaryProperty];
-            await constructorAddParameters(tableContructor, existingProperties)
+            const extraImports = await constructorAddParameters(tableContructor, existingProperties);
+            if (extraImports.length > 0) {
+              namedImports.push(...extraImports);
+            }
           }
 
           tableAddGetStorageMethod(table);
 
-          addNamedImports(sourceTables, 'proton-tsc', ["Name", "Table", (this.data.isSingleton ? "Singleton" : "TableStore")]);
+          addNamedImports(sourceTables, 'proton-tsc', namedImports);
 
           sourceTables.formatText(FORMAT_SETTINGS);
           sourceTables.saveSync();
