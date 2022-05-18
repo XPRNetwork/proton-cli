@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.66",
+  "version": "0.1.67",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -30,7 +30,9 @@
       "command_incomplete": "./lib/hooks/command_incomplete.js"
     },
     "topics": {
-      "generate": { "description": "Tools to generate smart contracts" }
+      "generate": {
+        "description": "Tools to generate smart contracts"
+      }
     }
   },
   "repository": "ProtonProtocol/proton-cli",
