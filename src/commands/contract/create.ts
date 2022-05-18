@@ -71,7 +71,11 @@ export default class ContractCreateCommand extends Command {
 
           CliUx.ux.log("Let's add some actions to the class");
 
-          await contractAddActions(contract)
+          const extraImports = await contractAddActions(contract);
+
+          if (extraImports.length > 0) {
+            addNamedImports(sourceFile, 'proton-tsc', extraImports);
+          }
 
           sourceFile.formatText(FORMAT_SETTINGS);
           file.content = sourceFile.getText();

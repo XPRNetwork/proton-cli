@@ -2,7 +2,7 @@ import { ClassDeclaration, MethodDeclaration } from 'ts-morph';
 import { prompt } from 'inquirer'
 import { promptName, validateName } from '../../utils';
 import { IParameter } from './common';
-import { parameterAdd, parametersCollect, parameterToDeclaration } from './parameters';
+import { parameterAdd, parametersCollect, parametersExtractImports, parameterToDeclaration } from './parameters';
 import { CliUx } from '@oclif/core';
 
 export interface IContractAction {
@@ -56,6 +56,9 @@ export async function contractAddActions(contractClass: ClassDeclaration) {
 
   const actionsToAdd: IContractActionToAdd[] = [];
   const actionsNamesToAdd: string[] = [];
+
+  const extraImports: string[] = [];
+
   let stop = false
   while (!stop) {
     const name = await contractPromptAction(actionsNamesToAdd, existingActions);
@@ -93,11 +96,15 @@ export async function contractAddActions(contractClass: ClassDeclaration) {
 
   if (actionsToAdd.length > 0) {
     actionsToAdd.forEach((action) => {
+      const typesToImport = parametersExtractImports(action.parameters);
+      if (typesToImport.length > 0) {
+        extraImports.push(...typesToImport);
+      }
       contractAddAction(contractClass, action);
     });
   }
 
-  return actionsNamesToAdd.length > 0
+  return extraImports;
 }
 
 export function contractAddAction(contractClass: ClassDeclaration, action: IContractActionToAdd): MethodDeclaration {

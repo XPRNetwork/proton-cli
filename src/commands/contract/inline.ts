@@ -106,9 +106,15 @@ export default class ContractInlineActionCreateCommand extends Command {
             }
           );
 
-          await constructorAddParameters(inlineActionContructor);
+          const extraImports = await constructorAddParameters(inlineActionContructor);
 
-          addNamedImports(sourceInlineActions, 'proton-tsc', ["InlineAction", "Name"]);
+          const namedImports = ["InlineAction", "Name"];
+
+          if (extraImports.length > 0) {
+            namedImports.push(...extraImports);
+          }
+
+          addNamedImports(sourceInlineActions, 'proton-tsc', namedImports);
 
           sourceInlineActions.formatText(FORMAT_SETTINGS);
           sourceInlineActions.saveSync();

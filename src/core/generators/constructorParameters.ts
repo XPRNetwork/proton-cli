@@ -1,6 +1,6 @@
 import { ConstructorDeclaration, ParameterDeclaration, Scope } from 'ts-morph';
 import { fixParameterType, IParameter } from './common';
-import { parameterAdd, parametersCollect, parameterToDeclaration } from './parameters';
+import { parameterAdd, parametersCollect, parametersExtractImports, parameterToDeclaration } from './parameters';
 
 export const CONSTRUCTOR_PARAMETER_TYPES = new Map([
   ['u64', {
@@ -28,14 +28,20 @@ export const CONSTRUCTOR_PARAMETER_TYPES = new Map([
 
 export async function constructorAddParameters(tableContructor: ConstructorDeclaration, existingParameters: IParameter[] = []) {
   const parametersToAdd: IParameter[] = await parametersCollect(existingParameters);
-
+  const extraImports: string[] = [];
   if (parametersToAdd.length > 0) {
+
+    const typesToImport = parametersExtractImports(parametersToAdd);
+    if (typesToImport.length > 0) {
+      extraImports.push(...typesToImport);
+    }
+
     parametersToAdd.forEach((property) => {
       constructorAddParameter(tableContructor, property);
     });
   }
 
-  return parametersToAdd.length > 0
+  return extraImports;
 }
 
 export function constructorAddParameter(

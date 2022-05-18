@@ -6,7 +6,7 @@ import { destinationFolder } from '../../core/flags';
 import { extractContract, validateName } from '../../utils';
 
 import { Project, ScriptTarget } from 'ts-morph';
-import { contractAddActions, FORMAT_SETTINGS } from '../../core/generators';
+import { addNamedImports, contractAddActions, FORMAT_SETTINGS } from '../../core/generators';
 
 export const contractName = Flags.string({
   char: 'c',
@@ -52,7 +52,11 @@ export default class ContractActionsAddCommand extends Command {
     const contractSource = this.project.addSourceFileAtPath(contractFilePath);
     const contractClass = contractSource.getClass(contractName)
     if (contractClass) {
-      await contractAddActions(contractClass)
+      const extraImports = await contractAddActions(contractClass);
+
+      if (extraImports.length > 0) {
+        addNamedImports(contractSource, 'proton-tsc', extraImports);
+      }
 
       contractSource.formatText(FORMAT_SETTINGS);
       contractSource.saveSync();
