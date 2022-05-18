@@ -28,6 +28,9 @@
     "flexibleTaxonomy": true,
     "hooks": {
       "command_incomplete": "./lib/hooks/command_incomplete.js"
+    },
+    "topics": {
+      "generate": { "description": "Tools to generate smart contracts" }
     }
   },
   "repository": "ProtonProtocol/proton-cli",
