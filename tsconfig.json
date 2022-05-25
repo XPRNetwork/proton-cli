@@ -9,7 +9,8 @@
     "target": "es2020",
     "allowJs": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "useUnknownInCatchVariables": true
   },
   "include": [
     "src/**/*"

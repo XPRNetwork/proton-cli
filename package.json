@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.66",
+  "version": "0.1.67",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -28,6 +28,11 @@
     "flexibleTaxonomy": true,
     "hooks": {
       "command_incomplete": "./lib/hooks/command_incomplete.js"
+    },
+    "topics": {
+      "generate": {
+        "description": "Tools to generate smart contracts"
+      }
     }
   },
   "repository": "ProtonProtocol/proton-cli",
@@ -70,7 +75,8 @@
     "shelljs": "^0.8.5",
     "text-encoding-shim": "^1.0.5",
     "ts-dedent": "^2.2.0",
-    "typescript": "^3.3",
+    "ts-morph": "^14.0.0",
+    "typescript": "^4.6",
     "uuid": "^8.3.2",
     "ws": "^8.5.0"
   },

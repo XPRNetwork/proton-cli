@@ -16,14 +16,15 @@ export interface IFilePreprocess {
 }
 
 export interface IFolderContentOptions {
-  filePreprocess?: (data: IFilePreprocess) => IFilePreprocess,
+  filePreprocess?: (data: IFilePreprocess) => Promise<IFilePreprocess>,
 }
 
-export function createFolderContent(templatePath: string, targetPath: string, options: IFolderContentOptions) {
+export async function createFolderContent(templatePath: string, targetPath: string, options: IFolderContentOptions) {
   // read all files/folders (1 level) from template folder
   const filesToCreate = fs.readdirSync(templatePath);
   // loop each file/folder
-  filesToCreate.forEach(file => {
+
+  for (const file of filesToCreate) {
     const origFilePath = path.join(templatePath, file);
 
     // get stats about the current file
@@ -34,7 +35,7 @@ export function createFolderContent(templatePath: string, targetPath: string, op
       let content = fs.readFileSync(origFilePath, 'utf8');
       let fileName = file;
       if (options.filePreprocess) {
-        const result = options.filePreprocess({ fileName, content });
+        const result = await options.filePreprocess({ fileName, content });
         fileName = result.fileName;
         content = result.content;
       }
@@ -46,9 +47,9 @@ export function createFolderContent(templatePath: string, targetPath: string, op
       // create folder in destination folder
       fs.mkdirSync(path.join(targetPath, file));
       // copy files/folder inside current folder recursively
-      createFolderContent(path.join(templatePath, file), targetPath, options);
+      await createFolderContent(path.join(templatePath, file), targetPath, options);
     }
-  });
+  }
 }
 
 export function buildContractFileName(contractName: string, type: string = 'contract'): string {
