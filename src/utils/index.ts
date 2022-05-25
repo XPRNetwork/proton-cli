@@ -7,4 +7,5 @@ export * from './permissions';
 export * from './prompt';
 export * from './resources';
 export * from './wait';
+export * from './extractContract';
 
