@@ -1,11 +1,11 @@
 import { CliUx, Command } from '@oclif/core';
 import * as path from 'path';
-import { green, red } from 'colors';
+import { green, red, yellow } from 'colors';
 import * as shell from 'shelljs';
 import { render } from 'ejs';
 import { Project, PropertyAccessExpression, ScriptTarget, SyntaxKind } from "ts-morph";
 
-import { validateName, createRootFolder, createFolderContent, IFilePreprocess } from '../../utils';
+import { validateName, createRootFolder, createFolderContent, IFilePreprocess, promptChoices } from '../../utils';
 import { destinationFolder } from '../../core/flags';
 import { addNamedImports, contractAddActions, FORMAT_SETTINGS } from '../../core/generators';
 
@@ -108,25 +108,41 @@ export default class ContractCreateCommand extends Command {
         return file
       }
     });
-    if (!postProcessNode(targetPath)) {
+
+    if (!await postProcessNode(targetPath)) {
       return this.error(red('Failed to install dependencies. Try to install manually.'));
     }
     CliUx.ux.log(green(`Contract ${args.contractName} successfully created!`));
   }
 }
 
-function postProcessNode(targetPath: string) {
+async function postProcessNode(targetPath: string) {
   shell.cd(targetPath);
+
+  const managers = ['npm'];
+  if (shell.which('yarn')) {
+    managers.push('yarn');
+  }
+  let selectedManager = 'npm';
+
+  if (managers.length > 1) {
+    selectedManager = await promptChoices(
+      'Choose your preferred package manager:',
+      managers,
+      selectedManager);
+  }
 
   let cmd = '';
 
-  if (shell.which('yarn')) {
+  if (selectedManager === 'yarn') {
     cmd = 'yarn';
-  } else if (shell.which('npm')) {
+  } else if (selectedManager === 'npm') {
     cmd = 'npm install';
   }
 
   if (cmd) {
+    CliUx.ux.log(yellow('Installing packages...'));
+
     const result = shell.exec(cmd);
 
     if (result.code !== 0) {
