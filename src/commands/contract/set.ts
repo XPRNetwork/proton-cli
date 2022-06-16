@@ -44,7 +44,7 @@ export default class SetContract extends Command {
     clear: flags.boolean({ char: 'c', description: 'Removes WASM + ABI from contract' }),
     abiOnly: flags.boolean({ char: 'a', description: 'Only deploy ABI' }),
     wasmOnly: flags.boolean({ char: 'w', description: 'Only deploy WASM' }),
-    enableInline: flags.boolean({ char: 'i', description: 'Enable inline' }),
+    skipInline: flags.boolean({ char: 's', description: 'Skip enabling inline actions on a Contract' }),
   }
 
   async run() {
@@ -131,7 +131,7 @@ export default class SetContract extends Command {
     }
 
     // 5. Enable inline
-    if (flags.enableInline) {
+    if (!flags.skipInline) {
       await ContractEnableInline.run([args.account])
     }
   }
