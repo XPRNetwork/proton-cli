@@ -299,13 +299,13 @@ Deploy Contract (WASM + ABI)
 
 ```
 USAGE
-  $ proton contract:set [ACCOUNT] [DIRECTORY] [-c] [-a] [-w] [-i]
+  $ proton contract:set [ACCOUNT] [DIRECTORY] [-c] [-a] [-w] [-s]
 
 FLAGS
-  -a, --abiOnly       Only deploy ABI
-  -c, --clear         Removes WASM + ABI from contract
-  -i, --enableInline  Enable inline
-  -w, --wasmOnly      Only deploy WASM
+  -a, --abiOnly        Only deploy ABI
+  -c, --clear          Removes WASM + ABI from contract
+  -s, --disableInline  Disable inline actions on contract
+  -w, --wasmOnly       Only deploy WASM
 
 DESCRIPTION
   Deploy Contract (WASM + ABI)
