@@ -9,7 +9,7 @@ import { checkFileExists, extractContract, validateName } from '../../utils';
 import { Project, ScriptTarget, SourceFile } from 'ts-morph';
 import {
   addNamedImports, constructorAddParameter, FORMAT_SETTINGS,
-  IParameter, tableAddGetStorageMethod, tableAddPrimaryParameter,
+  IParameter, tableAddPrimaryParameter,
   constructorAddParameters, parameterPrompt, parametersExtractImports
 } from '../../core/generators';
 
@@ -152,7 +152,7 @@ export default class ContractTableCreateCommand extends Command {
             }
           );
 
-          const namedImports = ["Name", "Table", (this.data.isSingleton ? "Singleton" : "TableStore")];
+          const namedImports = ["Name", "Table"];
 
           CliUx.ux.log(`Let's add a primary parameter for the table`);
 
@@ -186,8 +186,6 @@ export default class ContractTableCreateCommand extends Command {
             },
           ]);
 
-
-
           if (addMore) {
             const existingProperties: IParameter[] = [primaryProperty];
             const extraImports = await constructorAddParameters(tableContructor, existingProperties);
@@ -195,8 +193,6 @@ export default class ContractTableCreateCommand extends Command {
               namedImports.push(...extraImports);
             }
           }
-
-          tableAddGetStorageMethod(table);
 
           addNamedImports(sourceTables, 'proton-tsc', namedImports);
 
@@ -223,18 +219,14 @@ export default class ContractTableCreateCommand extends Command {
 
         const contractClass = contractSource.getClass(this.data.contractName);
         if (contractClass) {
-          let methodSuffix = 'Table';
-          if (this.data.isSingleton) {
-            methodSuffix = 'Singleton';
-          }
-          const methodName = `${this.data.className.toLowerCase()}${methodSuffix}`;
+          const methodName = `${this.data.className.toLowerCase()}${protonImportClass}`;
           const methodExists = contractClass.getProperty(methodName);
           if (!methodExists) {
             const maxIdx = contractClass.getProperties().length;
             contractClass.insertProperty(maxIdx, {
               name: methodName,
               type: `${protonImportClass}<${this.data.className}>`,
-              initializer: `${this.data.className}.get${methodSuffix}(this.receiver)`
+              initializer: `new ${protonImportClass}<${this.data.className}>(this.receiver)`
             });
           }
         }
