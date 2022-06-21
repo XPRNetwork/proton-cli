@@ -52,10 +52,10 @@ export default class ContractActionsAddCommand extends Command {
     const contractSource = this.project.addSourceFileAtPath(contractFilePath);
     const contractClass = contractSource.getClass(contractName)
     if (contractClass) {
-      const extraImports = await contractAddActions(contractClass);
+      const result = await contractAddActions(contractClass);
 
-      if (extraImports.length > 0) {
-        addNamedImports(contractSource, 'proton-tsc', extraImports);
+      if (result.extraImports.length > 0) {
+        addNamedImports(contractSource, 'proton-tsc', result.extraImports);
       }
 
       contractSource.formatText(FORMAT_SETTINGS);
