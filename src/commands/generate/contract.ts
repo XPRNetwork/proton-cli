@@ -7,7 +7,7 @@ import { Project, PropertyAccessExpression, ScriptTarget, SyntaxKind } from "ts-
 
 import { validateName, createRootFolder, createFolderContent, IFilePreprocess, promptChoices } from '../../utils';
 import { destinationFolder } from '../../core/flags';
-import { addNamedImports, contractAddActions, FORMAT_SETTINGS } from '../../core/generators';
+import { addNamedImports, CONSTRUCTOR_PARAMETER_TYPES, contractAddActions, fixParameterType, FORMAT_SETTINGS, IContractActionToAdd } from '../../core/generators';
 
 export default class ContractCreateCommand extends Command {
   static description = 'Create new smart contract';
@@ -50,6 +50,7 @@ export default class ContractCreateCommand extends Command {
 
     createRootFolder(targetPath);
 
+    let actionsToAdd: IContractActionToAdd[] = [];
     await createFolderContent(templatePath, targetPath, {
       filePreprocess: async (file: IFilePreprocess) => {
         if (file.fileName === 'contract.ts') {
@@ -71,10 +72,14 @@ export default class ContractCreateCommand extends Command {
 
           CliUx.ux.log("Let's add some actions to the class");
 
-          const extraImports = await contractAddActions(contract);
+          const result = await contractAddActions(contract);
 
-          if (extraImports.length > 0) {
-            addNamedImports(sourceFile, 'proton-tsc', extraImports);
+          if (result.extraImports.length > 0) {
+            addNamedImports(sourceFile, 'proton-tsc', result.extraImports);
+          }
+
+          if (result.actionsToAdd.length > 0) {
+            actionsToAdd = result.actionsToAdd;
           }
 
           sourceFile.formatText(FORMAT_SETTINGS);
@@ -96,9 +101,31 @@ export default class ContractCreateCommand extends Command {
               }
             });
 
-            mainFunction.addStatements([
-              `await contract.actions.action([]).send('${data.contractName}@active');`
-            ]);
+            if (actionsToAdd.length > 0) {
+              actionsToAdd.forEach(action => {
+                const values = action.parameters.map((parameter) => {
+                  const fixedType = fixParameterType(parameter.type);
+                  const paramType = CONSTRUCTOR_PARAMETER_TYPES.get(fixedType);
+                  let initializer = '';
+                  if (paramType) {
+                    if (parameter.isNullable) {
+                      initializer = 'null';
+                    } else if (parameter.isArray) {
+                      initializer = '[]';
+                    } else {
+                      initializer = paramType.initializer;
+                    }
+                  }
+                  return initializer;
+                })
+
+                mainFunction.addStatements([
+                  `await contract.actions.${action.name}([${values.join(',')}]).send('${data.contractName}@active');`
+                ]);
+              })
+            }
+
+
           }
           sourceFile.formatText(FORMAT_SETTINGS);
           file.content = sourceFile.getText();
@@ -112,7 +139,14 @@ export default class ContractCreateCommand extends Command {
     if (!await postProcessNode(targetPath)) {
       return this.error(red('Failed to install dependencies. Try to install manually.'));
     }
+
     CliUx.ux.log(green(`Contract ${args.contractName} successfully created!`));
+
+    CliUx.ux.log(`Next steps:
+    1. cd ${flags.output || args.contractName}
+    2. "proton generate:table" to generate a table
+    3. "proton generate:action" to generate an action
+    `);
   }
 }
 

@@ -104,7 +104,10 @@ export async function contractAddActions(contractClass: ClassDeclaration) {
     });
   }
 
-  return extraImports;
+  return {
+    extraImports,
+    actionsToAdd
+  };
 }
 
 export function contractAddAction(contractClass: ClassDeclaration, action: IContractActionToAdd): MethodDeclaration {
