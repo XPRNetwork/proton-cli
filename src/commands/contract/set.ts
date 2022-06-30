@@ -100,7 +100,7 @@ export default class SetContract extends Command {
           }],
         })
         await CliUx.ux.log(green(`WASM Successfully ${deployText}:`))
-        await CliUx.ux.url(`View TX`, `https://${config.get('currentChain')}.bloks.io/tx/${(res as any).transaction_id}?tab=traces`)
+        await CliUx.ux.url(`View TX`, `https://${config.get('currentChain')}.ProtonScan.io/tx/${(res as any).transaction_id}?tab=traces`)
       } catch (e) {
         parseDetailsError(e)
       }

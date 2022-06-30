@@ -75,7 +75,7 @@ export default class NewAccount extends Command {
     try {
       await network.rpc.get_account(args.account)
       this.log(`Account ${args.account} already exists!`)
-      await CliUx.ux.url('View Account on Bloks.io', `${getExplorer()}/account/${args.account}#keys`)
+      await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.account}#keys`)
       return
     } catch (error) {
       // Do nothing
@@ -86,11 +86,11 @@ export default class NewAccount extends Command {
         account: 'eosio',
         name: 'newaccount',
         authorization: [{
-          actor: 'wlcm.proton',
-          permission: 'newacc',
+          actor: 'proton',
+          permission: 'active',
         }],
         data: {
-          creator: 'wlcm.proton',
+          creator: 'proton',
           name: args.account,
           owner: parsePermission(args.owner),
           active: parsePermission(args.active),
@@ -135,6 +135,6 @@ export default class NewAccount extends Command {
     await network.transact({ actions })
 
     this.log(`${green('Success:')} Account ${args.account} created!`)
-    await CliUx.ux.url('View Account on Bloks.io', `${getExplorer()}/account/${args.account}#keys`)
+    await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.account}#keys`)
   }
 }
