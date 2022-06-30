@@ -1,16 +1,94 @@
 import { Command, flags } from '@oclif/command'
 import { CliUx } from '@oclif/core'
-import { readdirSync, readFileSync } from 'fs'
-import { join } from 'path'
+import { createWriteStream, mkdtemp, readdirSync, readFileSync, rmSync, unlink } from 'fs'
+import { join, basename } from 'path'
+import { tmpdir } from 'os'
+import https from 'https'
+import { URL } from 'url'
 import { Serialize } from '@proton/js'
 import { network } from '../../storage/networks'
 import { config } from '../../storage/config'
-import { green } from 'colors'
+import { green, red, yellow } from 'colors'
 import { parseDetailsError } from '../../utils/detailsError'
 import { getExplorer } from '../../apis/getExplorer'
 import ContractEnableInline from './enableinline'
 
-function getDeployableFilesFromDir(dir: string) {
+const TIMEOUT = 10000
+
+function download(url: string, dest: string) {
+  const uri = new URL(url)
+  if (!dest) {
+    dest = basename(uri.pathname)
+  }
+
+  return new Promise<string | void>((resolve, reject) => {
+    const request = https.get(uri.href).on('response', (res) => {
+      if (res.statusCode === 200) {
+        const file = createWriteStream(dest, { flags: 'wx' })
+        res.pipe(file)
+        file
+          .on('finish', () => {
+            file.end()
+            resolve()
+          })
+          .on('error', (err: any) => {
+            file.destroy()
+            unlink(dest, () => reject(err))
+          })
+
+      } else {
+        reject(new Error(`Download request failed, response status: ${res.statusCode} ${res.statusMessage}`))
+      }
+    }).on('error', (err) => {
+      reject(err)
+    })
+    request.setTimeout(TIMEOUT, function () {
+      request.destroy()
+      reject(new Error(`Request timeout after ${TIMEOUT / 1000.0}s`))
+    })
+  })
+}
+
+
+async function getDeployableFilesFromDir(dir: string) {
+  let tmpFolder: string = '';
+
+  if (/^https:\/\/github\.com/.test(dir)) {
+    CliUx.ux.log(yellow(`The source is GitHub. Starting to download files...`))
+    // The source is github need to fetch contract files first.
+
+    const tmpFolderPromise = new Promise<string>((resolve, reject) => {
+      mkdtemp(join(tmpdir(), 'foo-'), (err, folder) => {
+        if (err) {
+          reject(err)
+        };
+        resolve(folder)
+      })
+    })
+
+    tmpFolder = await tmpFolderPromise
+    const dirArr = dir.replace(/^https:\/\/github\.com\//, '').split('/');
+    dirArr.splice(2, 1);
+    const contractName = dirArr[dirArr.length - 1];
+
+    const allDownloaded = await Promise.all(['wasm', 'abi'].map((ext) => {
+      const rawFile = `https://raw.githubusercontent.com/${dirArr.join('/')}/${contractName}.${ext}`;
+      return download(rawFile, join(tmpFolder, `${contractName}.${ext}`))
+        .then(() => true)
+        .catch((err) => {
+          CliUx.ux.log(red(`Cannot download ${contractName}.${ext}: ${err}`))
+          return false
+        });
+    }))
+
+    if (allDownloaded.every((status) => status)) {
+      CliUx.ux.log(green(`Download completed`))
+    }
+
+    dir = tmpFolder;
+  }
+
+
   const dirCont = readdirSync(dir)
   const wasms = dirCont.filter(filePath => filePath.match(/.*\.(wasm)$/gi) as any)
   const abis = dirCont.filter(filePath => filePath.match(/.*\.(abi)$/gi) as any)
@@ -29,6 +107,7 @@ function getDeployableFilesFromDir(dir: string) {
   return {
     wasmPath: join(dir, wasms[0]),
     abiPath: join(dir, abis[0]),
+    tmpFolder: tmpFolder
   }
 }
 
@@ -37,7 +116,7 @@ export default class SetContract extends Command {
 
   static args = [
     { name: 'account', required: true, help: 'The account to publish the contract to' },
-    { name: 'directory', required: true, help: 'Path of directory with WASM and ABI' },
+    { name: 'source', required: true, help: 'Path of directory with WASM and ABI or URL for GitHub folder with WASM and ABI' },
   ]
 
   static flags = {
@@ -52,11 +131,12 @@ export default class SetContract extends Command {
 
     let wasm: Buffer = Buffer.from('')
     let abi: string = ''
+    let folderToCleanup: string = '';
 
     // If not clearing, find files
     if (!flags.clear) {
       // 0. Get path of WASM and ABI
-      const { wasmPath, abiPath } = getDeployableFilesFromDir(args.directory)
+      const { wasmPath, abiPath, tmpFolder } = await getDeployableFilesFromDir(args.source)
 
       // 1. Prepare SETCODE
       // read the file and make a hex string out of it
@@ -76,6 +156,8 @@ export default class SetContract extends Command {
         )
       )
       abi = Buffer.from(abiBuffer.asUint8Array()).toString('hex')
+
+      folderToCleanup = tmpFolder
     }
 
     const deployText = flags.clear ? 'Cleared' : 'Deployed'
@@ -99,8 +181,8 @@ export default class SetContract extends Command {
             }],
           }],
         })
-        await CliUx.ux.log(green(`WASM Successfully ${deployText}:`))
-        await CliUx.ux.url(`View TX`, `https://${config.get('currentChain')}.bloks.io/tx/${(res as any).transaction_id}?tab=traces`)
+        CliUx.ux.log(green(`WASM Successfully ${deployText}:`))
+        CliUx.ux.url(`View TX`, `https://${config.get('currentChain')}.bloks.io/tx/${(res as any).transaction_id}?tab=traces`)
       } catch (e) {
         parseDetailsError(e)
       }
@@ -123,8 +205,8 @@ export default class SetContract extends Command {
             }],
           }],
         })
-        await CliUx.ux.log(green(`ABI Successfully ${deployText}:`))
-        await CliUx.ux.url(`View TX`, `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
+        CliUx.ux.log(green(`ABI Successfully ${deployText}:`))
+        CliUx.ux.url(`View TX`, `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
       } catch (e) {
         parseDetailsError(e)
       }
@@ -133,6 +215,10 @@ export default class SetContract extends Command {
     // 5. Enable inline
     if (!flags.disableInline) {
       await ContractEnableInline.run([args.account])
+    }
+
+    if (folderToCleanup) {
+      rmSync(folderToCleanup, { recursive: true });
     }
   }
 }
