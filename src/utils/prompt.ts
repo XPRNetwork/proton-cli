@@ -47,7 +47,7 @@ export const promptName = async (text: string,
 
 export const promptKey = async () => {
   let { publicKey } = await prompt<{ publicKey: string | undefined }>({
-    name: 'key',
+    name: 'publicKey',
     type: 'input',
     message: 'Enter new public key (e.g. PUB_K1..., leave empty to create new):',
   });
