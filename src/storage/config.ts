@@ -23,8 +23,11 @@ const schema = {
 				chain: {
 					type: JST.String,
 				},
-				endpoint: {
-					type: JST.String,
+				endpoints: {
+					type: JST.Array,
+					items: {
+						type: JST.String
+					}
 				}
 			}
 		}
@@ -38,12 +41,12 @@ export const config = new Conf<{
 	privateKeys: string[],
 	isLocked: boolean,
 	tryKeychain: boolean,
-	networks: { chain: string, endpoint: string }[],
+	networks: { chain: string, endpoints: string[] }[],
 	currentChain: string
 }>({
     schema,
     configName: 'proton-cli',
-    projectVersion: '0.0.0',
+    projectVersion: '0.0.1',
 	defaults: {
 		privateKeys: [],
 		tryKeychain: false,
@@ -52,9 +55,13 @@ export const config = new Conf<{
 		currentChain: networks[0].chain
 	},
     migrations: {
-		// '1.0.0': (store: Conf) => {
-		// 	store.delete('debugPhase');
-		// 	store.set('phase', '1.0.0');
-		// }
+		'0.0.1': store => {
+			const networks = store.get('networks')
+			store.set('networks', networks.map(_ => {
+				_.endpoints = [(_ as any).endpoint]
+				delete (_ as any).endpoint
+				return _
+			}))
+		}
 	},
 });

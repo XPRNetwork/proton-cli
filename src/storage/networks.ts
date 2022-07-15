@@ -15,12 +15,13 @@ class Network {
 
   get network () {
     const chain = config.get('currentChain')
-    const networks = config.get('networks') as any
+    // const masterNetwork = 
+    // const networks = config.get('networks') as any
     return networks.find((network: any) => network.chain === chain)!
   }
 
   initialize () {
-    this.rpc = new JsonRpc(this.network.endpoint)
+    this.rpc = new JsonRpc(this.network.endpoints)
     this.api = new Api({ rpc: this.rpc })
   }
 

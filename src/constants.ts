@@ -1,4 +1,15 @@
 export const networks = [
-	{chain: 'proton', endpoint: 'https://proton.greymass.com'},
-	{chain: 'proton-test', endpoint: 'https://protontestnet.greymass.com'}
+	{
+		chain: 'proton',
+		endpoints: [
+			'https://proton.greymass.com'
+		]
+	},
+	{
+		chain: 'proton-test',
+		endpoints: [
+			'https://protontestnet.ledgerwise.io',
+			'https://proton-testnet.eosphere.io'
+		]
+	}
 ]
