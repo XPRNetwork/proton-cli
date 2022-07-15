@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.72",
+  "version": "0.1.74",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -57,7 +57,7 @@
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.7.0",
     "@oclif/plugin-help": "^3",
-    "@proton/js": "^26.1.16",
+    "@proton/js": "^26.1.36",
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
     "@proton/signing-request": "^4.1.10",
