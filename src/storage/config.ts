@@ -46,7 +46,7 @@ export const config = new Conf<{
 }>({
     schema,
     configName: 'proton-cli',
-    projectVersion: '0.0.1',
+    projectVersion: '0.0.2',
 	defaults: {
 		privateKeys: [],
 		tryKeychain: false,
@@ -57,11 +57,7 @@ export const config = new Conf<{
     migrations: {
 		'0.0.1': store => {
 			const networks = store.get('networks')
-			store.set('networks', networks.map(_ => {
-				_.endpoints = [(_ as any).endpoint]
-				delete (_ as any).endpoint
-				return _
-			}))
+			store.set('networks', networks)
 		}
 	},
 });
