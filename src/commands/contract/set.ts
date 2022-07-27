@@ -113,7 +113,6 @@ async function getDeployableFilesFromDir(dir: string) {
   }
 }
 
-
 function extractStruct(abiStructs: Abi['structs'], structName: string): Abi['structs'][number] | undefined {
   return abiStructs.find((item) => item.name === structName);
 }
@@ -138,20 +137,17 @@ async function compareTables(existingABI: Abi, newAbi: Abi): Promise<{ removed: 
 }
 
 async function checkDataExists(account: string, tables: string[]): Promise<string[]> {
-
   const data = await Promise.all(
     tables.map(
       async (tableName) => {
         let hasData: boolean
         try {
-          const res = await network.rpc.get_table_rows({
+          const res = await network.rpc.get_table_by_scope({
             code: account,
-            scope: account,
             table: tableName,
-            limit: 1
           })
           hasData = res.rows.length > 0
-        } catch {
+        } catch (err) {
           hasData = false
         }
         return hasData ? tableName : null
@@ -182,7 +178,7 @@ export default class SetContract extends Command {
     let abi: string = ''
     let folderToCleanup: string = ''
     let warning = ''
-    let confirmed: boolean = true
+    let canDeploy: boolean = true
 
     // If not clearing, find files
     if (!flags.clear) {
@@ -207,7 +203,7 @@ export default class SetContract extends Command {
       const existingABI = await network.rpc.get_abi(args.account)
 
       if (existingABI.abi) {
-        const tablesToCheck = await compareTables(existingABI.abi, abiFields);
+        const tablesToCheck = await compareTables(existingABI.abi, abiFields)
 
         if (tablesToCheck.removed.length > 0) {
 
@@ -217,7 +213,7 @@ export default class SetContract extends Command {
           }
         }
         if (tablesToCheck.updated.length > 0) {
-          const updatedTables = await checkDataExists(args.account, tablesToCheck.removed)
+          const updatedTables = await checkDataExists(args.account, tablesToCheck.updated)
           if (updatedTables.length) {
             warning += `The following tables you are going to change have rows:\n    ${updatedTables.join('\n    ')}\n`
           }
@@ -234,7 +230,7 @@ export default class SetContract extends Command {
             default: false,
           },
         ])
-        confirmed = confirmedToContinue
+        canDeploy = confirmedToContinue
       } else {
         CliUx.ux.log(green(`No issue with the existing contract found. Continuing.`))
       }
@@ -247,7 +243,8 @@ export default class SetContract extends Command {
 
       folderToCleanup = tmpFolder
     }
-    if (confirmed) {
+
+    if (canDeploy) {
       const deployText = flags.clear ? 'Cleared' : 'Deployed'
 
       // 3. Set code
