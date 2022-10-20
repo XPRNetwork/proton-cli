@@ -50,7 +50,6 @@
   "dependencies": {
     "@bloks/api": "^26.1.15",
     "@bloks/numbers": "^26.1.9",
-    "@eoscafe/light-api": "^3.2.18",
     "@greymass/eosio": "^0.5.5",
     "@inquirer/input": "^0.0.18-alpha.0",
     "@oclif/command": "^1.8.16",
@@ -58,6 +57,7 @@
     "@oclif/core": "^1.7.0",
     "@oclif/plugin-help": "^3",
     "@proton/js": "^26.1.64",
+    "@proton/light-api": "^3.3.1",
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
     "@proton/signing-request": "^4.1.10",

@@ -1,4 +1,4 @@
-import * as LightApi from '@eoscafe/light-api'
+import * as LightApi from '@proton/light-api'
 import { config } from '../storage/config'
 
 export async function getLightAccount(account: string) {
