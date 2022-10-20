@@ -199,35 +199,30 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@bloks/api@^26.1.15":
-  version "26.1.17"
-  resolved "https://registry.npmjs.org/@bloks/api/-/api-26.1.17.tgz"
-  integrity sha512-1jcqENlDic0FClGEDQ15SlAMfAzxeh/Z56MuYT6clURhsV0+uW1nMqeoQQ5PsulZGmi2R/fRNPLMlUd+oPq65w==
-  dependencies:
-    "@bloks/constants" "^26.1.14"
-    "@bloks/numbers" "^26.1.9"
-    "@bloks/utils" "^26.0.3"
-    "@eoscafe/hyperion" "^3.3.2"
-    "@eoscafe/light-api" "^3.2.18"
-    "@proton/js" "^26.1.17"
-    "@proton/wrap-constants" "^0.0.46"
-    cross-fetch "^3.1.4"
-    zod "^3.5.1"
+"@bloks/constants@26.4.0":
+  version "26.4.0"
+  resolved "https://registry.yarnpkg.com/@bloks/constants/-/constants-26.4.0.tgz#5d4eaa0a31a76b31cfb976304441a60dd408174c"
+  integrity sha512-+ExG+kfY/KPNF6wQ6eMJ+3R4iH6k4wjNgHC2fmbdn4SNTP7C07ihSy+SAyLhb2vfJaRAchnsNAVF87TKWgVdHw==
 
 "@bloks/constants@^25.0.76":
   version "25.0.76"
   resolved "https://registry.npmjs.org/@bloks/constants/-/constants-25.0.76.tgz"
   integrity sha512-r4YrwduQP/5YXBS8KqjcpOiwmyWL0GbN7FbB4oLBMUiBO9Uaw/cweHYneU7RBnoImj5dAVmsUuoeBrqJnFr37A==
 
-"@bloks/constants@^26.1.14", "@bloks/constants@^26.1.36":
+"@bloks/constants@^26.1.36":
   version "26.1.36"
   resolved "https://registry.npmjs.org/@bloks/constants/-/constants-26.1.36.tgz"
   integrity sha512-FS16OU3z5+feXtgxCq+k3SyQGU7Y15WmEWOlDfmgjhQWGmrJ4ql6KLE4JMlCqLNZARxKxzrAUb4K+1IZK6Mm4g==
 
-"@bloks/constants@^26.1.59":
-  version "26.1.59"
-  resolved "https://registry.yarnpkg.com/@bloks/constants/-/constants-26.1.59.tgz#94ba4649795e4e8d17d84b5278240de03b46be75"
-  integrity sha512-fUbtQuYMWmnc3azi6PrM7uHOCeM2aWft2FiN7OkEpA6VpeXc+anEnfGG5qLGFNFQm28v23+VX5k73bAVH/iMjg==
+"@bloks/numbers@26.4.0":
+  version "26.4.0"
+  resolved "https://registry.yarnpkg.com/@bloks/numbers/-/numbers-26.4.0.tgz#1e35720060c930e966d727f625aac80189ccf381"
+  integrity sha512-gS17sq6CZqREHSjbGXmmC6VAHIHBru60DnoSVmHXuxsCJoZJdjpfAIqoEunUPTU2UpxE5kUzd3j0ctqs8ccxgw==
+  dependencies:
+    "@jafri/numbro" "^2.3.4"
+    "@proton/tsconfig" "0.3.0"
+    bignumber.js "^9.0.1"
+    dayjs "^1.8.18"
 
 "@bloks/numbers@^26.1.9":
   version "26.1.9"
@@ -238,27 +233,14 @@
     bignumber.js "^9.0.1"
     dayjs "^1.8.18"
 
-"@bloks/utils@^26.0.3":
-  version "26.0.3"
-  resolved "https://registry.npmjs.org/@bloks/utils/-/utils-26.0.3.tgz"
-  integrity sha512-AgngGNmw7W9HJGxMBOlBDfpsjOyqVODopzHEST/8rr0evc2P9q4PaDEwsGhG8e5vDemXpL6t4EdUWwOhMrLkZw==
+"@bloks/utils@26.4.0":
+  version "26.4.0"
+  resolved "https://registry.yarnpkg.com/@bloks/utils/-/utils-26.4.0.tgz#0032686cf71b6df5be65c0faf94d5fe1e7e4b410"
+  integrity sha512-fLAvUZnBEZusGL53aZXGYTpdolk4yffNjiRK+rGLbU8BSEWZAotvCd955zIYn2NvjaiDGvyNAN1PyQUznpcC/Q==
   dependencies:
+    fast-text-encoding "^1.0.3"
     long "^4.0.0"
     qs "^6.9.0"
-
-"@eoscafe/hyperion@^3.3.2":
-  version "3.3.2"
-  resolved "https://registry.npmjs.org/@eoscafe/hyperion/-/hyperion-3.3.2.tgz"
-  integrity sha512-tZrhCUp4vnpdUyblI4MvxxSSCTZYsObI1wD3m0LZwKb6oEmDXggkzXxe01XXjxW1mPh/vS6QJZX9JLvFYa/QBw==
-  dependencies:
-    cross-fetch "^3.1.5"
-
-"@eoscafe/light-api@^3.2.18":
-  version "3.2.18"
-  resolved "https://registry.npmjs.org/@eoscafe/light-api/-/light-api-3.2.18.tgz"
-  integrity sha512-EwIw6PhtLDS5nrkseTQs9z+UrRf0ijIPaj/W5yXn3jE/CuPFwSIrC2Ad4wTg6zsl4QaaQPdguiPfXmol+i0nuA==
-  dependencies:
-    cross-fetch "^3.1.5"
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -898,6 +880,22 @@
     tslib "^2.4.0"
     webcrypto-core "^1.7.4"
 
+"@proton/api@^26.4.0":
+  version "26.4.0"
+  resolved "https://registry.yarnpkg.com/@proton/api/-/api-26.4.0.tgz#5a20220bcd88867722e487729d70e88010b96124"
+  integrity sha512-KRHXoodc0OhNP0O+/GUWUqhaGKsa5cl4Nn/fTBmhDH5LjzT7mpsOHPapSzQ3l+B/n+o5ZKy4PhraW4GVobaJJQ==
+  dependencies:
+    "@bloks/constants" "26.4.0"
+    "@bloks/numbers" "26.4.0"
+    "@bloks/utils" "26.4.0"
+    "@proton/hyperion" "^3.3.2"
+    "@proton/js" "26.4.0"
+    "@proton/light-api" "^3.3.0"
+    "@proton/tsconfig" "0.3.0"
+    "@proton/wrap-constants" "^0.2.28"
+    cross-fetch "^3.1.4"
+    zod "^3.19.1"
+
 "@proton/bip32@^3.0.1":
   version "3.0.1"
   resolved "https://registry.npmjs.org/@proton/bip32/-/bip32-3.0.1.tgz"
@@ -909,6 +907,30 @@
     create-hmac "^1.1.7"
     typeforce "^1.11.5"
     wif "^2.0.6"
+
+"@proton/hyperion@^3.3.2":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@proton/hyperion/-/hyperion-3.3.3.tgz#7aba9c27188a6e26c7b93c98d82bc1bb4678bd91"
+  integrity sha512-vUmh4Jz5O7AGxbsxmYRS3NOKapiwCLqlLFEAgW0Wg5pc9ZRQgo4W6g7IP/L6wAaV7OwBMWftFmr3YaCN3b4TPQ==
+  dependencies:
+    cross-fetch "^3.1.5"
+
+"@proton/js@26.4.0", "@proton/js@^26.4.0":
+  version "26.4.0"
+  resolved "https://registry.yarnpkg.com/@proton/js/-/js-26.4.0.tgz#82a707f02859b966c4cf5f0a9b86c52b500726aa"
+  integrity sha512-U2csucyTq4JZJ1/aIeGRfUX3yDlVq5Sz8uMC/wWY7ct/P0RJ2e39uISd2H+0bNcAz6/IkmguMur0o+hBj24vcg==
+  dependencies:
+    "@bloks/constants" "26.4.0"
+    abortcontroller-polyfill "^1.7.3"
+    base64url "^3.0.1"
+    bn.js "^5.2.1"
+    cross-fetch "^3.1.4"
+    elliptic "^6.5.4"
+    event-target-shim "^6.0.2"
+    fast-text-encoding "^1.0.3"
+    hash.js "1.1.7"
+    pako "2.0.3"
+    ripemd-ts "0.0.2"
 
 "@proton/js@^25.0.76":
   version "25.0.76"
@@ -924,7 +946,7 @@
     pako "2.0.3"
     ripemd-ts "0.0.2"
 
-"@proton/js@^26.1.15", "@proton/js@^26.1.17":
+"@proton/js@^26.1.15":
   version "26.1.36"
   resolved "https://registry.npmjs.org/@proton/js/-/js-26.1.36.tgz"
   integrity sha512-qA6sfonJ/Mb7DrCyb2Wk9Kf5pzWYP8z8nKGGSwfiw9Xqd8koaaV3uzUEkr95UXXFtYVFP2pVa1NdJcZMliVitQ==
@@ -939,23 +961,7 @@
     pako "2.0.3"
     ripemd-ts "0.0.2"
 
-"@proton/js@^26.1.64":
-  version "26.1.64"
-  resolved "https://registry.yarnpkg.com/@proton/js/-/js-26.1.64.tgz#4f01a192f4194c45089729017db54cf4015b9231"
-  integrity sha512-l8GKXX+kE1swyAxnSKkk26nArVTCecpd5sQzdH+hQfbHUu6HRgUNfM0o4uHINHDV8HMGCMBRk6m5cu6LC1q0CA==
-  dependencies:
-    "@bloks/constants" "^26.1.59"
-    abortcontroller-polyfill "^1.7.3"
-    base64url "^3.0.1"
-    cross-fetch "^3.1.4"
-    elliptic "^6.5.4"
-    event-target-shim "^6.0.2"
-    fast-text-encoding "^1.0.3"
-    hash.js "1.1.7"
-    pako "2.0.3"
-    ripemd-ts "0.0.2"
-
-"@proton/light-api@^3.3.1":
+"@proton/light-api@^3.3.0", "@proton/light-api@^3.3.1":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/@proton/light-api/-/light-api-3.3.1.tgz#f23d5191b9118cf1cf9152997190b5e2700ecd1a"
   integrity sha512-KYCHqzxVUyYwR+5k5LwKZ7WglygsmMsB7uQUPVL7ye6fHw94kT2WxPkq8V0btev8Jum1tIsuIxMhPS5ZN7iZGw==
@@ -1001,12 +1007,18 @@
     core-js "^3.21.0"
     tslib "^2.0.3"
 
-"@proton/wrap-constants@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.npmjs.org/@proton/wrap-constants/-/wrap-constants-0.0.46.tgz"
-  integrity sha512-mIeFCiZBd6cKZzEwLFY5DxbwDEYWdQgtH/Jn7P+H38emWM6OurKv4Eh5aV/EmZP3w1EYfU32nXAm8qE1QuhpQA==
+"@proton/tsconfig@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@proton/tsconfig/-/tsconfig-0.3.0.tgz#1dcf6a4cd6c5ebd5e119a4f0ec2c8e69b87f3387"
+  integrity sha512-BGuAsZrb9h5ouL8lyslbFu1NEjiBb6OXi7rDujzBsD7V95o3DaNSqL5FwF+UgGwNyzAcGEFSloMgt+swuY91Cw==
+
+"@proton/wrap-constants@^0.2.28":
+  version "0.2.35"
+  resolved "https://registry.yarnpkg.com/@proton/wrap-constants/-/wrap-constants-0.2.35.tgz#6e8c430abed8276c147399dbafcb19c4ce1ac64b"
+  integrity sha512-g5LVuPa5K9gDrL55POHK7Y+EMM1Cns9ce8YNJ2Jzf3oC/i2H97K6AEX72mREO553Em1FO11Uhzn8TQJQM6eKww==
   dependencies:
-    zod "^1.11.11"
+    lodash.clonedeep "^4.5.0"
+    zod "^3.19.1"
 
 "@tootallnate/once@1":
   version "1.1.2"
@@ -1642,6 +1654,11 @@ bn.js@^4.11.9:
   version "4.12.0"
   resolved "https://registry.npmjs.org/bn.js/-/bn.js-4.12.0.tgz"
   integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
+
+bn.js@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.1.tgz#0bc527a6a0d18d0aa8d5b0538ce4a77dccfa7b70"
+  integrity sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -3908,6 +3925,11 @@ locate-path@^6.0.0:
   integrity sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
   dependencies:
     p-locate "^5.0.0"
+
+lodash.clonedeep@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz#e23f3f9c4f8fbdde872529c1071857a086e5ccef"
+  integrity sha512-H5ZhCF25riFd9uB5UCkVKo61m3S/xZk1x4wA6yp/L3RFP6Z/eHH1ymQcGLo7J3GMPfm0V/7m1tryHuGVxpqEBQ==
 
 lodash.flattendeep@^4.4.0:
   version "4.4.0"
@@ -6393,12 +6415,7 @@ yosay@^2.0.2:
     taketalk "^1.0.0"
     wrap-ansi "^2.0.0"
 
-zod@^1.11.11:
-  version "1.11.17"
-  resolved "https://registry.npmjs.org/zod/-/zod-1.11.17.tgz"
-  integrity sha512-UzIwO92D0dSFwIRyyqAfRXICITLjF0IP8tRbEK/un7adirMssWZx8xF/1hZNE7t61knWZ+lhEuUvxlu2MO8qqA==
-
-zod@^3.5.1:
-  version "3.17.3"
-  resolved "https://registry.npmjs.org/zod/-/zod-3.17.3.tgz"
-  integrity sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==
+zod@^3.19.1:
+  version "3.19.1"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.19.1.tgz#112f074a97b50bfc4772d4ad1576814bd8ac4473"
+  integrity sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==
