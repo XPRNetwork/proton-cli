@@ -3,9 +3,8 @@ import { Command } from '@oclif/command'
 import { network } from '../../storage/networks'
 import { CliUx } from '@oclif/core'
 import { green, red } from 'colors'
-import { getExplorer } from '../../apis/getExplorer'
 
-export default class Multisig extends Command {
+export default class MultisigCancel extends Command {
   static description = 'Multisig Cancel'
 
   static args = [
@@ -14,7 +13,7 @@ export default class Multisig extends Command {
   ]
 
   async run() {
-    const {args: {proposalName, auth}} = this.parse(Multisig)
+    const {args: {proposalName, auth}} = this.parse(MultisigCancel)
     const [actor, permission] = auth.split('@')
   
     try {

@@ -6,8 +6,8 @@ import { green, red } from 'colors'
 import { getExplorer } from '../../apis/getExplorer'
 import { Authorization } from '@proton/wrap-constants'
 
-export default class Multisig extends Command {
-  static description = 'Multisig Transaction'
+export default class MultisigPropose extends Command {
+  static description = 'Multisig Propose'
 
   static args = [
     {name: 'proposalName', required: true, help: 'Name of proposal'},
@@ -15,13 +15,13 @@ export default class Multisig extends Command {
     {name: 'auth', required: true, help: 'Your authorization'},
   ]
 
-  static flags = {
-    blocksBehind: flags.string({char: 'b', default: "30"}),
-    expireSeconds: flags.string({char: 'x', default: "3000"}),
+  static flags: { [k: string]: flags.IFlag<number>; } = {
+    blocksBehind: flags.integer({char: 'b', default: 30}),
+    expireSeconds: flags.integer({char: 'x', default: 3000}),
   }
 
   async run() {
-    const {args: {proposalName, actions, auth}, flags} = this.parse(Multisig)
+    const {args: {proposalName, actions, auth}, flags} = this.parse(MultisigPropose)
     const [actor, permission] = auth.split('@')
     
     // Serialize action
@@ -41,8 +41,8 @@ export default class Multisig extends Command {
         requested = requested.concat(requiredAccountsLocal)
       }
     }
-    requested = [...new Set(requested)]
-  
+    requested = requested.filter((item, pos) => requested.findIndex(_ => _.actor === item.actor) === pos)
+      
     try {
       await network.transact({
         actions: [{

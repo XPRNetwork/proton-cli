@@ -622,7 +622,7 @@ _See code: [lib/commands/msig/cancel.js](https://github.com/ProtonProtocol/proto
 
 ## `proton msig:propose PROPOSALNAME ACTIONS AUTH`
 
-Multisig Transaction
+Multisig Propose
 
 ```
 USAGE
@@ -633,7 +633,7 @@ FLAGS
   -x, --expireSeconds=<value>  [default: 3000]
 
 DESCRIPTION
-  Multisig Transaction
+  Multisig Propose
 ```
 
 _See code: [lib/commands/msig/propose.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.77/lib/commands/msig/propose.js)_
