@@ -5,7 +5,7 @@ import { CliUx } from '@oclif/core'
 import { green, red } from 'colors'
 import { getExplorer } from '../../apis/getExplorer'
 
-export default class Multisig extends Command {
+export default class MultisigApprove extends Command {
   static description = 'Multisig Approve'
 
   static args = [
@@ -14,7 +14,7 @@ export default class Multisig extends Command {
   ]
 
   async run() {
-    const {args: {proposalName, auth}} = this.parse(Multisig)
+    const {args: {proposalName, auth}} = this.parse(MultisigApprove)
     const [actor, permission] = auth.split('@')
   
     try {
