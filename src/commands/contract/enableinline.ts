@@ -1,6 +1,6 @@
 import { Command, flags } from '@oclif/command'
 import { CliUx } from '@oclif/core'
-import { GetAccountResult } from '@proton/js/dist/rpc/types'
+import { RpcInterfaces } from '@proton/js'
 import { green, red } from 'colors'
 import { network } from '../../storage/networks'
 import { sortRequiredAuth } from '../../utils/sortRequiredAuth'
@@ -20,7 +20,7 @@ export default class ContractEnableInline extends Command {
     const {args, flags} = this.parse(ContractEnableInline)
 
     // Get active perm
-    const account: GetAccountResult = await network.rpc.get_account(args.account)
+    const account: RpcInterfaces.GetAccountResult = await network.rpc.get_account(args.account)
     const activePerm = account.permissions.find(perm => perm.perm_name === 'active')
 
     // Check if already exists

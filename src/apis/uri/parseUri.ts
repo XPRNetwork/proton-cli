@@ -7,7 +7,7 @@ import {
 	ResolvedCallback,
 	SigningRequestEncodingOptions,
 } from '@proton/signing-request'
-import { Authority } from '@bloks/api'
+import { Authority } from '@proton/api'
 import { ABI, Name } from '@greymass/eosio'
 import { Key } from '@proton/js'
 import { fetchWithTimeout } from './fetch'
