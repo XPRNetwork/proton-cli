@@ -17,7 +17,7 @@ export default class MultisigPropose extends Command {
 
   static flags: { [k: string]: flags.IFlag<number>; } = {
     blocksBehind: flags.integer({char: 'b', default: 30}),
-    expireSeconds: flags.integer({char: 'x', default: 3000}),
+    expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7 }),
   }
 
   async run() {
@@ -27,11 +27,7 @@ export default class MultisigPropose extends Command {
     // Serialize action
     const parsedActions = JSON.parse(actions)
     const serializedActions = await network.api.serializeActions(parsedActions)
-    const transactionSettings = await network.protonApi.generateTransactionSettings(
-      +flags.blocksBehind,
-      +flags.blocksBehind,
-      0
-    )
+    const transactionSettings = await network.protonApi.generateTransactionSettings(flags.expireSeconds, flags.blocksBehind, 0)
 
     // Find required signers
     let requested: Authorization[] = []
