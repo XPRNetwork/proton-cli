@@ -1,4 +1,4 @@
-import { Authority } from "@bloks/api"
+import { Authority } from "@proton/api"
 import { CliUx } from "@oclif/core"
 import { green } from "colors"
 import { IProtonLinkSessionManagerSessionExtended, ProtonLinkSessionManager } from "../esr"

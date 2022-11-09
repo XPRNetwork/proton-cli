@@ -1,5 +1,5 @@
 import { Numeric, Serialize } from "@proton/js"
-import { RequiredAuth } from "@proton/js/dist/rpc/types"
+import { RpcInterfaces } from "@proton/js"
 
 
 export const decodeWaPublicKey = (waPublicKey: string) => {
@@ -21,7 +21,7 @@ export const decodeWaPublicKey = (waPublicKey: string) => {
 	}
 }
 
-export const sortRequiredAuth = (required_auth: RequiredAuth) => {
+export const sortRequiredAuth = (required_auth: RpcInterfaces.RequiredAuth) => {
     required_auth.accounts = required_auth.accounts.sort((a: { permission: { actor: any; }; }, b: { permission: { actor: any; }; }) => a.permission.actor.localeCompare(b.permission.actor))
     required_auth.waits    = required_auth.waits.sort((a: { wait_sec: any; }, b: { wait_sec: any; }) => a.wait_sec.localeCompare(b.wait_sec))
     required_auth.keys = required_auth.keys.sort((a: { key: string }, b: { key: string }) => {
