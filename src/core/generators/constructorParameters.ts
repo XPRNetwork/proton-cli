@@ -53,7 +53,7 @@ export function constructorAddParameter(
   const declaration = parameterToDeclaration(parameter);
 
   const paramType = CONSTRUCTOR_PARAMETER_TYPES.get(fixedType);
-  let initializer = '';
+  let initializer = '""';
   if (paramType) {
     if (parameter.isNullable) {
       initializer = 'null';

@@ -82,6 +82,20 @@ export default class ContractTableCreateCommand extends Command {
       tableFileNameWithExt: `${contractName}.tables.ts`
     }
 
+    CliUx.ux.log(green(`Starting to generate a table '${this.data.tableName}' for contract`));
+    CliUx.ux.log(green(`Let's collect some properties:`));
+
+    if (!flags.class) {
+      this.data.className = this.data.className.charAt(0).toUpperCase() + this.data.className.slice(1)
+      const { tableClass } = await prompt<{ tableClass: string; }>({
+        name: 'tableClass',
+        type: 'input',
+        message: `Enter the name of Typescript class for the table:`,
+        default: this.data.className,
+      });
+      this.data.className = tableClass;
+    }
+
     if (!flags.singleton) {
       const { isSingleton } = await prompt<{ isSingleton: boolean }>([
         {
@@ -93,8 +107,6 @@ export default class ContractTableCreateCommand extends Command {
       ]);
       this.data.isSingleton = isSingleton;
     }
-
-    this.data.className = this.data.className.charAt(0).toUpperCase() + this.data.className.slice(1);
 
     const tableFilePath = path.join(targetPath, this.data.tableFileNameWithExt);
 

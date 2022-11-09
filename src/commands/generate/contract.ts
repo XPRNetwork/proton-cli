@@ -100,20 +100,20 @@ export default class ContractCreateCommand extends Command {
                 });
               }
             });
-
             if (actionsToAdd.length > 0) {
+
               actionsToAdd.forEach(action => {
                 const values = action.parameters.map((parameter) => {
                   const fixedType = fixParameterType(parameter.type);
                   const paramType = CONSTRUCTOR_PARAMETER_TYPES.get(fixedType);
-                  let initializer = '';
+                  let initializer = '""';
                   if (paramType) {
-                    if (parameter.isNullable) {
-                      initializer = 'null';
-                    } else if (parameter.isArray) {
+                    if (parameter.isArray) {
                       initializer = '[]';
                     } else {
-                      initializer = paramType.initializer;
+                      if (fixedType !== 'Name') {
+                        initializer = paramType.initializer;
+                      }
                     }
                   }
                   return initializer;
@@ -124,8 +124,6 @@ export default class ContractCreateCommand extends Command {
                 ]);
               })
             }
-
-
           }
           sourceFile.formatText(FORMAT_SETTINGS);
           file.content = sourceFile.getText();
