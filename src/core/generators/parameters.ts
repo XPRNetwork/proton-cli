@@ -46,18 +46,20 @@ export async function parameterPrompt(existingParameters: IParameter[],
     isArray = isArrayPrompt;
   }
   let isNullable: boolean = false;
-  if (opts.preset?.isNullable !== undefined) {
-    isNullable = opts.preset.isNullable;
-  } else {
-    const { isNullablePrompt } = await prompt<{ isNullablePrompt: boolean }>([
-      {
-        name: 'isNullablePrompt',
-        type: 'confirm',
-        message: 'Can the parameter be nullable?',
-        default: false,
-      },
-    ]);
-    isNullable = isNullablePrompt;
+  if (!isArray) {
+    if (opts.preset?.isNullable !== undefined) {
+      isNullable = opts.preset.isNullable;
+    } else {
+      const { isNullablePrompt } = await prompt<{ isNullablePrompt: boolean }>([
+        {
+          name: 'isNullablePrompt',
+          type: 'confirm',
+          message: 'Can the parameter be nullable?',
+          default: false,
+        },
+      ]);
+      isNullable = isNullablePrompt;
+    }
   }
 
   return {

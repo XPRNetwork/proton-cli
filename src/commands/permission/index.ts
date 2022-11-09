@@ -1,7 +1,6 @@
 import { Command } from '@oclif/command'
 import { CliUx } from '@oclif/core'
-import { Key } from '@proton/js'
-import { GetAccountResult } from '@proton/js/dist/rpc/types'
+import { Key, RpcInterfaces } from '@proton/js'
 import { green, red } from 'colors'
 import { Separator } from 'inquirer'
 import { getLightAccount } from '../../apis/lightApi'
@@ -25,7 +24,7 @@ export default class UpdatePermission extends Command {
     const { args } = this.parse(UpdatePermission)
 
     // Track
-    let account: GetAccountResult
+    let account: RpcInterfaces.GetAccountResult
     let lightAccount: any
     let permissionSnapshot
     let step
@@ -129,7 +128,7 @@ export default class UpdatePermission extends Command {
           extraOptions.unshift(green('Save'))
         }
 
-        const choices = account!.permissions.map(_ => _.perm_name)
+        const choices = account!.permissions.map((_: any) => _.perm_name)
           .concat([new Separator() as any])
           .concat(extraOptions)
 
@@ -140,7 +139,7 @@ export default class UpdatePermission extends Command {
         } else {
           if (permission === 'Add New Permission') {
             const permission = await promptName('permission', { default: 'newperm' })
-            const parentpermission = await promptChoices('Choose parent permission:', account!.permissions.map(_ => _.perm_name), 'active')
+            const parentpermission = await promptChoices('Choose parent permission:', account!.permissions.map((_: any) => _.perm_name), 'active')
             account!.permissions.push({
               perm_name: permission,
               parent: parentpermission,
@@ -153,7 +152,7 @@ export default class UpdatePermission extends Command {
             })
             currentPermission = account!.permissions[account!.permissions.length - 1]
           } else {
-            currentPermission = account!.permissions.find(_ => _.perm_name === permission)
+            currentPermission = account!.permissions.find((_: any) => _.perm_name === permission)
           }
 
           step = 'editPermission'

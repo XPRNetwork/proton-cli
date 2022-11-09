@@ -1,8 +1,8 @@
 import { parseNetAndRam, parseCpu } from "@bloks/numbers"
 import { CliUx } from "@oclif/core"
-import { GetAccountResult } from "@proton/js/dist/rpc/types"
+import { RpcInterfaces } from "@proton/js"
 
-export const generateResourceTable = (account: GetAccountResult) => {
+export const generateResourceTable = (account: RpcInterfaces.GetAccountResult) => {
   const resourceTable = [
     {
       type: 'RAM',

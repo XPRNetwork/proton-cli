@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.75",
+  "version": "0.1.83",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -48,16 +48,16 @@
   },
   "types": "lib/index.d.ts",
   "dependencies": {
-    "@bloks/api": "^26.1.15",
     "@bloks/numbers": "^26.1.9",
-    "@eoscafe/light-api": "^3.2.18",
     "@greymass/eosio": "^0.5.5",
     "@inquirer/input": "^0.0.18-alpha.0",
     "@oclif/command": "^1.8.16",
     "@oclif/config": "^1.18.3",
     "@oclif/core": "^1.7.0",
     "@oclif/plugin-help": "^3",
-    "@proton/js": "^26.1.36",
+    "@proton/api": "^26.4.0",
+    "@proton/js": "^26.4.0",
+    "@proton/light-api": "^3.3.1",
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
     "@proton/signing-request": "^4.1.10",

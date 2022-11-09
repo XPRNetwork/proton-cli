@@ -1,4 +1,4 @@
-import { Authority } from '@bloks/api'
+import { Authority } from '@proton/api'
 import { IProtonLinkSessionManagerSessionExtended } from '../esr'
 import { getProtonAvatar } from '../getProtonAvatar'
 import { parseURI } from './parseUri'
