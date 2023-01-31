@@ -12,13 +12,11 @@ export default class MultisigApprove extends Command {
     {name: 'proposer', required: true, help: 'Name of proposer'},
     {name: 'proposal', required: true, help: 'Name of proposal'},
     {name: 'auth', required: true, help: 'Signing authorization (e.g. user1@active)'},
-    {name: 'msigAuth', required: false, help: 'Multisig authorization (e.g. user2@active)'},
   ]
 
   async run() {
-    const {args: { proposer, proposal, auth, msigAuth }} = this.parse(MultisigApprove)
+    const {args: { proposer, proposal, auth }} = this.parse(MultisigApprove)
     const [actor, permission] = auth.split('@')
-    const [msigActor, msigPermission] = (auth || msigAuth).split('@')
 
     try {
       await network.transact({
@@ -28,10 +26,7 @@ export default class MultisigApprove extends Command {
           data: {
             proposer,
             proposal_name: proposal,
-            level: {
-              actor: msigActor,
-              permission: msigPermission
-            }
+            level: { actor, permission }
           },
           authorization: [{ actor, permission }]
         }]
