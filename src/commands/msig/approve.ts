@@ -9,29 +9,35 @@ export default class MultisigApprove extends Command {
   static description = 'Multisig Approve'
 
   static args = [
-    {name: 'proposalName', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Your authorization'},
+    {name: 'proposer', required: true, help: 'Name of proposer'},
+    {name: 'proposal', required: true, help: 'Name of proposal'},
+    {name: 'auth', required: true, help: 'Signing authorization (e.g. user1@active)'},
+    {name: 'msigAuth', required: false, help: 'Multisig authorization (e.g. user2@active)'},
   ]
 
   async run() {
-    const {args: {proposalName, auth}} = this.parse(MultisigApprove)
+    const {args: { proposer, proposal, auth, msigAuth }} = this.parse(MultisigApprove)
     const [actor, permission] = auth.split('@')
-  
+    const [msigActor, msigPermission] = (auth || msigAuth).split('@')
+
     try {
       await network.transact({
         actions: [{
           account: 'eosio.msig',
           name: 'approve',
           data: {
-            proposer: actor,
-            proposal_name: proposalName,
-            level: { actor, permission }
+            proposer,
+            proposal_name: proposal,
+            level: {
+              actor: msigActor,
+              permission: msigPermission
+            }
           },
-          authorization: [{ actor, permission: permission || 'active' }]
+          authorization: [{ actor, permission }]
         }]
       })
-      CliUx.ux.log(green(`Multisig ${proposalName} successfully approved.`))
-      CliUx.ux.url(`View Proposal`, `${getExplorer()}/msig/${actor}/${proposalName}`)
+      CliUx.ux.log(green(`Multisig ${proposal} successfully approved.`))
+      CliUx.ux.url(`View Proposal`, `${getExplorer()}/msig/${actor}/${proposal}`)
     } catch (err: any) {
       return this.error(red(err));
     }
