@@ -8,12 +8,13 @@ export default class MultisigExecute extends Command {
   static description = 'Multisig Execute'
 
   static args = [
-    {name: 'proposalName', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Your authorization'},
+    {name: 'proposer', required: true, help: 'Name of proposer'},
+    {name: 'proposal', required: true, help: 'Name of proposal'},
+    {name: 'auth', required: true, help: 'Your authorization (e.g. user1@active'},
   ]
 
   async run() {
-    const {args: {proposalName, auth}} = this.parse(MultisigExecute)
+    const {args: {proposer, proposal, auth}} = this.parse(MultisigExecute)
     const [actor, permission] = auth.split('@')
   
     try {
@@ -22,14 +23,14 @@ export default class MultisigExecute extends Command {
           account: 'eosio.msig',
           name: 'exec',
           data: {
-            proposer: actor,
-            proposal_name: proposalName,
+            proposer: proposer,
+            proposal_name: proposal,
             executer: actor
           },
-          authorization: [{ actor, permission: permission || 'active' }]
+          authorization: [{ actor, permission }]
         }]
       })
-      CliUx.ux.log(green(`Multisig ${proposalName} successfully executed.`))
+      CliUx.ux.log(green(`Multisig ${proposal} successfully executed.`))
     } catch (err: any) {
       return this.error(red(err));
     }
