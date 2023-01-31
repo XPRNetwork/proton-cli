@@ -36,7 +36,7 @@ class Network {
   async transact (transaction: any, args: { endpoint?: string } = {}): Promise<RpcInterfaces.PushTransactionArgs | ApiInterfaces.TransactResult | RpcInterfaces.ReadOnlyTransactResult> {
     const api = new Api({
       rpc: args.endpoint
-        ? new JsonRpc(args.endpoint)
+        ? new JsonRpc([args.endpoint])
         : this.rpc,
       signatureProvider: await this.getSignatureProvider()
     })

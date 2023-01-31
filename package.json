@@ -1,7 +1,7 @@
 {
   "name": "@proton/cli",
   "description": "Proton CLI",
-  "version": "0.1.84",
+  "version": "0.1.85",
   "author": "Syed Jafri @jafri",
   "bin": {
     "proton": "./bin/run"
@@ -9,7 +9,7 @@
   "bugs": "https://github.com/ProtonProtocol/proton-cli/issues",
   "files": [
     "/bin",
-    "/lib",
+  "/lib",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
