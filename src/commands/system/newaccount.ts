@@ -1,7 +1,6 @@
 import { Command, flags } from '@oclif/command'
 import { network } from '../../storage/networks'
 import { CliUx } from '@oclif/core'
-import { config } from '../../storage/config';
 import { green } from 'colors';
 import { getExplorer } from '../../apis/getExplorer';
 

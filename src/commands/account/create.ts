@@ -52,7 +52,7 @@ export default class CreateNewAccount extends Command {
       chainAccount: args.account,
       ownerPublicKey: publicKey,
       activePublicKey: publicKey,
-      verificationCode: undefined
+      verificationCode: ''
     }
     let res = await createAccount(data)
 

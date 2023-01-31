@@ -33,9 +33,11 @@ class Network {
     return new JsSignatureProvider(privateKeys)
   }
 
-  async transact (transaction: any): Promise<RpcInterfaces.PushTransactionArgs | ApiInterfaces.TransactResult | RpcInterfaces.ReadOnlyTransactResult> {
+  async transact (transaction: any, args: { endpoint?: string } = {}): Promise<RpcInterfaces.PushTransactionArgs | ApiInterfaces.TransactResult | RpcInterfaces.ReadOnlyTransactResult> {
     const api = new Api({
-      rpc: this.rpc,
+      rpc: args.endpoint
+        ? new JsonRpc(args.endpoint)
+        : this.rpc,
       signatureProvider: await this.getSignatureProvider()
     })
     return api.transact(transaction, {

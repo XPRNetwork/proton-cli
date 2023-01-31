@@ -10,7 +10,8 @@
     "allowJs": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "useUnknownInCatchVariables": true
+    "useUnknownInCatchVariables": true,
+    "preserveSymlinks": true
   },
   "include": [
     "src/**/*"
