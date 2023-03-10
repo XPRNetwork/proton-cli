@@ -14,7 +14,7 @@ export async function extractContract(targetPath: string, contract?: string): Pr
       throw `The contract file ${contractFileName} does not exits. May be you forgot to create the contract first?`;
     }
   } else {
-    const paths = await globby([path.join(targetPath, '*.contract.ts')])
+    const paths = await globby([path.join(targetPath, '*.contract.ts').replace(/\\/g, '/')])
     if (!paths.length) {
       throw `The contract file is not found. May be you forgot to create the contract first?`;
     }

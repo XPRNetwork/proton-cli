@@ -61,6 +61,7 @@
     "@proton/link": "^4.1.10",
     "@proton/mnemonic": "^0.5.0",
     "@proton/signing-request": "^4.1.10",
+    "@proton/wrap-constants": "^0.2.69",
     "bignumber.js": "^9.0.2",
     "colors": "^1.4.0",
     "conf": "^10.1.2",
