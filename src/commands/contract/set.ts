@@ -6,14 +6,13 @@ import { prompt } from 'inquirer'
 import { tmpdir } from 'os'
 import https from 'https'
 import { URL } from 'url'
-import { Serialize } from '@proton/js'
+import { Serialize, RpcInterfaces } from '@proton/js'
 import { network } from '../../storage/networks'
 import { config } from '../../storage/config'
 import { green, red, yellow } from 'colors'
 import { parseDetailsError } from '../../utils/detailsError'
 import { getExplorer } from '../../apis/getExplorer'
 import ContractEnableInline from './enableinline'
-import type { Abi } from '@proton/js/dist/rpc/types'
 import isEqual from 'lodash.isequal'
 
 const TIMEOUT = 10000
@@ -113,11 +112,11 @@ async function getDeployableFilesFromDir(dir: string) {
   }
 }
 
-function extractStruct(abiStructs: Abi['structs'], structName: string): Abi['structs'][number] | undefined {
+function extractStruct(abiStructs: RpcInterfaces.Abi['structs'], structName: string): RpcInterfaces.Abi['structs'][number] | undefined {
   return abiStructs.find((item) => item.name === structName);
 }
 
-async function compareTables(existingABI: Abi, newAbi: Abi): Promise<{ removed: string[], updated: string[] }> {
+async function compareTables(existingABI: RpcInterfaces.Abi, newAbi: RpcInterfaces.Abi): Promise<{ removed: string[], updated: string[] }> {
   const existingTables = existingABI.tables;
   const newTables = newAbi.tables;
 

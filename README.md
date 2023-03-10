@@ -60,7 +60,7 @@ $ npm install -g @proton/cli
 $ proton COMMAND
 running command...
 $ proton (--version)
-@proton/cli/0.1.83 darwin-arm64 node-v16.14.0
+@proton/cli/0.1.83 linux-x64 node-v16.19.1
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
@@ -79,6 +79,7 @@ USAGE
 * [`proton chain:list`](#proton-chainlist)
 * [`proton chain:set [CHAIN]`](#proton-chainset-chain)
 * [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
+* [`proton contract:clear ACCOUNT`](#proton-contractclear-account)
 * [`proton contract:enableinline ACCOUNT`](#proton-contractenableinline-account)
 * [`proton contract:set ACCOUNT SOURCE`](#proton-contractset-account-source)
 * [`proton encode:name ACCOUNT`](#proton-encodename-account)
@@ -275,6 +276,24 @@ DESCRIPTION
 ```
 
 _See code: [lib/commands/contract/abi.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.83/lib/commands/contract/abi.js)_
+
+## `proton contract:clear ACCOUNT`
+
+Clean Contract
+
+```
+USAGE
+  $ proton contract:clear [ACCOUNT] [-a] [-w]
+
+FLAGS
+  -a, --abiOnly   Only remove ABI
+  -w, --wasmOnly  Only remove WASM
+
+DESCRIPTION
+  Clean Contract
+```
+
+_See code: [lib/commands/contract/clear.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.83/lib/commands/contract/clear.js)_
 
 ## `proton contract:enableinline ACCOUNT`
 
