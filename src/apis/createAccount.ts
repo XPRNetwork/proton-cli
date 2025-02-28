@@ -15,9 +15,9 @@ export async function postData (url: string, data = {}): Promise<any> {
 
 const getMetalEndpoint = (chain: string) => {
     if (chain === 'proton') {
-        return 'https://api.protonchain.com'
+        return 'https://identity.api.prod.metalx.com'
     } else if (chain === 'proton-test') {
-        return 'https://api-dev.protonchain.com'
+        return 'https://identity.api.dev.metalx.com'
     } else {
         throw new Error('Can only create new account on proton or proton testnet')
     }
