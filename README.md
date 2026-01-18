@@ -8,11 +8,11 @@ Proton CLI
 [![License](https://img.shields.io/npm/l/@proton/cli.svg)](https://github.com/ProtonProtocol/proton-cli/blob/master/package.json)
 
 <!-- toc -->
-
-- [Installation](#installation)
-- [Install NodeJS](#install-nodejs)
-- [Usage](#usage)
-- [Commands](#commands)
+* [@proton/cli](#protoncli)
+* [Installation](#installation)
+* [Install NodeJS](#install-nodejs)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Installation
@@ -62,77 +62,74 @@ nvm use 16
 # Usage
 
 <!-- usage -->
-
 ```sh-session
 $ npm install -g @proton/cli
 $ proton COMMAND
 running command...
 $ proton (--version)
-@proton/cli/0.1.95 darwin-arm64 node-v22.14.0
+@proton/cli/0.1.95 darwin-arm64 node-v25.2.1
 $ proton --help [COMMAND]
 USAGE
   $ proton COMMAND
 ...
 ```
-
 <!-- usagestop -->
 
 # Commands
 
 <!-- commands -->
-
-- [`proton account ACCOUNT`](#proton-account-account)
-- [`proton account:create ACCOUNT`](#proton-accountcreate-account)
-- [`proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`](#proton-action-contract-action-data-authorization)
-- [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
-- [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
-- [`proton chain:get`](#proton-chainget)
-- [`proton chain:info`](#proton-chaininfo)
-- [`proton chain:list`](#proton-chainlist)
-- [`proton chain:set [CHAIN]`](#proton-chainset-chain)
-- [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
-- [`proton contract:clear ACCOUNT`](#proton-contractclear-account)
-- [`proton contract:enableinline ACCOUNT`](#proton-contractenableinline-account)
-- [`proton contract:set ACCOUNT SOURCE`](#proton-contractset-account-source)
-- [`proton encode:name ACCOUNT`](#proton-encodename-account)
-- [`proton encode:symbol SYMBOL PRECISION`](#proton-encodesymbol-symbol-precision)
-- [`proton endpoint`](#proton-endpoint)
-- [`proton endpoint:default [ENDPOINT]`](#proton-endpointdefault-endpoint)
-- [`proton endpoint:get`](#proton-endpointget)
-- [`proton endpoint:set [ENDPOINT]`](#proton-endpointset-endpoint)
-- [`proton faucet`](#proton-faucet)
-- [`proton faucet:claim SYMBOL AUTHORIZATION`](#proton-faucetclaim-symbol-authorization)
-- [`proton generate:action`](#proton-generateaction)
-- [`proton generate:contract CONTRACTNAME`](#proton-generatecontract-contractname)
-- [`proton generate:inlineaction ACTIONNAME`](#proton-generateinlineaction-actionname)
-- [`proton generate:table TABLENAME`](#proton-generatetable-tablename)
-- [`proton help [COMMAND]`](#proton-help-command)
-- [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
-- [`proton key:generate`](#proton-keygenerate)
-- [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
-- [`proton key:list`](#proton-keylist)
-- [`proton key:lock`](#proton-keylock)
-- [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
-- [`proton key:reset`](#proton-keyreset)
-- [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
-- [`proton msig:approve PROPOSER PROPOSAL AUTH`](#proton-msigapprove-proposer-proposal-auth)
-- [`proton msig:cancel PROPOSALNAME AUTH`](#proton-msigcancel-proposalname-auth)
-- [`proton msig:exec PROPOSER PROPOSAL AUTH`](#proton-msigexec-proposer-proposal-auth)
-- [`proton msig:propose PROPOSALNAME ACTIONS AUTH`](#proton-msigpropose-proposalname-actions-auth)
-- [`proton network`](#proton-network)
-- [`proton permission ACCOUNT`](#proton-permission-account)
-- [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
-- [`proton permission:unlink ACCOUNT CONTRACT [ACTION]`](#proton-permissionunlink-account-contract-action)
-- [`proton psr URI`](#proton-psr-uri)
-- [`proton ram`](#proton-ram)
-- [`proton ram:buy BUYER RECEIVER BYTES`](#proton-rambuy-buyer-receiver-bytes)
-- [`proton rpc:accountsbyauthorizers AUTHORIZATIONS [KEYS]`](#proton-rpcaccountsbyauthorizers-authorizations-keys)
-- [`proton scan ACCOUNT`](#proton-scan-account)
-- [`proton table CONTRACT [TABLE] [SCOPE]`](#proton-table-contract-table-scope)
-- [`proton transaction JSON`](#proton-transaction-json)
-- [`proton transaction:get ID`](#proton-transactionget-id)
-- [`proton transaction:push TRANSACTION`](#proton-transactionpush-transaction)
-- [`proton version`](#proton-version)
+* [`proton account ACCOUNT`](#proton-account-account)
+* [`proton account:create ACCOUNT`](#proton-accountcreate-account)
+* [`proton action CONTRACT [ACTION] [DATA] [AUTHORIZATION]`](#proton-action-contract-action-data-authorization)
+* [`proton block:get BLOCKNUMBER`](#proton-blockget-blocknumber)
+* [`proton boilerplate [FOLDER]`](#proton-boilerplate-folder)
+* [`proton chain:get`](#proton-chainget)
+* [`proton chain:info`](#proton-chaininfo)
+* [`proton chain:list`](#proton-chainlist)
+* [`proton chain:set [CHAIN]`](#proton-chainset-chain)
+* [`proton contract:abi ACCOUNT`](#proton-contractabi-account)
+* [`proton contract:clear ACCOUNT`](#proton-contractclear-account)
+* [`proton contract:enableinline ACCOUNT`](#proton-contractenableinline-account)
+* [`proton contract:set ACCOUNT SOURCE`](#proton-contractset-account-source)
+* [`proton encode:name ACCOUNT`](#proton-encodename-account)
+* [`proton encode:symbol SYMBOL PRECISION`](#proton-encodesymbol-symbol-precision)
+* [`proton endpoint`](#proton-endpoint)
+* [`proton endpoint:default [ENDPOINT]`](#proton-endpointdefault-endpoint)
+* [`proton endpoint:get`](#proton-endpointget)
+* [`proton endpoint:set [ENDPOINT]`](#proton-endpointset-endpoint)
+* [`proton faucet`](#proton-faucet)
+* [`proton faucet:claim SYMBOL AUTHORIZATION`](#proton-faucetclaim-symbol-authorization)
+* [`proton generate:action`](#proton-generateaction)
+* [`proton generate:contract CONTRACTNAME`](#proton-generatecontract-contractname)
+* [`proton generate:inlineaction ACTIONNAME`](#proton-generateinlineaction-actionname)
+* [`proton generate:table TABLENAME`](#proton-generatetable-tablename)
+* [`proton help [COMMAND]`](#proton-help-command)
+* [`proton key:add [PRIVATEKEY]`](#proton-keyadd-privatekey)
+* [`proton key:generate`](#proton-keygenerate)
+* [`proton key:get PUBLICKEY`](#proton-keyget-publickey)
+* [`proton key:list`](#proton-keylist)
+* [`proton key:lock`](#proton-keylock)
+* [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
+* [`proton key:reset`](#proton-keyreset)
+* [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
+* [`proton msig:approve PROPOSER PROPOSAL AUTH`](#proton-msigapprove-proposer-proposal-auth)
+* [`proton msig:cancel PROPOSALNAME AUTH`](#proton-msigcancel-proposalname-auth)
+* [`proton msig:exec PROPOSER PROPOSAL AUTH`](#proton-msigexec-proposer-proposal-auth)
+* [`proton msig:propose PROPOSALNAME ACTIONS AUTH`](#proton-msigpropose-proposalname-actions-auth)
+* [`proton network`](#proton-network)
+* [`proton permission ACCOUNT`](#proton-permission-account)
+* [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
+* [`proton permission:unlink ACCOUNT CONTRACT [ACTION]`](#proton-permissionunlink-account-contract-action)
+* [`proton psr URI`](#proton-psr-uri)
+* [`proton ram`](#proton-ram)
+* [`proton ram:buy BUYER RECEIVER BYTES`](#proton-rambuy-buyer-receiver-bytes)
+* [`proton rpc:accountsbyauthorizers AUTHORIZATIONS [KEYS]`](#proton-rpcaccountsbyauthorizers-authorizations-keys)
+* [`proton scan ACCOUNT`](#proton-scan-account)
+* [`proton table CONTRACT [TABLE] [SCOPE]`](#proton-table-contract-table-scope)
+* [`proton transaction JSON`](#proton-transaction-json)
+* [`proton transaction:get ID`](#proton-transactionget-id)
+* [`proton transaction:push TRANSACTION`](#proton-transactionpush-transaction)
+* [`proton version`](#proton-version)
 
 ## `proton account ACCOUNT`
 
@@ -403,7 +400,7 @@ USAGE
   $ proton endpoint:default [ENDPOINT]
 
 ARGUMENTS
-  ENDPOINT  Specific endpoint
+  ENDPOINT  Restore default endpoints
 
 DESCRIPTION
   Restore default enpoint
@@ -850,7 +847,7 @@ _See code: [lib/commands/ram/index.js](https://github.com/ProtonProtocol/proton-
 
 ## `proton ram:buy BUYER RECEIVER BYTES`
 
-Claim faucet
+Buy RAM for an account
 
 ```
 USAGE
@@ -859,13 +856,18 @@ USAGE
 ARGUMENTS
   BUYER     Account paying for RAM
   RECEIVER  Account receiving RAM
-  BYTES     Bytes of RAM to purchase
+  BYTES     Number of bytes of RAM to purchase
 
 FLAGS
-  -p, --authorization=<value>  Use a specific authorization other than buyer@active
+  -p, --authorization=<value>  Authorization to use (e.g., account@active). Defaults to buyer@active
 
 DESCRIPTION
-  Claim faucet
+  Buy RAM for an account
+
+EXAMPLES
+  $ proton ram:buy myaccount myaccount 10000
+
+  $ proton ram:buy payer receiver 50000 -p payer@active
 ```
 
 _See code: [lib/commands/ram/buy.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.95/lib/commands/ram/buy.js)_
@@ -980,5 +982,4 @@ DESCRIPTION
 ```
 
 _See code: [lib/commands/version.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.95/lib/commands/version.js)_
-
 <!-- commandsstop -->

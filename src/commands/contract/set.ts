@@ -249,6 +249,7 @@ export default class SetContract extends Command {
       // 3. Set code
       if (!flags.abiOnly) {
         try {
+          CliUx.ux.log(yellow(`Deploying WASM to ${args.account}...`))
           const res = await network.transact({
             actions: [{
               account: 'eosio',
@@ -266,16 +267,27 @@ export default class SetContract extends Command {
             }],
           })
 
-          CliUx.ux.log(green(`WASM Successfully ${deployText}:`))
-          CliUx.ux.url(`View TX`, `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
-        } catch (e) {
-          parseDetailsError(e)
+          const txId = (res as any).transaction_id
+          CliUx.ux.log(green(`✓ WASM Successfully ${deployText}`))
+          CliUx.ux.log(`  Account: ${args.account}`)
+          CliUx.ux.log(`  Size: ${(wasm.length / 1024).toFixed(2)} KB`)
+          CliUx.ux.log(`  TX: ${txId}`)
+          CliUx.ux.url(`  View on Explorer`, `${getExplorer()}/tx/${txId}?tab=traces`)
+        } catch (e: any) {
+          // Check if this is just a "contract is unchanged" scenario
+          const errorMsg = e?.message || ''
+          if (errorMsg.includes('contract is already running this version of code')) {
+            CliUx.ux.log(yellow(`WASM unchanged - contract already has this code`))
+          } else {
+            parseDetailsError(e)
+          }
         }
       }
 
       // 4. Set ABI
       if (!flags.wasmOnly) {
         try {
+          CliUx.ux.log(yellow(`Deploying ABI to ${args.account}...`))
           const res = await network.transact({
             actions: [{
               account: 'eosio',
@@ -290,10 +302,19 @@ export default class SetContract extends Command {
               }],
             }],
           })
-          CliUx.ux.log(green(`ABI Successfully ${deployText}:`))
-          CliUx.ux.url(`View TX`, `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
-        } catch (e) {
-          parseDetailsError(e)
+
+          const txId = (res as any).transaction_id
+          CliUx.ux.log(green(`✓ ABI Successfully ${deployText}`))
+          CliUx.ux.log(`  Account: ${args.account}`)
+          CliUx.ux.log(`  TX: ${txId}`)
+          CliUx.ux.url(`  View on Explorer`, `${getExplorer()}/tx/${txId}?tab=traces`)
+        } catch (e: any) {
+          const errorMsg = e?.message || ''
+          if (errorMsg.includes('contract is already running this version of code')) {
+            CliUx.ux.log(yellow(`ABI unchanged - contract already has this ABI`))
+          } else {
+            parseDetailsError(e)
+          }
         }
       }
 

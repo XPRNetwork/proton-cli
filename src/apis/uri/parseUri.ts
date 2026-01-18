@@ -250,10 +250,19 @@ export async function signRequest(
 		// if (returnPath && !(await isIosAppOnMac())) {
 		// 	Linking.openURL(returnPath)
 		// }
-	} catch (err) {
+	} catch (err: any) {
 		console.error(err)
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-        callbackURIWithError(callbackUrl, 'Request cancelled from WebAuth.com Wallet')
+
+		// Provide more helpful error messages
+		let errorMessage = err?.message || 'Transaction signing failed'
+
+		// Check for common issues
+		if (errorMessage.includes('No private key') || errorMessage.includes('unknown key')) {
+			errorMessage = 'No signing key available. WebAuthn keys (PUB_WA_*) cannot sign from CLI. Please add a K1 private key: proton key:add'
+		}
+
+		if (callbackUrl) {
+			callbackURIWithError(callbackUrl, errorMessage)
+		}
 	}
 }
