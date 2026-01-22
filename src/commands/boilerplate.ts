@@ -7,7 +7,7 @@ import * as fs from 'fs'
 import * as rimraf from 'rimraf'
 import { CliUx } from '@oclif/core'
 
-const BOILERPLATE_URL = 'https://github.com/ProtonProtocol/proton-boilerplate.git'
+const BOILERPLATE_URL = 'https://github.com/XPRNetwork/proton-boilerplate.git'
 const BOILERPLATE_BRANCH = 'master'
 
 export default class Boilerplate extends Command {

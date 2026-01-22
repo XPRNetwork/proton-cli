@@ -10,14 +10,14 @@
   "bin": {
     "proton": "./bin/run"
   },
-  "bugs": "https://github.com/ProtonProtocol/proton-cli/issues",
+  "bugs": "https://github.com/XPRNetwork/proton-cli/issues",
   "files": [
     "/bin",
     "/lib",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/ProtonProtocol/proton-cli",
+  "homepage": "https://github.com/XPRNetwork/proton-cli",
   "keywords": [
     "oclif"
   ],
@@ -39,7 +39,7 @@
       }
     }
   },
-  "repository": "ProtonProtocol/proton-cli",
+  "repository": "XPRNetwork/proton-cli",
   "scripts": {
     "build": "npm run prepack && npm run postpack",
     "postpack": "rm -f oclif.manifest.json",
