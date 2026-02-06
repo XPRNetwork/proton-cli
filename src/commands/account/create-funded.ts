@@ -20,6 +20,13 @@ Account naming rules:
   - Characters 0, 6, 7, 8, 9 are NOT allowed
   - Examples: myaccount, agent11111, test.paul
 
+Security:
+  Use --owner to add a backup account to the owner permission.
+  This allows the designated owner to recover or rotate keys
+  on the new account if the generated key is lost or compromised.
+  The owner permission threshold is set to 1, so either the key
+  or the owner account can act independently.
+
 Cost: ~6-7 XPR per 3000 bytes of RAM (default).
 The creator account must hold enough XPR to cover RAM costs.`
 
@@ -27,6 +34,7 @@ The creator account must hold enough XPR to cover RAM costs.`
     '$ proton account:create-funded myaccount --creator fundingacct',
     '$ proton account:create-funded myaccount -c fundingacct --ram 8192',
     '$ proton account:create-funded myaccount -c fundingacct -k PUB_K1_...',
+    '$ proton account:create-funded agentacct -c fundingacct --owner paul123',
   ]
 
   static args = [
@@ -38,6 +46,7 @@ The creator account must hold enough XPR to cover RAM costs.`
     creator: flags.string({ char: 'c', required: true, description: 'Existing account that pays for and creates the new account' }),
     key: flags.string({ char: 'k', description: 'Public key for new account (PUB_K1_... format). Generates new key if omitted' }),
     ram: flags.integer({ char: 'r', default: 3000, description: 'RAM bytes to purchase for new account (minimum 3000)' }),
+    owner: flags.string({ char: 'o', description: 'Account to add as backup owner (can recover/rotate keys if agent key is lost)' }),
   }
 
   async run() {
@@ -97,6 +106,20 @@ The creator account must hold enough XPR to cover RAM costs.`
       await passwordManager.addPrivateKey(privateKey)
     }
 
+    // Build owner permission: key + optional backup owner account
+    const ownerPerm: any = {
+      threshold: 1,
+      keys: [{ key: publicKey, weight: 1 }],
+      accounts: [],
+      waits: [],
+    }
+    if (flags.owner) {
+      ownerPerm.accounts.push({
+        weight: 1,
+        permission: { actor: flags.owner, permission: 'active' },
+      })
+    }
+
     // Build 3-action transaction:
     // 1. Create account on-chain (creator pays)
     // 2. Buy RAM for the new account (creator pays)
@@ -109,12 +132,7 @@ The creator account must hold enough XPR to cover RAM costs.`
         data: {
           creator: flags.creator,
           name: accountName,
-          owner: {
-            threshold: 1,
-            keys: [{ key: publicKey, weight: 1 }],
-            accounts: [],
-            waits: [],
-          },
+          owner: ownerPerm,
           active: {
             threshold: 1,
             keys: [{ key: publicKey, weight: 1 }],
@@ -147,6 +165,9 @@ The creator account must hold enough XPR to cover RAM costs.`
 
     this.log(green(`Account ${accountName} successfully created!`))
     this.log(`Creator: ${flags.creator}`)
+    if (flags.owner) {
+      this.log(`Owner: ${flags.owner} (backup recovery account)`)
+    }
     this.log(`RAM: ${flags.ram} bytes`)
     this.log(`CPU/NET: delegated by wlcm.proton (free)`)
     await CliUx.ux.url('View on explorer', `${getExplorer()}/account/${accountName}`)
