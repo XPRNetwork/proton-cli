@@ -37,6 +37,15 @@ const schema = {
   },
 };
 
+export interface RevealPasswordHash {
+  salt: string;
+  hash: string;
+  N: number;
+  r: number;
+  p: number;
+  keyLen: number;
+}
+
 export const config = new Conf<{
   privateKeys: string[];
   isLocked: boolean;
@@ -44,6 +53,7 @@ export const config = new Conf<{
   networks: { chain: string; endpoints: string[] }[];
   currentChain: string;
   endpoints?: { chain: string; endpoints: string[] }[];
+  revealPasswordHash?: RevealPasswordHash;
 }>({
   schema,
   configName: "proton-cli",

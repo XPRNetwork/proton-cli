@@ -112,6 +112,8 @@ USAGE
 * [`proton key:lock`](#proton-keylock)
 * [`proton key:remove [PRIVATEKEY]`](#proton-keyremove-privatekey)
 * [`proton key:reset`](#proton-keyreset)
+* [`proton key:reveal-disable`](#proton-keyreveal-disable)
+* [`proton key:reveal-setup`](#proton-keyreveal-setup)
 * [`proton key:unlock [PASSWORD]`](#proton-keyunlock-password)
 * [`proton msig:approve PROPOSER PROPOSAL AUTH`](#proton-msigapprove-proposer-proposal-auth)
 * [`proton msig:cancel PROPOSALNAME AUTH`](#proton-msigcancel-proposalname-auth)
@@ -675,35 +677,32 @@ _See code: [lib/commands/key/generate.js](https://github.com/ProtonProtocol/prot
 
 ## `proton key:get PUBLICKEY`
 
-Reveal the private key for a saved public key (requires typed confirmation)
+Reveal the private key for a saved public key (gated by the reveal password if one is set)
 
 ```
 USAGE
-  $ proton key:get [PUBLICKEY] [-f]
-
-FLAGS
-  -f, --force  Skip the typed confirmation (use only in trusted, non-interactive contexts)
+  $ proton key:get [PUBLICKEY]
 
 DESCRIPTION
-  Reveal the private key for a saved public key (requires typed confirmation)
+  Reveal the private key for a saved public key (gated by the reveal password
+  if one is set)
 ```
 
 _See code: [lib/commands/key/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/get.js)_
 
 ## `proton key:list`
 
-List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys.
+List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys (gated by the reveal password if one is set).
 
 ```
 USAGE
-  $ proton key:list [-r] [-f]
+  $ proton key:list [-r]
 
 FLAGS
-  -r, --reveal-private  Include private keys in the output (requires typed confirmation)
-  -f, --force           Skip the typed confirmation when used with --reveal-private (use only in trusted, non-interactive contexts)
+  -r, --reveal-private  Include private keys in the output (requires the reveal password if set, or a typed confirmation otherwise)
 
 DESCRIPTION
-  List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys.
+  List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys (gated by the reveal password if one is set).
 ```
 
 _See code: [lib/commands/key/list.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/list.js)_
@@ -749,6 +748,35 @@ DESCRIPTION
 ```
 
 _See code: [lib/commands/key/reset.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/reset.js)_
+
+## `proton key:reveal-disable`
+
+Remove the reveal password (requires entering the current one)
+
+```
+USAGE
+  $ proton key:reveal-disable
+
+DESCRIPTION
+  Remove the reveal password (requires entering the current one)
+```
+
+_See code: [lib/commands/key/reveal-disable.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/reveal-disable.js)_
+
+## `proton key:reveal-setup`
+
+Set or change the reveal password required to view private keys via key:get or key:list --reveal-private
+
+```
+USAGE
+  $ proton key:reveal-setup
+
+DESCRIPTION
+  Set or change the reveal password required to view private keys via key:get
+  or key:list --reveal-private
+```
+
+_See code: [lib/commands/key/reveal-setup.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/reveal-setup.js)_
 
 ## `proton key:unlock [PASSWORD]`
 

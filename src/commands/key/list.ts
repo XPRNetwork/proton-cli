@@ -4,21 +4,17 @@ import { Key } from '@proton/js'
 import { red, yellow } from 'colors'
 import passwordManager from '../../storage/passwordManager'
 import { network } from '../../storage/networks'
+import { isRevealPasswordSet, requireRevealPassword } from '../../storage/revealPassword'
 
 const CONFIRMATION_PHRASE = 'I UNDERSTAND'
 
 export default class ListAllKeys extends Command {
-  static description = 'List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys.'
+  static description = 'List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys (gated by the reveal password if one is set).'
 
   static flags = {
     'reveal-private': flags.boolean({
       char: 'r',
-      description: 'Include private keys in the output (requires typed confirmation)',
-      default: false,
-    }),
-    force: flags.boolean({
-      char: 'f',
-      description: 'Skip the typed confirmation when used with --reveal-private (use only in trusted, non-interactive contexts)',
+      description: 'Include private keys in the output (requires the reveal password if set, or a typed confirmation otherwise)',
       default: false,
     }),
   }
@@ -62,10 +58,14 @@ export default class ListAllKeys extends Command {
       return
     }
 
-    if (!parsedFlags.force) {
-      if (!process.stdout.isTTY || !process.stdin.isTTY) {
-        CliUx.ux.error('Refusing to print private keys to a non-TTY stream. Re-run in an interactive terminal, or pass --force if you know what you are doing.')
-      }
+    if (!process.stdout.isTTY || !process.stdin.isTTY) {
+      CliUx.ux.error('Refusing to print private keys to a non-TTY stream. Run this in an interactive terminal.')
+    }
+
+    if (isRevealPasswordSet()) {
+      await requireRevealPassword()
+    } else {
+      CliUx.ux.log(yellow('No reveal password is set. Run `proton key:reveal-setup` to protect private-key reveals behind a password that AI agents running on this machine cannot bypass.'))
       CliUx.ux.log(red('WARNING: This will print your PRIVATE KEYS to the terminal.'))
       CliUx.ux.log(red('Anyone with these keys can control your accounts. Make sure no one is watching and your terminal is not being recorded.'))
       const confirmation = await CliUx.ux.prompt(`Type "${CONFIRMATION_PHRASE}" to continue`)
