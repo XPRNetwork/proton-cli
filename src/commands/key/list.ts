@@ -40,7 +40,9 @@ export default class ListAllKeys extends Command {
       const res = await network.rpc.get_accounts_by_authorizers([], publicKeys)
       for (const entry of res.accounts) {
         if (!entry.authorizing_key) continue
-        const list = accountsByPubkey[entry.authorizing_key] || (accountsByPubkey[entry.authorizing_key] = [])
+        // RPC may return keys in legacy EOS format; normalize to modern PUB_K1_... form.
+        const canonical = Key.PublicKey.fromString(entry.authorizing_key).toString()
+        const list = accountsByPubkey[canonical] || (accountsByPubkey[canonical] = [])
         list.push({ account: entry.account_name, permission: entry.permission_name })
       }
     } catch (err) {
