@@ -675,28 +675,35 @@ _See code: [lib/commands/key/generate.js](https://github.com/ProtonProtocol/prot
 
 ## `proton key:get PUBLICKEY`
 
-Find private key for public key
+Reveal the private key for a saved public key (requires typed confirmation)
 
 ```
 USAGE
-  $ proton key:get [PUBLICKEY]
+  $ proton key:get [PUBLICKEY] [-f]
+
+FLAGS
+  -f, --force  Skip the typed confirmation (use only in trusted, non-interactive contexts)
 
 DESCRIPTION
-  Find private key for public key
+  Reveal the private key for a saved public key (requires typed confirmation)
 ```
 
 _See code: [lib/commands/key/get.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/get.js)_
 
 ## `proton key:list`
 
-List All Key
+List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys.
 
 ```
 USAGE
-  $ proton key:list
+  $ proton key:list [-r] [-f]
+
+FLAGS
+  -r, --reveal-private  Include private keys in the output (requires typed confirmation)
+  -f, --force           Skip the typed confirmation when used with --reveal-private (use only in trusted, non-interactive contexts)
 
 DESCRIPTION
-  List All Key
+  List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys.
 ```
 
 _See code: [lib/commands/key/list.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.97/lib/commands/key/list.js)_
