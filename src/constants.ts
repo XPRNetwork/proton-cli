@@ -1,13 +1,18 @@
 export const networks = [
   {
     chain: "proton",
-    endpoints: ["https://proton.greymass.com"],
+    endpoints: [
+      "https://rpc.api.mainnet.metalx.com",
+      "https://proton.cryptolions.io",
+      "https://proton.eosusa.io",
+    ],
   },
   {
     chain: "proton-test",
     endpoints: [
-      "https://protontestnet.ledgerwise.io",
-      "https://proton-testnet.eosphere.io",
+      "https://rpc.api.testnet.metalx.com",
+      "https://proton-testnet.eoscafeblock.com",
+      "https://test.proton.eosusa.io",
     ],
   },
 ];

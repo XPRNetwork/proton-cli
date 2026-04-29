@@ -681,7 +681,10 @@ Reveal the private key for a saved public key (gated by the reveal password if o
 
 ```
 USAGE
-  $ proton key:get [PUBLICKEY]
+  $ proton key:get [PUBLICKEY] [-f]
+
+FLAGS
+  -f, --force  Skip the typed confirmation and TTY check. Intended for non-interactive scripts. Does NOT skip the reveal password if one is set.
 
 DESCRIPTION
   Reveal the private key for a saved public key (gated by the reveal password
@@ -696,10 +699,11 @@ List saved keys. Shows public keys and associated accounts by default; pass --re
 
 ```
 USAGE
-  $ proton key:list [-r]
+  $ proton key:list [-r] [-f]
 
 FLAGS
   -r, --reveal-private  Include private keys in the output (requires the reveal password if set, or a typed confirmation otherwise)
+  -f, --force           Skip the typed confirmation and TTY check when used with --reveal-private. Intended for non-interactive scripts. Does NOT skip the reveal password if one is set.
 
 DESCRIPTION
   List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys (gated by the reveal password if one is set).
