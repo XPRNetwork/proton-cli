@@ -35,7 +35,28 @@ const schema = {
   currentChain: {
     type: JST.String,
   },
+  revealPasswordHash: {
+    type: JST.Object,
+    properties: {
+      salt: { type: JST.String, pattern: "^[0-9a-fA-F]+$" },
+      hash: { type: JST.String, pattern: "^[0-9a-fA-F]+$" },
+      N: { type: JST.Number, minimum: 1024, maximum: 1048576 },
+      r: { type: JST.Number, minimum: 1, maximum: 32 },
+      p: { type: JST.Number, minimum: 1, maximum: 16 },
+      keyLen: { type: JST.Number, minimum: 16, maximum: 128 },
+    },
+    required: ["salt", "hash", "N", "r", "p", "keyLen"],
+  },
 };
+
+export interface RevealPasswordHash {
+  salt: string;
+  hash: string;
+  N: number;
+  r: number;
+  p: number;
+  keyLen: number;
+}
 
 export const config = new Conf<{
   privateKeys: string[];
@@ -44,6 +65,7 @@ export const config = new Conf<{
   networks: { chain: string; endpoints: string[] }[];
   currentChain: string;
   endpoints?: { chain: string; endpoints: string[] }[];
+  revealPasswordHash?: RevealPasswordHash;
 }>({
   schema,
   configName: "proton-cli",
