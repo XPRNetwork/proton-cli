@@ -45,6 +45,7 @@
     "postpack": "rm -f oclif.manifest.json",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && npx oclif manifest && npx oclif readme && shx cp -r src/templates lib",
+    "pretest": "tsc -b",
     "test": "mocha --config test/.mocharc.json --forbid-only",
     "test:coverage": "nyc --extension .ts mocha --config test/.mocharc.json --forbid-only",
     "version": "npx oclif readme && git add README.md"
