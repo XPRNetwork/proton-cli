@@ -1,9 +1,17 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    "noEmit": true
+    "noEmit": true,
+    "module": "commonjs",
+    "rootDir": "..",
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "references": [
-    {"path": ".."}
-  ]
+  "include": [
+    "../src/**/*",
+    "./**/*"
+  ],
+  "ts-node": {
+    "transpileOnly": true
+  }
 }
