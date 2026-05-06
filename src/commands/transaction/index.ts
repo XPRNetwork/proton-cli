@@ -1,21 +1,24 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 import { parseDetailsError } from '../../utils/detailsError'
 
 export default class Transaction extends Command {
   static description = 'Execute Transaction'
 
-  static args = [
-    { name: 'json', required: true },
-  ]
+  static args = {
+    json: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(Transaction)
+    const { args } = await this.parse(Transaction)
 
     // Fetch rows
     const result = await network.transact(args.json)
-    CliUx.ux.styledJSON(result)
+    ux.styledJSON(result)
   }
 
   async catch(e: Error | any) {

@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { green, red } from 'colors'
 import { ProtonLinkSessionManager } from '../../apis/esr/manager'
 import { IProtonLinkSessionManagerSessionExtended } from '../../apis/esr/session'
@@ -15,18 +16,20 @@ const DEFAULT_SERVICE = 'cb.anchor.link'
 export default class CreateSession extends Command {
   static description = 'Create Session'
 
-  static args = [
-    {name: 'uri', required: true},
-  ]
+  static args = {
+    uri: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const {args} = this.parse(CreateSession)
+    const {args} = await this.parse(CreateSession)
 
     // Parse URI
     const uri = args.uri
     
     // Get account
-    const promptAccount = await CliUx.ux.prompt('Enter account to login with (e.g. account@active)', { required: true })
+    const promptAccount = await ux.prompt('Enter account to login with (e.g. account@active)', { required: true })
     const [actor, permission] = promptAccount.split('@')
     const auth = { actor, permission }
 
@@ -69,13 +72,13 @@ export default class CreateSession extends Command {
     }
 
     await signUri(uri, auth, sessionManager)
-    await CliUx.ux.log(`${green('Success:')} TX Signed`)
+    await ux.log(`${green('Success:')} TX Signed`)
 
     // Prevent it from dying
     setTimeout(() => {}, 1000 * 60 * 60 * 24)
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(red(e.message))
+    ux.error(red(e.message))
   }
 }

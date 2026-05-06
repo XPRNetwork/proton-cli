@@ -1,4 +1,5 @@
-import { Command } from '@oclif/command'
+import { Command, Args } from '@oclif/core'
+
 import { network } from '../../storage/networks'
 import { green } from 'colors';
 
@@ -6,13 +7,17 @@ export default class SetRamLimit extends Command {
   static description = 'System Set RAM Limit'
   static hidden = true
 
-  static args = [
-    {name: 'account', required: true},
-    {name: 'ramlimit', required: true},
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+    }),
+    ramlimit: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const {args} = this.parse(SetRamLimit)
+    const {args} = await this.parse(SetRamLimit)
 
     const actions = [
       {

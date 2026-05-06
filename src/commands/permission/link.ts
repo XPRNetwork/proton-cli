@@ -1,24 +1,34 @@
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 import { green } from 'colors'
 
 export default class LinkAuth extends Command {
   static description = 'Link Auth'
 
-  static args = [
-    { name: 'account', required: true },
-    { name: 'permission', required: true },
-    { name: 'contract', required: true },
-    { name: 'action', required: false, default: '' },
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+    }),
+    permission: Args.string({
+      required: true,
+    }),
+    contract: Args.string({
+      required: true,
+    }),
+    action: Args.string({
+      required: false,
+      default: '',
+    }),
+  }
 
   static flags = {
-    permission: flags.string({ char: 'p', default: '', description: 'Permission to sign with (e.g. account@active)' })
+    permission: Flags.string({ char: 'p', default: '', description: 'Permission to sign with (e.g. account@active)' })
   }
 
   async run() {
-    const {args, flags} = this.parse(LinkAuth)
+    const {args, flags} = await this.parse(LinkAuth)
 
     const [actor, permission] = flags.permission.split('@')
 
@@ -39,10 +49,10 @@ export default class LinkAuth extends Command {
       }]
     })
     
-    await CliUx.ux.log(`${green('Success:')} Permission successfully linked.`)
+    await ux.log(`${green('Success:')} Permission successfully linked.`)
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(e)
+    ux.error(e)
   }
 }

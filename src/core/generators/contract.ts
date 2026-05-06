@@ -1,9 +1,9 @@
+import { ux } from '../../utils/ux'
 import { ClassDeclaration, MethodDeclaration } from 'ts-morph';
 import { prompt } from 'inquirer'
 import { promptName, validateName } from '../../utils';
 import { IParameter } from './common';
 import { parameterAdd, parametersCollect, parametersExtractImports, parameterToDeclaration } from './parameters';
-import { CliUx } from '@oclif/core';
 
 export interface IContractAction {
   methodName: string;
@@ -76,7 +76,7 @@ export async function contractAddActions(contractClass: ClassDeclaration) {
     if (addParameters) {
       parametersToAdd = await parametersCollect();
     }
-    CliUx.ux.log(`————————————`);
+    ux.log(`————————————`);
 
     actionsToAdd.push({
       name: name,

@@ -1,7 +1,9 @@
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
 /* eslint-disable no-console */
-import { Command, flags } from '@oclif/command'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green, red } from 'colors'
 import { getExplorer } from '../../apis/getExplorer'
 import { Authorization } from '@proton/wrap-constants'
@@ -9,19 +11,28 @@ import { Authorization } from '@proton/wrap-constants'
 export default class MultisigPropose extends Command {
   static description = 'Multisig Propose'
 
-  static args = [
-    {name: 'proposalName', required: true, help: 'Name of proposal'},
-    {name: 'actions', required: true, help: 'Actions JSON'},
-    {name: 'auth', required: true, help: 'Your authorization'},
-  ]
+  static args = {
+    proposalName: Args.string({
+      required: true,
+      help: 'Name of proposal',
+    }),
+    actions: Args.string({
+      required: true,
+      help: 'Actions JSON',
+    }),
+    auth: Args.string({
+      required: true,
+      help: 'Your authorization',
+    }),
+  }
 
-  static flags: { [k: string]: flags.IFlag<number>; } = {
-    blocksBehind: flags.integer({char: 'b', default: 30}),
-    expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7 }),
+  static flags = {
+    blocksBehind: Flags.integer({char: 'b', default: 30}),
+    expireSeconds: Flags.integer({char: 'x', default: 60 * 60 * 24 * 7 }),
   }
 
   async run() {
-    const {args: {proposalName, actions, auth}, flags} = this.parse(MultisigPropose)
+    const {args: {proposalName, actions, auth}, flags} = await this.parse(MultisigPropose)
     const [actor, permission] = auth.split('@')
     
     // Serialize action
@@ -56,8 +67,8 @@ export default class MultisigPropose extends Command {
           authorization: [{ actor, permission: permission || 'active' }]
         }]
       })
-      CliUx.ux.log(green(`Multisig ${proposalName} successfully proposed.`))
-      CliUx.ux.url(`View Proposal`, `${getExplorer()}/msig/${actor}/${proposalName}`)
+      ux.log(green(`Multisig ${proposalName} successfully proposed.`))
+      ux.url(`View Proposal`, `${getExplorer()}/msig/${actor}/${proposalName}`)
     } catch (err: any) {
       return this.error(red(err));
     }

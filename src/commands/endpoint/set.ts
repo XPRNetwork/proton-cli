@@ -1,5 +1,6 @@
-import { Command } from "@oclif/command";
-import { CliUx, Flags } from "@oclif/core";
+import { ux } from '../../utils/ux'
+
+import { Flags, Command, Args } from '@oclif/core'
 import { network } from "../../storage/networks";
 import { config } from "../../storage/config";
 import * as inquirer from "inquirer";
@@ -10,14 +11,18 @@ import { green } from "colors";
 export default class SetEnpoint extends Command {
   static description = "Set current enpoint";
 
-  static args = [
-    { name: "endpoint", required: false, description: "Specific endpoint" },
-  ];
+  static args = {
+    endpoint: Args.string({
+      required: false,
+      description: "Specific endpoint",
+    }),
+  };
 
   async run() {
-    const { args } = this.parse(SetEnpoint);
+    const { args } = await this.parse(SetEnpoint);
 
-    if (!args.chain) {
+    let chosenEndpoints: string[]
+    if (!args.endpoint) {
       const chain = network.network.chain;
       const chainDiscoveryService = EP_DISCOVERY.find(
         (api: ChainDiscoveryService) => api.chain === chain
@@ -38,12 +43,14 @@ export default class SetEnpoint extends Command {
           choices: [...availableEndpointsList],
         },
       ]);
-      args.endpoint = responses.endpoint;
+      chosenEndpoints = Array.isArray(responses.endpoint) ? responses.endpoint : [responses.endpoint]
+    } else {
+      chosenEndpoints = [args.endpoint]
     }
-    network.overrideEndpoint(args.endpoint);
+    network.overrideEndpoint(chosenEndpoints);
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(e);
+    ux.error(e);
   }
 }

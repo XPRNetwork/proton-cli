@@ -1,5 +1,5 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command } from '@oclif/core'
+import { ux } from '../utils/ux'
 
 const packageJson = require('../../package.json')
 
@@ -11,6 +11,6 @@ export default class Version extends Command {
   }
 
   async catch(e: Error) {
-    CliUx.ux.styledJSON(e)
+    ux.styledJSON(e)
   }
 }

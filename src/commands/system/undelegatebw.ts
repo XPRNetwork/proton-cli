@@ -1,6 +1,8 @@
-import { Command, flags } from '@oclif/command'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green } from 'colors';
 import { getExplorer } from '../../apis/getExplorer';
 
@@ -8,15 +10,20 @@ export default class UndelegateBandwidth extends Command {
   static description = 'System Undelegate Bandwidth'
   static hidden = true
 
-  static args = [
-    {name: 'receiver', required: true},
-    {name: 'cpu', required: true},
-    {name: 'net', required: true},
-  ]
+  static args = {
+    receiver: Args.string({
+      required: true,
+    }),
+    cpu: Args.string({
+      required: true,
+    }),
+    net: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const {args} = this.parse(UndelegateBandwidth)
-
+    const {args} = await this.parse(UndelegateBandwidth)
 
     const actions = [
       {
@@ -38,7 +45,7 @@ export default class UndelegateBandwidth extends Command {
     // Execute
     await network.transact({ actions })
 
-    this.log(`${green('Success:')} Removed resources from ${args.account}!`)
-    await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.receiver}`)
+    this.log(`${green('Success:')} Removed resources from ${args.receiver}!`)
+    await ux.url('View Account on block explorer', `${getExplorer()}/account/${args.receiver}`)
   }
 }

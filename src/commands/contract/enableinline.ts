@@ -1,5 +1,6 @@
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { RpcInterfaces } from '@proton/js'
 import { green, red } from 'colors'
 import { network } from '../../storage/networks'
@@ -8,16 +9,19 @@ import { sortRequiredAuth } from '../../utils/sortRequiredAuth'
 export default class ContractEnableInline extends Command {
   static description = 'Enable Inline Actions on a Contract'
 
-  static args = [
-    {name: 'account', required: true, description: 'Contract account to enable'},
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+      description: 'Contract account to enable',
+    }),
+  }
 
   static flags = {
-    authorization: flags.string({ char: 'p', description: 'Use a specific authorization other than contract@active' }),
+    authorization: Flags.string({ char: 'p', description: 'Use a specific authorization other than contract@active' }),
   }
 
   async run() {
-    const {args, flags} = this.parse(ContractEnableInline)
+    const {args, flags} = await this.parse(ContractEnableInline)
 
     // Get active perm
     const account: RpcInterfaces.GetAccountResult = await network.rpc.get_account(args.account)
@@ -57,10 +61,10 @@ export default class ContractEnableInline extends Command {
     })
 
     // Log
-    CliUx.ux.log(`${green('Success:')} Inline actions enabled`)
+    ux.log(`${green('Success:')} Inline actions enabled`)
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(red(e.message))
+    ux.error(red(e.message))
   }
 }

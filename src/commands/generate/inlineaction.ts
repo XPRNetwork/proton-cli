@@ -1,4 +1,5 @@
-import { CliUx, Command, Flags } from '@oclif/core'
+import { ux } from '../../utils/ux'
+import { Command, Flags, Args } from '@oclif/core'
 import * as path from 'path';
 import { red } from 'colors';
 
@@ -17,13 +18,12 @@ export default class ContractInlineActionCreateCommand extends Command {
 
   static description = 'Add inline action for the smart contract';
 
-  static args = [
-    {
-      name: 'actionName',
+  static args = {
+    actionName: Args.string({
       required: true,
       description: 'The name of the inline action\'s class.',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     output: destinationFolder(),
@@ -118,7 +118,7 @@ export default class ContractInlineActionCreateCommand extends Command {
 
           sourceInlineActions.formatText(FORMAT_SETTINGS);
           sourceInlineActions.saveSync();
-          CliUx.ux.log(`Inline action ${this.data.actionName} successfully created`);
+          ux.log(`Inline action ${this.data.actionName} successfully created`);
         } else {
           throw `The inline action ${this.data.actionName} already exists. Try changing the name.`;
         }

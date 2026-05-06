@@ -1,4 +1,5 @@
-import { CliUx, Command } from '@oclif/core';
+import { ux } from '../../utils/ux'
+import { Command, Args } from '@oclif/core'
 import * as path from 'path';
 import { green, red, yellow } from 'colors';
 import * as shell from 'shelljs';
@@ -12,13 +13,12 @@ import { addNamedImports, CONSTRUCTOR_PARAMETER_TYPES, contractAddActions, fixPa
 export default class ContractCreateCommand extends Command {
   static description = 'Create new smart contract';
 
-  static args = [
-    {
-      name: 'contractName',
+  static args = {
+    contractName: Args.string({
       required: true,
       description: 'The name of the contract. 1-12 chars, only lowercase a-z and numbers 1-5 are possible',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     output: destinationFolder(),
@@ -70,7 +70,7 @@ export default class ContractCreateCommand extends Command {
 
           addNamedImports(sourceFile, 'proton-tsc', ["Contract"]);
 
-          CliUx.ux.log("Let's add some actions to the class");
+          ux.log("Let's add some actions to the class");
 
           const result = await contractAddActions(contract);
 
@@ -138,9 +138,9 @@ export default class ContractCreateCommand extends Command {
       return this.error(red('Failed to install dependencies. Try to install manually.'));
     }
 
-    CliUx.ux.log(green(`Contract ${args.contractName} successfully created!`));
+    ux.log(green(`Contract ${args.contractName} successfully created!`));
 
-    CliUx.ux.log(`Next steps:
+    ux.log(`Next steps:
     1. cd ${flags.output || args.contractName}
     2. "proton generate:table" to generate a table
     3. "proton generate:action" to generate an action
@@ -173,7 +173,7 @@ async function postProcessNode(targetPath: string) {
   }
 
   if (cmd) {
-    CliUx.ux.log(yellow('Installing packages...'));
+    ux.log(yellow('Installing packages...'));
 
     const result = shell.exec(cmd);
 
@@ -181,7 +181,7 @@ async function postProcessNode(targetPath: string) {
       return false;
     }
   } else {
-    CliUx.ux.log(red('No yarn or npm found. Cannot run installation.'));
+    ux.log(red('No yarn or npm found. Cannot run installation.'));
   }
 
   return true;
