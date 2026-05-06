@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import {CliUx} from '@oclif/core'
+import { Command } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 
 export default class GetAccount extends Command {
@@ -7,6 +8,6 @@ export default class GetAccount extends Command {
 
   async run() {
     const account = await network.rpc.get_info()
-    CliUx.ux.styledJSON(account)
+    ux.styledJSON(account)
   }
 }

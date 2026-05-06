@@ -1,6 +1,8 @@
-import { Command, flags } from '@oclif/command'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green } from 'colors';
 import { getExplorer } from '../../apis/getExplorer';
 
@@ -8,13 +10,17 @@ export default class BuyRam extends Command {
   static description = 'System Buy Ram'
   static hidden = true
 
-  static args = [
-    {name: 'receiver', required: true},
-    {name: 'bytes', required: true},
-  ]
+  static args = {
+    receiver: Args.string({
+      required: true,
+    }),
+    bytes: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const {args} = this.parse(BuyRam)
+    const {args} = await this.parse(BuyRam)
 
     const actions = [
       {
@@ -37,6 +43,6 @@ export default class BuyRam extends Command {
     await network.transact({ actions })
 
     this.log(`${green('Success:')} Bought ${args.bytes} bytes RAM for ${args.receiver}!`)
-    await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.receiver}`)
+    await ux.url('View Account on block explorer', `${getExplorer()}/account/${args.receiver}`)
   }
 }

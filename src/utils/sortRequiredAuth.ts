@@ -1,7 +1,6 @@
 import { Numeric, Serialize } from "@proton/js"
 import { RpcInterfaces } from "@proton/js"
 
-
 export const decodeWaPublicKey = (waPublicKey: string) => {
 	if (!waPublicKey.startsWith('PUB_WA_')) {
 	  throw new Error('Not WA Public Key (starts with PUB_WA_)')

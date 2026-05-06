@@ -1,19 +1,27 @@
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
 /* eslint-disable no-console */
-import { Command } from '@oclif/command'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green, red } from 'colors'
 
 export default class MultisigCancel extends Command {
   static description = 'Multisig Cancel'
 
-  static args = [
-    {name: 'proposalName', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Your authorization'},
-  ]
+  static args = {
+    proposalName: Args.string({
+      required: true,
+      help: 'Name of proposal',
+    }),
+    auth: Args.string({
+      required: true,
+      help: 'Your authorization',
+    }),
+  }
 
   async run() {
-    const {args: {proposalName, auth}} = this.parse(MultisigCancel)
+    const {args: {proposalName, auth}} = await this.parse(MultisigCancel)
     const [actor, permission] = auth.split('@')
   
     try {
@@ -29,7 +37,7 @@ export default class MultisigCancel extends Command {
           authorization: [{ actor, permission: permission || 'active' }]
         }]
       })
-      CliUx.ux.log(green(`Multisig ${proposalName} successfully cancelled.`))
+      ux.log(green(`Multisig ${proposalName} successfully cancelled.`))
     } catch (err: any) {
       return this.error(red(err));
     }

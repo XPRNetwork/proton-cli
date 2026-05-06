@@ -1,6 +1,8 @@
-import { Command, flags } from '@oclif/command'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green } from 'colors';
 import { getExplorer } from '../../apis/getExplorer';
 
@@ -53,28 +55,33 @@ export default class NewAccount extends Command {
   static hidden = true
 
   static flags = {
-    help: flags.help({char: 'h'}),
-    net: flags.string({char: 'n', default: '10.0000 SYS'}),
-    cpu: flags.string({char: 'c', default: '10.0000 SYS'}),
-    ram: flags.integer({char: 'r', default: 12288}),
-    transfer: flags.boolean({char: 't', default: false}),
-    code: flags.boolean({default: false}),
+net: Flags.string({char: 'n', default: '10.0000 SYS'}),
+    cpu: Flags.string({char: 'c', default: '10.0000 SYS'}),
+    ram: Flags.integer({char: 'r', default: 12288}),
+    transfer: Flags.boolean({char: 't', default: false}),
+    code: Flags.boolean({default: false}),
   }
 
-  static args = [
-    {name: 'account', required: true},
-    {name: 'owner', required: true},
-    {name: 'active', required: true},
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+    }),
+    owner: Args.string({
+      required: true,
+    }),
+    active: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const {args, flags} = this.parse(NewAccount)
+    const {args, flags} = await this.parse(NewAccount)
 
     // Ensure account does not exist
     try {
       await network.rpc.get_account(args.account)
       this.log(`Account ${args.account} already exists!`)
-      await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.account}#keys`)
+      await ux.url('View Account on block explorer', `${getExplorer()}/account/${args.account}#keys`)
       return
     } catch (error) {
       // Do nothing
@@ -134,6 +141,6 @@ export default class NewAccount extends Command {
     await network.transact({ actions })
 
     this.log(`${green('Success:')} Account ${args.account} created!`)
-    await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.account}#keys`)
+    await ux.url('View Account on block explorer', `${getExplorer()}/account/${args.account}#keys`)
   }
 }

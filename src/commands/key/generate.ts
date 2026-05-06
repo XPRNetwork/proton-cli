@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import {CliUx} from '@oclif/core'
+import { Command } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { Mnemonic } from '@proton/mnemonic'
 import { red, yellow } from 'colors'
 
@@ -12,8 +13,8 @@ export default class GenerateKey extends Command {
     })
     const { publicKey, privateKey } = mnemonic.keyPairAtIndex(0)
 
-    CliUx.ux.log(`\n${yellow('Note:')} Please store private key or mnemonic securely!`)
-    CliUx.ux.styledJSON({
+    ux.log(`\n${yellow('Note:')} Please store private key or mnemonic securely!`)
+    ux.styledJSON({
       public: publicKey.toString(),
       private: privateKey.toString(),
       mnemonic: mnemonic.phrase 
@@ -23,6 +24,6 @@ export default class GenerateKey extends Command {
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(red(e.message))
+    ux.error(red(e.message))
   }
 }

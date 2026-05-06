@@ -1,20 +1,31 @@
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
 /* eslint-disable no-console */
-import { Command } from '@oclif/command'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green, red } from 'colors'
 
 export default class MultisigExecute extends Command {
   static description = 'Multisig Execute'
 
-  static args = [
-    {name: 'proposer', required: true, help: 'Name of proposer'},
-    {name: 'proposal', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Your authorization (e.g. user1@active'},
-  ]
+  static args = {
+    proposer: Args.string({
+      required: true,
+      help: 'Name of proposer',
+    }),
+    proposal: Args.string({
+      required: true,
+      help: 'Name of proposal',
+    }),
+    auth: Args.string({
+      required: true,
+      help: 'Your authorization (e.g. user1@active',
+    }),
+  }
 
   async run() {
-    const {args: {proposer, proposal, auth}} = this.parse(MultisigExecute)
+    const {args: {proposer, proposal, auth}} = await this.parse(MultisigExecute)
     const [actor, permission] = auth.split('@')
   
     try {
@@ -30,7 +41,7 @@ export default class MultisigExecute extends Command {
           authorization: [{ actor, permission }]
         }]
       })
-      CliUx.ux.log(green(`Multisig ${proposal} successfully executed.`))
+      ux.log(green(`Multisig ${proposal} successfully executed.`))
     } catch (err: any) {
       return this.error(red(err));
     }

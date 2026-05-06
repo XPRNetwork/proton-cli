@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { getFaucets } from '../../apis/getFaucets'
 
 export default class Faucet extends Command {
@@ -9,7 +10,7 @@ export default class Faucet extends Command {
     const faucets = await getFaucets()
     for (const faucet of faucets) {
       const [claimAmount, claimSymbol] = faucet.claimToken.quantity.split(' ')
-      CliUx.ux.log(`${claimSymbol}: Claim ${claimAmount} every ${faucet.duration} seconds`)
+      ux.log(`${claimSymbol}: Claim ${claimAmount} every ${faucet.duration} seconds`)
     }
   }
 }

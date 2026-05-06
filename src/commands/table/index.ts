@@ -1,29 +1,36 @@
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 import { prompt } from 'inquirer'
 
 export default class GetTable extends Command {
   static description = 'Get Table Storage Rows'
 
-  static args = [
-    { name: 'contract', required: true },
-    { name: 'table', required: false },
-    { name: 'scope', required: false },
-  ]
+  static args = {
+    contract: Args.string({
+      required: true,
+    }),
+    table: Args.string({
+      required: false,
+    }),
+    scope: Args.string({
+      required: false,
+    }),
+  }
 
   static flags = {
-    lowerBound: flags.string({ char: 'l', default: undefined }),
-    upperBound: flags.string({ char: 'u', default: undefined }),
-    keyType: flags.string({ char: 'k', default: undefined }),
-    reverse: flags.boolean({ char: 'r', default: false }),
-    showPayer: flags.boolean({ char: 'p', default: false }),
-    limit: flags.integer({ char: 'c', default: 100 }),
-    indexPosition: flags.integer({ char: 'i', default: 1 }),
+    lowerBound: Flags.string({ char: 'l', default: undefined }),
+    upperBound: Flags.string({ char: 'u', default: undefined }),
+    keyType: Flags.string({ char: 'k', default: undefined }),
+    reverse: Flags.boolean({ char: 'r', default: false }),
+    showPayer: Flags.boolean({ char: 'p', default: false }),
+    limit: Flags.integer({ char: 'c', default: 100 }),
+    indexPosition: Flags.integer({ char: 'i', default: 1 }),
   }
 
   async run() {
-    const { args, flags } = this.parse(GetTable)
+    const { args, flags } = await this.parse(GetTable)
 
     // Have user choose table if not present
     if (!args.table) {
@@ -53,7 +60,7 @@ export default class GetTable extends Command {
       reverse: flags.reverse,
       show_payer: flags.showPayer,
     })
-    CliUx.ux.styledJSON(rows)
+    ux.styledJSON(rows)
   }
 }
 

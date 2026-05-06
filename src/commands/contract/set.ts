@@ -1,6 +1,6 @@
-import {Command, flags} from '@oclif/command'
-import {CliUx} from '@oclif/core'
-import * as Parser from '@oclif/parser'
+import { Command, Flags } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import {createWriteStream, mkdtemp, readdirSync, readFileSync, rmSync, unlink} from 'node:fs'
 import path, {join, basename} from 'node:path'
 import {prompt} from 'inquirer'
@@ -56,7 +56,7 @@ async function getDeployableFilesFromDir(dir: string) {
   let tmpFolder = ''
 
   if (/^https:\/\/github\.com/.test(dir)) {
-    CliUx.ux.log(yellow('The source is GitHub. Starting to download files...'))
+    ux.log(yellow('The source is GitHub. Starting to download files...'))
     // The source is github need to fetch contract files first.
 
     const tmpFolderPromise = new Promise<string>((resolve, reject) => {
@@ -79,13 +79,13 @@ async function getDeployableFilesFromDir(dir: string) {
       return download(rawFile, join(tmpFolder, `${contractName}.${ext}`))
       .then(() => true)
       .catch(error => {
-        CliUx.ux.log(red(`Cannot download ${contractName}.${ext}: ${error}`))
+        ux.log(red(`Cannot download ${contractName}.${ext}: ${error}`))
         return false
       })
     }))
 
     if (allDownloaded.every(status => status)) {
-      CliUx.ux.log(green('Download completed'))
+      ux.log(green('Download completed'))
     }
 
     dir = tmpFolder
@@ -169,7 +169,7 @@ function readContractEnvFile(): Record<string, string> {
     const contractEnv = dotenv.parse(contractEnvSource)
 
     if (Object.keys(contractEnv).length > 0) {
-      CliUx.ux.log(green('Found .contract file. Using arguments from the file.'))
+      ux.log(green('Found .contract file. Using arguments from the file.'))
     }
 
     return contractEnv
@@ -178,64 +178,50 @@ function readContractEnvFile(): Record<string, string> {
   return {}
 }
 
-const accountArg = {name: 'account', required: true, help: 'The account to publish the contract to'}
-const sourceArg = {name: 'source', required: true, help: 'Path of directory with WASM and ABI or URL for GitHub folder with WASM and ABI'}
+import { Args } from '@oclif/core'
 
 export default class SetContract extends Command {
   static description = `Deploy Contract (WASM + ABI)
-  
+
   `
 
-  static args = [
-    accountArg,
-    sourceArg,
-  ]
+  static args = {
+    account: Args.string({
+      required: false,
+      description: 'The account to publish the contract to (or set ACCOUNT in .contract)',
+    }),
+    source: Args.string({
+      required: false,
+      description: 'Path of directory with WASM and ABI or GitHub folder URL (or set SOURCE in .contract)',
+    }),
+  }
 
   static flags = {
-    clear: flags.boolean({char: 'c', description: 'Removes WASM + ABI from contract'}), // ! remove the flag new command is implemented instead
-    abiOnly: flags.boolean({char: 'a', description: 'Only deploy ABI'}),
-    wasmOnly: flags.boolean({char: 'w', description: 'Only deploy WASM'}),
-    disableInline: flags.boolean({char: 's', description: 'Disable inline actions on contract'}),
+    clear: Flags.boolean({char: 'c', description: 'Removes WASM + ABI from contract'}), // ! remove the flag new command is implemented instead
+    abiOnly: Flags.boolean({char: 'a', description: 'Only deploy ABI'}),
+    wasmOnly: Flags.boolean({char: 'w', description: 'Only deploy WASM'}),
+    disableInline: Flags.boolean({char: 's', description: 'Disable inline actions on contract'}),
   }
 
   async run() {
     const contractConfig = readContractEnvFile()
 
-    let expectedNetwork = ''
     let confirmed = false
 
-    const options: {
-      args: Parser.args.Input;
-      flags: typeof SetContract.flags;
-    } = {
-      args: [],
-      flags: SetContract.flags,
+    if (contractConfig.NETWORK && network.chain !== contractConfig.NETWORK) {
+      return this.error(red(`Wrong network "${network.chain}". "${contractConfig.NETWORK}" is expected`))
     }
+
+    const {args: argsInput, flags} = await this.parse(SetContract)
 
     const presetValues: Record<string, string> = {}
-
-    if (contractConfig.NETWORK && network.chain !== contractConfig.NETWORK) {
-      expectedNetwork = contractConfig.NETWORK
-    }
-
     if (contractConfig.ACCOUNT) {
       presetValues.account = contractConfig.ACCOUNT
       confirmed = true
-    } else {
-      options.args.push(accountArg)
     }
-
     if (contractConfig.SOURCE) {
       presetValues.source = contractConfig.SOURCE
-    } else {
-      options.args.push(sourceArg)
     }
-
-    if (expectedNetwork) {
-      return this.error(red(`Wrong network "${network.chain}". "${expectedNetwork}" is expected`))
-    }
-
-    const {args: argsInput, flags} = this.parse(options)
 
     let wasm: Buffer = Buffer.from('')
     let abi = ''
@@ -243,7 +229,13 @@ export default class SetContract extends Command {
     let warning = ''
     let canDeploy = true
 
-    const args = {...argsInput, ...presetValues}
+    const args = { ...argsInput, ...presetValues } as { account: string; source: string }
+    if (!args.account) {
+      return this.error(red('Account is required (pass as the first arg or set ACCOUNT in .contract)'))
+    }
+    if (!flags.clear && !args.source) {
+      return this.error(red('Source is required (pass as the second arg or set SOURCE in .contract)'))
+    }
 
     if (!confirmed) {
       const {confirmedContract} = await prompt([
@@ -278,7 +270,7 @@ export default class SetContract extends Command {
             })
           }, JSON.parse(readFileSync(abiPath, 'utf8')),
         )
-        CliUx.ux.log(yellow('Checking for existing contract...'))
+        ux.log(yellow('Checking for existing contract...'))
         const existingABI = await network.rpc.get_abi(args.account)
 
         if (existingABI.abi) {
@@ -300,7 +292,7 @@ export default class SetContract extends Command {
         }
 
         if (warning) {
-          CliUx.ux.log(red(`${warning}Deploy of the contract may corrupt the data`))
+          ux.log(red(`${warning}Deploy of the contract may corrupt the data`))
           const {confirmedToContinue} = await prompt<{ confirmedToContinue: boolean }>([
             {
               name: 'confirmedToContinue',
@@ -311,7 +303,7 @@ export default class SetContract extends Command {
           ])
           canDeploy = confirmedToContinue
         } else {
-          CliUx.ux.log(green('No issue with the existing contract found. Continuing.'))
+          ux.log(green('No issue with the existing contract found. Continuing.'))
         }
 
         abiDefinition.serialize(
@@ -346,8 +338,8 @@ export default class SetContract extends Command {
               }],
             })
 
-            CliUx.ux.log(green(`WASM Successfully ${deployText}:`))
-            CliUx.ux.url('View TX', `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
+            ux.log(green(`WASM Successfully ${deployText}:`))
+            ux.url('View TX', `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
           } catch (error) {
             parseDetailsError(error)
           }
@@ -370,8 +362,8 @@ export default class SetContract extends Command {
                 }],
               }],
             })
-            CliUx.ux.log(green(`ABI Successfully ${deployText}:`))
-            CliUx.ux.url('View TX', `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
+            ux.log(green(`ABI Successfully ${deployText}:`))
+            ux.url('View TX', `${getExplorer()}/tx/${(res as any).transaction_id}?tab=traces`)
           } catch (error) {
             parseDetailsError(error)
           }
