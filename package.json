@@ -45,8 +45,8 @@
     "postpack": "rm -f oclif.manifest.json",
     "lint": "eslint . --ext .ts --config .eslintrc",
     "prepack": "rm -rf lib && tsc -b && npx oclif manifest && npx oclif readme && shx cp -r src/templates lib",
-    "test": "TS_NODE_PROJECT=test/tsconfig.json TS_NODE_TRANSPILE_ONLY=true mocha --config test/.mocharc.json --forbid-only",
-    "test:coverage": "TS_NODE_PROJECT=test/tsconfig.json TS_NODE_TRANSPILE_ONLY=true nyc --extension .ts mocha --config test/.mocharc.json --forbid-only",
+    "test": "mocha --config test/.mocharc.json --forbid-only",
+    "test:coverage": "nyc --extension .ts mocha --config test/.mocharc.json --forbid-only",
     "version": "npx oclif readme && git add README.md"
   },
   "types": "lib/index.d.ts",
@@ -114,8 +114,8 @@
     "oclif": "^3.0.0",
     "rxjs": "^7.5.5",
     "shx": "^0.3.4",
-    "ts-node": "^10.9.2",
-    "tslib": "^1"
+    "tslib": "^1",
+    "tsx": "^4.21.0"
   },
   "overrides": {
     "@oclif/core": {
