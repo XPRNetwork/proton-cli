@@ -118,7 +118,9 @@ USAGE
 * [`proton msig:approve PROPOSER PROPOSAL AUTH`](#proton-msigapprove-proposer-proposal-auth)
 * [`proton msig:cancel PROPOSALNAME AUTH`](#proton-msigcancel-proposalname-auth)
 * [`proton msig:exec PROPOSER PROPOSAL AUTH`](#proton-msigexec-proposer-proposal-auth)
+* [`proton msig:invalidate ACCOUNT AUTH`](#proton-msiginvalidate-account-auth)
 * [`proton msig:propose PROPOSALNAME ACTIONS AUTH`](#proton-msigpropose-proposalname-actions-auth)
+* [`proton msig:unapprove PROPOSER PROPOSAL AUTH`](#proton-msigunapprove-proposer-proposal-auth)
 * [`proton network`](#proton-network)
 * [`proton permission ACCOUNT`](#proton-permission-account)
 * [`proton permission:link ACCOUNT PERMISSION CONTRACT [ACTION]`](#proton-permissionlink-account-permission-contract-action)
@@ -804,7 +806,11 @@ Multisig Approve
 
 ```
 USAGE
-  $ proton msig:approve [PROPOSER] [PROPOSAL] [AUTH]
+  $ proton msig:approve [PROPOSER] [PROPOSAL] [AUTH] [-l <value>] [--proposal-hash <value>]
+
+FLAGS
+  -l, --level=<value>      Requested permission to approve (e.g. user1@active)
+  --proposal-hash=<value>  Optional proposal transaction hash
 
 DESCRIPTION
   Multisig Approve
@@ -818,7 +824,10 @@ Multisig Cancel
 
 ```
 USAGE
-  $ proton msig:cancel [PROPOSALNAME] [AUTH]
+  $ proton msig:cancel [PROPOSALNAME] [AUTH] [--proposer <value>]
+
+FLAGS
+  --proposer=<value>  Proposal owner (defaults to the signing account)
 
 DESCRIPTION
   Multisig Cancel
@@ -840,6 +849,20 @@ DESCRIPTION
 
 _See code: [lib/commands/msig/exec.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.98/lib/commands/msig/exec.js)_
 
+## `proton msig:invalidate ACCOUNT AUTH`
+
+Invalidate Multisig Proposals
+
+```
+USAGE
+  $ proton msig:invalidate [ACCOUNT] [AUTH]
+
+DESCRIPTION
+  Invalidate Multisig Proposals
+```
+
+_See code: [lib/commands/msig/invalidate.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.98/lib/commands/msig/invalidate.js)_
+
 ## `proton msig:propose PROPOSALNAME ACTIONS AUTH`
 
 Multisig Propose
@@ -857,6 +880,23 @@ DESCRIPTION
 ```
 
 _See code: [lib/commands/msig/propose.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.98/lib/commands/msig/propose.js)_
+
+## `proton msig:unapprove PROPOSER PROPOSAL AUTH`
+
+Multisig Unapprove
+
+```
+USAGE
+  $ proton msig:unapprove [PROPOSER] [PROPOSAL] [AUTH] [-l <value>]
+
+FLAGS
+  -l, --level=<value>  Requested permission to unapprove (e.g. user1@active)
+
+DESCRIPTION
+  Multisig Unapprove
+```
+
+_See code: [lib/commands/msig/unapprove.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.98/lib/commands/msig/unapprove.js)_
 
 ## `proton network`
 

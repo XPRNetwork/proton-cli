@@ -1,8 +1,10 @@
-/* eslint-disable no-console */
-import { Command } from '@oclif/command'
-import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
-import { green, red } from 'colors'
+import {Command, flags} from '@oclif/command'
+import {CliUx} from '@oclif/core'
+import {network} from '../../storage/networks'
+import {parseDetailsError} from '../../utils/detailsError'
+import {parseAuthorization} from '../../utils/multisig'
+
+/* eslint-disable camelcase */
 
 export default class MultisigCancel extends Command {
   static description = 'Multisig Cancel'
@@ -12,26 +14,30 @@ export default class MultisigCancel extends Command {
     {name: 'auth', required: true, help: 'Your authorization'},
   ]
 
-  async run() {
-    const {args: {proposalName, auth}} = this.parse(MultisigCancel)
-    const [actor, permission] = auth.split('@')
-  
-    try {
-      await network.transact({
-        actions: [{
-          account: 'eosio.msig',
-          name: 'cancel',
-          data: {
-            proposer: actor,
-            proposal_name: proposalName,
-            canceler: actor
-          },
-          authorization: [{ actor, permission: permission || 'active' }]
-        }]
-      })
-      CliUx.ux.log(green(`Multisig ${proposalName} successfully cancelled.`))
-    } catch (err: any) {
-      return this.error(red(err));
-    }
+  static flags = {
+    proposer: flags.string({description: 'Proposal owner (defaults to the signing account)'}),
+  }
+
+  async run(): Promise<void> {
+    const {args, flags: commandFlags} = this.parse(MultisigCancel)
+    const authorization = parseAuthorization(args.auth)
+    await network.transact({
+      actions: [{
+        account: 'eosio.msig',
+        name: 'cancel',
+        data: {
+          proposer: commandFlags.proposer || authorization.actor,
+          proposal_name: args.proposalName,
+          canceler: authorization.actor,
+        },
+        authorization: [authorization],
+      }],
+    })
+
+    CliUx.ux.log(`Multisig ${args.proposalName} successfully cancelled.`)
+  }
+
+  async catch(e: Error | any): Promise<void> {
+    parseDetailsError(e)
   }
 }

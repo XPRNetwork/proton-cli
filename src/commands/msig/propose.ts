@@ -1,10 +1,12 @@
-/* eslint-disable no-console */
-import { Command, flags } from '@oclif/command'
-import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
-import { green, red } from 'colors'
-import { getExplorer } from '../../apis/getExplorer'
-import { Authorization } from '@proton/wrap-constants'
+import {Command, flags} from '@oclif/command'
+import {CliUx} from '@oclif/core'
+import {getExplorer} from '../../apis/getExplorer'
+import {Authorization} from '@proton/wrap-constants'
+import {network} from '../../storage/networks'
+import {parseDetailsError} from '../../utils/detailsError'
+import {authorizationKey, parseActions, parseAuthorization} from '../../utils/multisig'
+
+/* eslint-disable camelcase */
 
 export default class MultisigPropose extends Command {
   static description = 'Multisig Propose'
@@ -17,49 +19,57 @@ export default class MultisigPropose extends Command {
 
   static flags: { [k: string]: flags.IFlag<number>; } = {
     blocksBehind: flags.integer({char: 'b', default: 30}),
-    expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7 }),
+    expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7}),
   }
 
-  async run() {
-    const {args: {proposalName, actions, auth}, flags} = this.parse(MultisigPropose)
-    const [actor, permission] = auth.split('@')
-    
+  async run(): Promise<void> {
+    const {args, flags: commandFlags} = this.parse(MultisigPropose)
+    const authorization = parseAuthorization(args.auth)
+
     // Serialize action
-    const parsedActions = JSON.parse(actions)
+    const parsedActions = parseActions(args.actions)
     const serializedActions = await network.api.serializeActions(parsedActions)
-    const transactionSettings = await network.protonApi.generateTransactionSettings(flags.expireSeconds, flags.blocksBehind, 0)
+    const transactionSettings = await network.protonApi.generateTransactionSettings(commandFlags.expireSeconds, commandFlags.blocksBehind, 0)
 
     // Find required signers
-    let requested: Authorization[] = []
-    for (const action of parsedActions) {
-      for (const { actor, permission } of action.authorization) {
-        const requiredAccountsLocal = await network.protonApi.getRequiredAccounts(actor, permission)
-        requested = requested.concat(requiredAccountsLocal)
-      }
+    const requested = new Map<string, Authorization>()
+    const actionAuthorizations = parsedActions.flatMap(action => action.authorization)
+    const requiredAccounts = await Promise.all(actionAuthorizations.map(async level => {
+      const parsedLevel = parseAuthorization(`${level.actor}@${level.permission}`, 'action authorization')
+      const required = await network.protonApi.getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
+      return required.length > 0 ? required : [parsedLevel]
+    }))
+    for (const required of requiredAccounts.flat()) {
+      requested.set(authorizationKey(required), required)
     }
-    requested = requested.filter((item, pos) => requested.findIndex(_ => _.actor === item.actor) === pos)
-      
-    try {
-      await network.transact({
-        actions: [{
-          account: 'eosio.msig',
-          name: 'propose',
-          data: {
-            proposer: actor,
-            proposal_name: proposalName,
-            requested,
-            trx: {
-              ...transactionSettings,
-              actions: serializedActions,
-            }
+
+    const sortedRequested = [...requested.values()].sort((left, right) => {
+      const actorOrder = left.actor.localeCompare(right.actor)
+      return actorOrder || left.permission.localeCompare(right.permission)
+    })
+
+    await network.transact({
+      actions: [{
+        account: 'eosio.msig',
+        name: 'propose',
+        data: {
+          proposer: authorization.actor,
+          proposal_name: args.proposalName,
+          requested: sortedRequested,
+          trx: {
+            ...transactionSettings,
+            actions: serializedActions,
           },
-          authorization: [{ actor, permission: permission || 'active' }]
-        }]
-      })
-      CliUx.ux.log(green(`Multisig ${proposalName} successfully proposed.`))
-      CliUx.ux.url(`View Proposal`, `${getExplorer()}/msig/${actor}/${proposalName}`)
-    } catch (err: any) {
-      return this.error(red(err));
-    }
+        },
+        authorization: [authorization],
+      }],
+    })
+
+    CliUx.ux.log(`Multisig ${args.proposalName} successfully proposed.`)
+    CliUx.ux.url('View Proposal', `${getExplorer()}/msig/${authorization.actor}/${args.proposalName}`)
+  }
+
+  async catch(e: Error | any): Promise<void> {
+    parseDetailsError(e)
   }
 }

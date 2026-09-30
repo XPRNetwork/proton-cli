@@ -1,42 +1,43 @@
-import {Command} from '@oclif/command'
+import {Command, flags} from '@oclif/command'
 import {CliUx} from '@oclif/core'
-import {getExplorer} from '../../apis/getExplorer'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
 import {parseAuthorization} from '../../utils/multisig'
 
 /* eslint-disable camelcase */
 
-export default class MultisigExecute extends Command {
-  static description = 'Multisig Execute'
+export default class MultisigUnapprove extends Command {
+  static description = 'Multisig Unapprove'
 
   static args = [
     {name: 'proposer', required: true, help: 'Name of proposer'},
     {name: 'proposal', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Your authorization (e.g. user1@active)'},
+    {name: 'auth', required: true, help: 'Signing authorization (e.g. user1@active)'},
   ]
 
+  static flags = {
+    level: flags.string({char: 'l', description: 'Requested permission to unapprove (e.g. user1@active)'}),
+  }
+
   async run(): Promise<void> {
-    const {args} = this.parse(MultisigExecute)
+    const {args, flags: commandFlags} = this.parse(MultisigUnapprove)
     const authorization = parseAuthorization(args.auth)
-    const result = await network.transact({
+    const level = parseAuthorization(commandFlags.level || args.auth, 'level')
+
+    await network.transact({
       actions: [{
         account: 'eosio.msig',
-        name: 'exec',
+        name: 'unapprove',
         data: {
           proposer: args.proposer,
           proposal_name: args.proposal,
-          executer: authorization.actor,
+          level,
         },
         authorization: [authorization],
       }],
     })
 
-    CliUx.ux.log(`Multisig ${args.proposal} successfully executed.`)
-    const transactionId = (result as any)?.transaction_id
-    if (transactionId) {
-      CliUx.ux.url('View TX', `${getExplorer()}/tx/${transactionId}?tab=traces`)
-    }
+    CliUx.ux.log(`Multisig ${args.proposal} successfully unapproved.`)
   }
 
   async catch(e: Error | any): Promise<void> {

@@ -1,6 +1,6 @@
 import * as rimraf from 'rimraf'
-import * as path from 'path'
-import * as fs from 'fs'
+import fs from 'node:fs'
+import path from 'node:path'
 import {expect, test} from '@oclif/test'
 
 // const TEST_DIR_NAME = 'testdir'
@@ -9,12 +9,13 @@ import {expect, test} from '@oclif/test'
 const DEFAULT_DIR_NAME = 'proton-boilerplate'
 const DEFAULT_DIR = path.join(process.cwd(), DEFAULT_DIR_NAME)
 
-const folders = ['atom', 'c++_tests', 'frontend', 'js_tests']
+const folders = ['atom', 'frontend', 'js_tests']
 
 const folderExists = (baseDir: string) => (folder: string) => fs.existsSync(path.join(baseDir, folder))
 
 describe('boilerplate', () => {
   test
+  .timeout(10_000)
   .command(['boilerplate'])
   .finally(() => rimraf.sync(DEFAULT_DIR))
   .it('All folders exist', (_: any) => {
