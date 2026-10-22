@@ -18,7 +18,7 @@ export default class MultisigApprove extends Command {
 
   static flags = {
     level: flags.string({char: 'l', description: 'Requested permission to approve (e.g. user1@active)'}),
-    'proposal-hash': flags.string({description: 'Optional proposal transaction hash'}),
+    'proposal-hash': flags.string({description: 'Optional proposal transaction hash (64 hex characters, 0x prefix allowed)'}),
   }
 
   async run(): Promise<void> {
@@ -56,5 +56,6 @@ export default class MultisigApprove extends Command {
 
   async catch(e: Error | any): Promise<void> {
     parseDetailsError(e)
+    return this.error(e instanceof Error ? e.message : String(e), {exit: 1})
   }
 }

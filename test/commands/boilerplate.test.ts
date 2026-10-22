@@ -9,6 +9,7 @@ import {expect, test} from '@oclif/test'
 const DEFAULT_DIR_NAME = 'proton-boilerplate'
 const DEFAULT_DIR = path.join(process.cwd(), DEFAULT_DIR_NAME)
 
+// Mirrors the top-level folders of the proton-boilerplate template (no c++_tests upstream).
 const folders = ['atom', 'frontend', 'js_tests']
 
 const folderExists = (baseDir: string) => (folder: string) => fs.existsSync(path.join(baseDir, folder))

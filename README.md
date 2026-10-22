@@ -810,7 +810,7 @@ USAGE
 
 FLAGS
   -l, --level=<value>      Requested permission to approve (e.g. user1@active)
-  --proposal-hash=<value>  Optional proposal transaction hash
+  --proposal-hash=<value>  Optional proposal transaction hash (64 hex characters, 0x prefix allowed)
 
 DESCRIPTION
   Multisig Approve

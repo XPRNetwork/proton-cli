@@ -52,6 +52,10 @@ export const parseActions = (value: string): MultisigAction[] => {
     })) {
       throw new TypeError('each authorization must include actor and permission')
     }
+
+    if (!candidate.data || typeof candidate.data !== 'object' || Array.isArray(candidate.data)) {
+      throw new TypeError('each action must include data')
+    }
   }
 
   return actions as MultisigAction[]

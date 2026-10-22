@@ -39,5 +39,6 @@ export default class MultisigCancel extends Command {
 
   async catch(e: Error | any): Promise<void> {
     parseDetailsError(e)
+    return this.error(e instanceof Error ? e.message : String(e), {exit: 1})
   }
 }

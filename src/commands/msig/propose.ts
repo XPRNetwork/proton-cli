@@ -8,6 +8,16 @@ import {authorizationKey, parseActions, parseAuthorization} from '../../utils/mu
 
 /* eslint-disable camelcase */
 
+// Code-unit order matches EOSIO name collation (`.` < `1-5` < `a-z`)
+// and is stable across machines, unlike localeCompare.
+const compareNames = (left: string, right: string): number => {
+  if (left === right) {
+    return 0
+  }
+
+  return left < right ? -1 : 1
+}
+
 export default class MultisigPropose extends Command {
   static description = 'Multisig Propose'
 
@@ -37,16 +47,18 @@ export default class MultisigPropose extends Command {
     const requiredAccounts = await Promise.all(actionAuthorizations.map(async level => {
       const parsedLevel = parseAuthorization(`${level.actor}@${level.permission}`, 'action authorization')
       const required = await network.protonApi.getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
-      return required.length > 0 ? required : [parsedLevel]
+      if (required.length === 0) {
+        throw new Error(`could not resolve required accounts for ${authorizationKey(parsedLevel)}`)
+      }
+
+      return required
     }))
     for (const required of requiredAccounts.flat()) {
       requested.set(authorizationKey(required), required)
     }
 
-    const sortedRequested = [...requested.values()].sort((left, right) => {
-      const actorOrder = left.actor.localeCompare(right.actor)
-      return actorOrder || left.permission.localeCompare(right.permission)
-    })
+    const sortedRequested = [...requested.values()].sort((left, right) =>
+      compareNames(left.actor, right.actor) || compareNames(left.permission, right.permission))
 
     await network.transact({
       actions: [{
@@ -71,5 +83,6 @@ export default class MultisigPropose extends Command {
 
   async catch(e: Error | any): Promise<void> {
     parseDetailsError(e)
+    return this.error(e instanceof Error ? e.message : String(e), {exit: 1})
   }
 }

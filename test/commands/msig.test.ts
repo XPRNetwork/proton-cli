@@ -198,39 +198,50 @@ describe('multisig commands', () => {
   .stub(network.protonApi, 'generateTransactionSettings', async () => ({expiration: '2030-01-01T00:00:00', ref_block_num: 1, ref_block_prefix: 2}))
   .stub(network.protonApi, 'getRequiredAccounts', async () => [])
   .command(['msig:propose', 'proposal', JSON.stringify(actions), 'proposer@active'])
-  .it('falls back to action authorizations when dependency resolution is empty', () => {
-    expect(transaction.value?.actions[0].data.requested).to.deep.equal([
-      {actor: 'alice', permission: 'active'},
-      {actor: 'alice', permission: 'owner'},
-      {actor: 'charlie', permission: 'active'},
-    ])
-  })
+  .catch(/could not resolve required accounts for charlie@active/)
+  .it('fails fast when required accounts cannot be resolved')
 
   test
-  .stdout()
+  .stub(network, 'transact', capture(transaction))
   .command(['msig:approve', 'proposer', 'proposal', 'bad@active@extra'])
-  .it('formats malformed command authorization errors', ctx => {
-    expect(ctx.stdout).to.contain('authorization must use the account@permission format')
-  })
+  .catch(/authorization must use the account@permission format/)
+  .it('rejects malformed command authorization')
 
   test
-  .stdout()
+  .stub(network, 'transact', capture(transaction))
+  .command(['msig:approve', 'proposer', 'proposal', 'bad@active@extra'])
+  .catch((error: Error & {oclif?: {exit?: number}}) => {
+    expect(error.oclif?.exit).to.equal(1)
+  })
+  .it('exits non-zero when approval fails')
+
+  test
+  .stub(network, 'transact', capture(transaction))
   .command(['msig:propose', 'proposal', 'not-json', 'proposer@active'])
-  .it('formats malformed proposal action errors', ctx => {
-    expect(ctx.stdout).to.contain('actions must be valid JSON')
-  })
+  .catch(/actions must be valid JSON/)
+  .it('rejects malformed proposal actions')
 
   test
-  .stdout()
+  .stub(network, 'transact', capture(transaction))
   .command(['msig:propose', 'proposal', '[{"account":"token","name":"transfer","authorization":[{"actor":"alice"}],"data":{}}]', 'proposer@active'])
-  .it('formats incomplete action authorization errors', ctx => {
-    expect(ctx.stdout).to.contain('each authorization must include actor and permission')
-  })
+  .catch(/each authorization must include actor and permission/)
+  .it('rejects incomplete action authorization')
 
   test
-  .stdout()
+  .stub(network, 'transact', capture(transaction))
+  .command(['msig:propose', 'proposal', '[{"account":"token","name":"transfer","authorization":[{"actor":"alice","permission":"active"}]}]', 'proposer@active'])
+  .catch(/each action must include data/)
+  .it('rejects actions without data')
+
+  test
+  .stub(network, 'transact', capture(transaction))
   .command(['msig:approve', 'proposer', 'proposal', 'signer', '--proposal-hash', 'abcd'])
-  .it('rejects proposal hashes with the wrong length', ctx => {
-    expect(ctx.stdout).to.contain('--proposal-hash must be exactly 64 hexadecimal characters')
-  })
+  .catch(/--proposal-hash must be exactly 64 hexadecimal characters/)
+  .it('rejects proposal hashes with the wrong length')
+
+  test
+  .stub(network, 'transact', capture(transaction))
+  .command(['msig:approve', 'proposer', 'proposal', 'signer', '--proposal-hash', 'zz'.repeat(32)])
+  .catch(/--proposal-hash must be exactly 64 hexadecimal characters/)
+  .it('rejects non-hexadecimal proposal hashes')
 })
