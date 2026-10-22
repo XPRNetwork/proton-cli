@@ -13,22 +13,20 @@ export default class MultisigApprove extends Command {
   static args = [
     {name: 'proposer', required: true, help: 'Name of proposer'},
     {name: 'proposal', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Signing authorization (e.g. user1@active)'},
+    {name: 'auth', required: true, help: 'Requested permission to approve; also signs the transaction (e.g. user1@active)'},
   ]
 
   static flags = {
-    level: flags.string({char: 'l', description: 'Requested permission to approve (e.g. user1@active)'}),
     'proposal-hash': flags.string({description: 'Optional proposal transaction hash (64 hex characters, 0x prefix allowed)'}),
   }
 
   async run(): Promise<void> {
     const {args, flags: commandFlags} = this.parse(MultisigApprove)
     const authorization = parseAuthorization(args.auth)
-    const level = parseAuthorization(commandFlags.level || args.auth, 'level')
     const data: Record<string, unknown> = {
       proposer: args.proposer,
       proposal_name: args.proposal,
-      level,
+      level: authorization,
     }
 
     const proposalHash = commandFlags['proposal-hash']

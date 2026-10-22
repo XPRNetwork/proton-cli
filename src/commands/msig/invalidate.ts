@@ -8,8 +8,7 @@ export default class MultisigInvalidate extends Command {
   static description = 'Invalidate Multisig Proposals'
 
   static args = [
-    {name: 'account', required: true, help: 'Account whose proposals should be invalidated'},
-    {name: 'auth', required: true, help: 'Signing authorization (e.g. user1@active)'},
+    {name: 'auth', required: true, help: 'Authorization of the account whose approvals should be invalidated (e.g. user1@active)'},
   ]
 
   async run(): Promise<void> {
@@ -20,12 +19,12 @@ export default class MultisigInvalidate extends Command {
       actions: [{
         account: 'eosio.msig',
         name: 'invalidate',
-        data: {account: args.account},
+        data: {account: authorization.actor},
         authorization: [authorization],
       }],
     })
 
-    CliUx.ux.log(`Multisig proposals for ${args.account} successfully invalidated.`)
+    CliUx.ux.log(`Multisig proposals for ${authorization.actor} successfully invalidated.`)
   }
 
   async catch(e: Error | any): Promise<void> {

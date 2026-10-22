@@ -53,13 +53,11 @@ describe('multisig commands', () => {
     'msig:approve',
     'proposer',
     'proposal',
-    'signer@active',
-    '--level',
     'requested@owner',
     '--proposal-hash',
     `0x${'00'.repeat(32)}`,
   ])
-  .it('approves a requested permission using a separate signer', () => {
+  .it('approves with the signing authorization as the requested level', () => {
     expect(transaction.value).to.deep.equal({
       actions: [{
         account: 'eosio.msig',
@@ -70,7 +68,7 @@ describe('multisig commands', () => {
           level: {actor: 'requested', permission: 'owner'},
           proposal_hash: '00'.repeat(32),
         },
-        authorization: [{actor: 'signer', permission: 'active'}],
+        authorization: [{actor: 'requested', permission: 'owner'}],
       }],
     })
   })
@@ -91,8 +89,8 @@ describe('multisig commands', () => {
 
   test
   .stub(network, 'transact', capture(transaction))
-  .command(['msig:unapprove', 'proposer', 'proposal', 'signer@active', '--level', 'requested@owner'])
-  .it('unapproves the requested permission', () => {
+  .command(['msig:unapprove', 'proposer', 'proposal', 'requested@owner'])
+  .it('unapproves with the signing authorization as the requested level', () => {
     expect(transaction.value?.actions[0]).to.deep.equal({
       account: 'eosio.msig',
       name: 'unapprove',
@@ -101,7 +99,7 @@ describe('multisig commands', () => {
         proposal_name: 'proposal',
         level: {actor: 'requested', permission: 'owner'},
       },
-      authorization: [{actor: 'signer', permission: 'active'}],
+      authorization: [{actor: 'requested', permission: 'owner'}],
     })
   })
 
@@ -114,8 +112,8 @@ describe('multisig commands', () => {
 
   test
   .stub(network, 'transact', capture(transaction))
-  .command(['msig:invalidate', 'proposer', 'proposer@owner'])
-  .it('invalidates proposals for an account', () => {
+  .command(['msig:invalidate', 'proposer@owner'])
+  .it('invalidates proposals for the signing account', () => {
     expect(transaction.value?.actions[0]).to.deep.equal({
       account: 'eosio.msig',
       name: 'invalidate',
@@ -244,4 +242,19 @@ describe('multisig commands', () => {
   .command(['msig:approve', 'proposer', 'proposal', 'signer', '--proposal-hash', 'zz'.repeat(32)])
   .catch(/--proposal-hash must be exactly 64 hexadecimal characters/)
   .it('rejects non-hexadecimal proposal hashes')
+
+  // eosio.msig approve/unapprove call require_auth(level), so the approval
+  // level must be the declared action authorization. A separate --level
+  // could only build transactions the chain rejects.
+  test
+  .stub(network, 'transact', capture(transaction))
+  .command(['msig:approve', 'proposer', 'proposal', 'signer@active', '--level', 'requested@owner'])
+  .catch(/Unexpected argument/)
+  .it('rejects --level on approve so the level cannot differ from the signer')
+
+  test
+  .stub(network, 'transact', capture(transaction))
+  .command(['msig:unapprove', 'proposer', 'proposal', 'signer@active', '--level', 'requested@owner'])
+  .catch(/Unexpected argument/)
+  .it('rejects --level on unapprove so the level cannot differ from the signer')
 })

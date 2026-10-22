@@ -118,7 +118,7 @@ USAGE
 * [`proton msig:approve PROPOSER PROPOSAL AUTH`](#proton-msigapprove-proposer-proposal-auth)
 * [`proton msig:cancel PROPOSALNAME AUTH`](#proton-msigcancel-proposalname-auth)
 * [`proton msig:exec PROPOSER PROPOSAL AUTH`](#proton-msigexec-proposer-proposal-auth)
-* [`proton msig:invalidate ACCOUNT AUTH`](#proton-msiginvalidate-account-auth)
+* [`proton msig:invalidate AUTH`](#proton-msiginvalidate-auth)
 * [`proton msig:propose PROPOSALNAME ACTIONS AUTH`](#proton-msigpropose-proposalname-actions-auth)
 * [`proton msig:unapprove PROPOSER PROPOSAL AUTH`](#proton-msigunapprove-proposer-proposal-auth)
 * [`proton network`](#proton-network)
@@ -806,10 +806,9 @@ Multisig Approve
 
 ```
 USAGE
-  $ proton msig:approve [PROPOSER] [PROPOSAL] [AUTH] [-l <value>] [--proposal-hash <value>]
+  $ proton msig:approve [PROPOSER] [PROPOSAL] [AUTH] [--proposal-hash <value>]
 
 FLAGS
-  -l, --level=<value>      Requested permission to approve (e.g. user1@active)
   --proposal-hash=<value>  Optional proposal transaction hash (64 hex characters, 0x prefix allowed)
 
 DESCRIPTION
@@ -849,13 +848,13 @@ DESCRIPTION
 
 _See code: [lib/commands/msig/exec.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.98/lib/commands/msig/exec.js)_
 
-## `proton msig:invalidate ACCOUNT AUTH`
+## `proton msig:invalidate AUTH`
 
 Invalidate Multisig Proposals
 
 ```
 USAGE
-  $ proton msig:invalidate [ACCOUNT] [AUTH]
+  $ proton msig:invalidate [AUTH]
 
 DESCRIPTION
   Invalidate Multisig Proposals
@@ -887,10 +886,7 @@ Multisig Unapprove
 
 ```
 USAGE
-  $ proton msig:unapprove [PROPOSER] [PROPOSAL] [AUTH] [-l <value>]
-
-FLAGS
-  -l, --level=<value>  Requested permission to unapprove (e.g. user1@active)
+  $ proton msig:unapprove [PROPOSER] [PROPOSAL] [AUTH]
 
 DESCRIPTION
   Multisig Unapprove

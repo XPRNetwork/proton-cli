@@ -1,4 +1,4 @@
-import {Command, flags} from '@oclif/command'
+import {Command} from '@oclif/command'
 import {CliUx} from '@oclif/core'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
@@ -12,17 +12,12 @@ export default class MultisigUnapprove extends Command {
   static args = [
     {name: 'proposer', required: true, help: 'Name of proposer'},
     {name: 'proposal', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Signing authorization (e.g. user1@active)'},
+    {name: 'auth', required: true, help: 'Requested permission to unapprove; also signs the transaction (e.g. user1@active)'},
   ]
 
-  static flags = {
-    level: flags.string({char: 'l', description: 'Requested permission to unapprove (e.g. user1@active)'}),
-  }
-
   async run(): Promise<void> {
-    const {args, flags: commandFlags} = this.parse(MultisigUnapprove)
+    const {args} = this.parse(MultisigUnapprove)
     const authorization = parseAuthorization(args.auth)
-    const level = parseAuthorization(commandFlags.level || args.auth, 'level')
 
     await network.transact({
       actions: [{
@@ -31,7 +26,7 @@ export default class MultisigUnapprove extends Command {
         data: {
           proposer: args.proposer,
           proposal_name: args.proposal,
-          level,
+          level: authorization,
         },
         authorization: [authorization],
       }],
