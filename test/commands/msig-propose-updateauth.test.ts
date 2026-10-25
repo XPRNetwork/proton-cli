@@ -24,7 +24,7 @@ const WA_KEY = 'PUB_WA_2SDwUMxUfDecidG4YwqBKmPjppXzqto9M8gDc7kU9ZsykSpZ1nS3E8d9R
 describe('msig:propose-updateauth', () => {
   test
   .stub(network, 'transact', capture(transaction))
-  .stub(network.api, 'serializeActions', async (actions: unknown) => actions)
+  .stub(network.api, 'serializeActions', async (...args: unknown[]) => args[0])
   .stub(network.protonApi, 'generateTransactionSettings', async () => ({expiration: '2030-01-01T00:00:00', ref_block_num: 1, ref_block_prefix: 2}))
   .stub(network.protonApi, 'getRequiredAccounts', async () => ([
     {actor: 'ruter2', permission: 'active'},
