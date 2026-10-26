@@ -6,7 +6,9 @@ import {isPositiveInteger} from './integer'
 /* eslint-disable camelcase */
 
 // EOSIO names allow up to 13 characters; a 13th character is restricted to [.1-5a-j].
-const validName = /^([.1-5a-z]{1,12}|[.1-5a-z]{12}[.1-5a-j])$/
+const eosioNamePattern = /^([.1-5a-z]{1,12}|[.1-5a-z]{12}[.1-5a-j])$/
+
+export const isValidEosioName = (value: string): boolean => eosioNamePattern.test(value)
 
 // Chain limits: weights are uint16, delays and thresholds are uint32.
 const maxWeight = 65_535
@@ -16,23 +18,23 @@ export type KeyWeight = {key: string; weight: number};
 export type AccountWeight = {permission: {actor: string; permission: string}; weight: number};
 export type WaitWeight = {wait_sec: number; weight: number};
 
-const parseWeight = (entry: string, value: string, argument: string): number => {
+const parseWeight = (entry: string, value: string, flagName: string): number => {
   if (!isPositiveInteger(value) || Number(value) < 1 || Number(value) > maxWeight) {
-    throw new Error(`${argument} weight in "${entry}" must be an integer between 1 and ${maxWeight}`)
+    throw new Error(`${flagName} weight in "${entry}" must be an integer between 1 and ${maxWeight}`)
   }
 
   return Number(value)
 }
 
-export const validatePublicKey = (key: string, argument: string): void => {
+export const validatePublicKey = (key: string, flagName: string): void => {
   if (!key) {
-    throw new Error(`${argument} has an empty public key`)
+    throw new Error(`${flagName} has an empty public key`)
   }
 
   try {
     Numeric.stringToPublicKey(key)
   } catch (error) {
-    throw new Error(`${argument} has invalid public key "${key}": ${(error as Error).message}`)
+    throw new Error(`${flagName} has invalid public key "${key}": ${(error as Error).message}`)
   }
 }
 
@@ -44,47 +46,47 @@ const splitList = (raw: string | undefined): string[] => {
   return raw.split(',').map(entry => entry.trim())
 }
 
-export const parseKeyWeights = (raw: string | undefined, argument = '--keys'): KeyWeight[] => {
+export const parseKeyWeights = (raw: string | undefined, flagName = '--keys'): KeyWeight[] => {
   return splitList(raw).map(entry => {
     const separator = entry.lastIndexOf(':')
     const key = separator === -1 ? entry : entry.slice(0, separator)
-    const weight = separator === -1 ? 1 : parseWeight(entry, entry.slice(separator + 1), argument)
+    const weight = separator === -1 ? 1 : parseWeight(entry, entry.slice(separator + 1), flagName)
 
-    validatePublicKey(key, argument)
+    validatePublicKey(key, flagName)
 
     return {key, weight}
   })
 }
 
-export const parseAccountWeights = (raw: string | undefined, argument = '--accounts'): AccountWeight[] => {
+export const parseAccountWeights = (raw: string | undefined, flagName = '--accounts'): AccountWeight[] => {
   return splitList(raw).map(entry => {
     const separator = entry.lastIndexOf(':')
     const weightPart = separator === -1 ? '' : entry.slice(separator + 1)
     const hasWeight = separator !== -1 && weightPart !== '' && !weightPart.includes('@')
     const level = hasWeight ? entry.slice(0, separator) : entry
-    const weight = hasWeight ? parseWeight(entry, weightPart, argument) : 1
-    const permission = parseAuthorization(level, `${argument} entry "${entry}"`)
+    const weight = hasWeight ? parseWeight(entry, weightPart, flagName) : 1
+    const permission = parseAuthorization(level, `${flagName} entry "${entry}"`)
 
-    if (!validName.test(permission.actor)) {
-      throw new Error(`${argument} entry "${entry}" has invalid account "${permission.actor}"`)
+    if (!isValidEosioName(permission.actor)) {
+      throw new Error(`${flagName} entry "${entry}" has invalid account "${permission.actor}"`)
     }
 
-    if (!validName.test(permission.permission)) {
-      throw new Error(`${argument} entry "${entry}" has invalid permission "${permission.permission}"`)
+    if (!isValidEosioName(permission.permission)) {
+      throw new Error(`${flagName} entry "${entry}" has invalid permission "${permission.permission}"`)
     }
 
     return {permission, weight}
   })
 }
 
-export const parseWaitWeights = (raw: string | undefined, argument = '--waits'): WaitWeight[] => {
+export const parseWaitWeights = (raw: string | undefined, flagName = '--waits'): WaitWeight[] => {
   return splitList(raw).map(entry => {
     const separator = entry.lastIndexOf(':')
     const seconds = separator === -1 ? entry : entry.slice(0, separator)
-    const weight = separator === -1 ? 1 : parseWeight(entry, entry.slice(separator + 1), argument)
+    const weight = separator === -1 ? 1 : parseWeight(entry, entry.slice(separator + 1), flagName)
 
     if (!isPositiveInteger(seconds) || Number(seconds) < 1 || Number(seconds) > maxUint32) {
-      throw new Error(`${argument} wait delay in "${entry}" must be an integer between 1 and ${maxUint32} seconds`)
+      throw new Error(`${flagName} wait delay in "${entry}" must be an integer between 1 and ${maxUint32} seconds`)
     }
 
     return {wait_sec: Number(seconds), weight}
@@ -156,14 +158,15 @@ export const buildUpdateAuthAction = (options: {
   permission: string;
   parent?: string;
   auth: RpcInterfaces.RequiredAuth;
+  actionPermission?: string;
 }): MultisigAction => {
   const {account, permission, auth} = options
 
-  if (!validName.test(account)) {
+  if (!isValidEosioName(account)) {
     throw new Error(`account "${account}" is not a valid EOSIO account name`)
   }
 
-  if (!validName.test(permission)) {
+  if (!isValidEosioName(permission)) {
     throw new Error(`permission "${permission}" is not a valid permission name`)
   }
 
@@ -176,7 +179,7 @@ export const buildUpdateAuthAction = (options: {
     parent = ''
   } else if (permission === 'active') {
     parent = parent === undefined || parent === '' ? 'owner' : parent
-    if (!validName.test(parent)) {
+    if (!isValidEosioName(parent)) {
       throw new Error(`parent "${parent}" is not a valid permission name`)
     }
 
@@ -188,7 +191,7 @@ export const buildUpdateAuthAction = (options: {
       throw new Error(`permission "${permission}" requires an explicit --parent so an existing permission is never silently reparented`)
     }
 
-    if (!validName.test(parent)) {
+    if (!isValidEosioName(parent)) {
       throw new Error(`parent "${parent}" is not a valid permission name`)
     }
 
@@ -197,10 +200,15 @@ export const buildUpdateAuthAction = (options: {
     }
   }
 
+  const actionPermission = options.actionPermission === undefined ? permission : options.actionPermission
+  if (!isValidEosioName(actionPermission)) {
+    throw new Error(`action permission "${actionPermission}" is not a valid permission name`)
+  }
+
   return {
     account: 'eosio',
     name: 'updateauth',
-    authorization: [{actor: account, permission}],
+    authorization: [{actor: account, permission: actionPermission}],
     data: {account, permission, parent, auth},
   }
 }

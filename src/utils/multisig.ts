@@ -17,11 +17,11 @@ export const compareNames = (left: string, right: string): number => {
   return left < right ? -1 : 1
 }
 
-export const parseAuthorization = (value: string, argument = 'authorization'): Authorization => {
+export const parseAuthorization = (value: string, label = 'authorization'): Authorization => {
   const [actor, permission = 'active', ...extra] = value.split('@')
 
   if (!actor || !permission || extra.length > 0) {
-    throw new Error(`${argument} must use the account@permission format`)
+    throw new Error(`${label} must use the account@permission format`)
   }
 
   return {actor, permission}

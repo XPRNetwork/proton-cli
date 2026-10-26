@@ -4,7 +4,7 @@ import {getExplorer} from '../../apis/getExplorer'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
 import {parseAuthorization, resolveRequestedApprovers} from '../../utils/multisig'
-import {buildRequiredAuth, buildUpdateAuthAction} from '../../utils/updateauth'
+import {buildRequiredAuth, buildUpdateAuthAction, isValidEosioName} from '../../utils/updateauth'
 
 /* eslint-disable camelcase */
 
@@ -37,6 +37,28 @@ export default class MultisigProposeUpdateauth extends Command {
       throw new Error('--permission must not be empty')
     }
 
+    // Validate every name before touching the chain so typos fail here
+    // with a clear message instead of an opaque node error.
+    if (!isValidEosioName(args.proposalName)) {
+      throw new Error(`proposal name "${args.proposalName}" is not a valid EOSIO name`)
+    }
+
+    if (!isValidEosioName(args.account)) {
+      throw new Error(`account "${args.account}" is not a valid EOSIO account name`)
+    }
+
+    if (!isValidEosioName(permission)) {
+      throw new Error(`permission "${permission}" is not a valid permission name`)
+    }
+
+    if (!isValidEosioName(authorization.actor)) {
+      throw new Error(`authorization actor "${authorization.actor}" is not a valid EOSIO account name`)
+    }
+
+    if (!isValidEosioName(authorization.permission)) {
+      throw new Error(`authorization permission "${authorization.permission}" is not a valid permission name`)
+    }
+
     const threshold = commandFlags.threshold as number
 
     if (permission === 'owner' && !commandFlags.yes) {
@@ -62,19 +84,22 @@ export default class MultisigProposeUpdateauth extends Command {
 
     const flagParent = commandFlags.parent as string | undefined
     const parent = flagParent === undefined || flagParent === '' ? existing?.parent : flagParent
+
+    // A parent that does not exist would only fail at exec, after approvals
+    // are collected. Reject it now while the chain state is in hand.
+    if (parent !== undefined && parent !== '' && !onChain.permissions.some(entry => entry.perm_name === parent)) {
+      throw new Error(`parent "${parent}" does not exist on account "${args.account}"`)
+    }
+
     const updateAuthAction = buildUpdateAuthAction({
       account: args.account,
       permission,
       parent,
       auth: requiredAuth,
+      // A permission that does not exist yet cannot authorize; the parent
+      // authority creates it.
+      actionPermission: existing ? permission : parent,
     })
-
-    // A permission that does not exist yet cannot authorize; the parent
-    // authority creates it.
-    if (!existing) {
-      const actionData = updateAuthAction.data as {parent: string}
-      updateAuthAction.authorization = [{actor: args.account, permission: actionData.parent}]
-    }
 
     const parsedActions = [updateAuthAction]
 

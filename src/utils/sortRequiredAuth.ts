@@ -1,7 +1,9 @@
 import {Numeric, RpcInterfaces} from '@proton/js'
 import {compareNames} from './multisig'
 
-/* eslint-disable camelcase */
+type KeyEntry = RpcInterfaces.RequiredAuth['keys'][number];
+type AccountEntry = RpcInterfaces.RequiredAuth['accounts'][number];
+type WaitEntry = RpcInterfaces.RequiredAuth['waits'][number];
 
 const compareBytes = (left: Uint8Array, right: Uint8Array): number => {
   const shared = Math.min(left.length, right.length)
@@ -18,25 +20,27 @@ const compareBytes = (left: Uint8Array, right: Uint8Array): number => {
   return left.length < right.length ? -1 : 1
 }
 
-// Chain order for authority keys is (key type, key bytes): decode every key
-// instead of comparing base58 strings, where '10...' would sort before '9...'.
-const compareKeys = (left: string, right: string): number => {
-  if (left === right) {
-    return 0
-  }
+// Chain order for authority keys is (key type, key bytes). Decode each key
+// once: base58 decoding inside the comparator would run O(n log n) times.
+const sortKeys = (keys: KeyEntry[]): void => {
+  const decoded = keys.map(entry => ({entry, binary: Numeric.stringToPublicKey(entry.key)}))
 
-  const leftKey = Numeric.stringToPublicKey(left)
-  const rightKey = Numeric.stringToPublicKey(right)
-  if (leftKey.type !== rightKey.type) {
-    return leftKey.type < rightKey.type ? -1 : 1
-  }
+  decoded.sort((left, right) => {
+    if (left.binary.type !== right.binary.type) {
+      return left.binary.type < right.binary.type ? -1 : 1
+    }
 
-  return compareBytes(leftKey.data, rightKey.data)
+    return compareBytes(left.binary.data, right.binary.data)
+  })
+
+  for (const [index, {entry}] of decoded.entries()) {
+    keys[index] = entry
+  }
 }
 
 export const sortRequiredAuth = (auth: RpcInterfaces.RequiredAuth): void => {
-  auth.keys.sort((a: {key: string}, b: {key: string}) => compareKeys(a.key, b.key))
-  auth.accounts.sort((a: {permission: {actor: string; permission: string}}, b: {permission: {actor: string; permission: string}}) =>
+  sortKeys(auth.keys)
+  auth.accounts.sort((a: AccountEntry, b: AccountEntry) =>
     compareNames(a.permission.actor, b.permission.actor) || compareNames(a.permission.permission, b.permission.permission))
-  auth.waits.sort((a: {wait_sec: number}, b: {wait_sec: number}) => a.wait_sec - b.wait_sec)
+  auth.waits.sort((a: WaitEntry, b: WaitEntry) => a.wait_sec - b.wait_sec)
 }

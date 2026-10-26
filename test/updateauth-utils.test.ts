@@ -5,6 +5,7 @@ import {strict as assert} from 'node:assert'
 import {
   buildRequiredAuth,
   buildUpdateAuthAction,
+  isValidEosioName,
   parseAccountWeights,
   parseKeyWeights,
   parseWaitWeights,
@@ -163,5 +164,21 @@ describe('updateauth utilities', () => {
     const action = buildUpdateAuthAction({account: 'victorcrisan', permission: 'trading', parent: 'active', auth: requiredAuth})
 
     assert.equal((action.data as {parent: string}).parent, 'active')
+  })
+
+  it('validates EOSIO names', () => {
+    assert.equal(isValidEosioName('victorcrisan'), true)
+    assert.equal(isValidEosioName('eosio.msig'), true)
+    assert.equal(isValidEosioName(''), false)
+    assert.equal(isValidEosioName('BAD NAME!'), false)
+    assert.equal(isValidEosioName('abcdefghijklm'), false)
+  })
+
+  it('authorizes the action with an explicit action permission', () => {
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${K1_A}:1`})
+    const action = buildUpdateAuthAction({account: 'victorcrisan', permission: 'trading', parent: 'active', auth: requiredAuth, actionPermission: 'active'})
+
+    assert.deepEqual(action.authorization, [{actor: 'victorcrisan', permission: 'active'}])
+    assert.throws(() => buildUpdateAuthAction({account: 'victorcrisan', permission: 'trading', parent: 'active', auth: requiredAuth, actionPermission: 'bad!'}), /action permission/)
   })
 })

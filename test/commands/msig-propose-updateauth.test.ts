@@ -103,6 +103,21 @@ describe('msig:propose-updateauth', () => {
   .it('rejects an empty permission instead of defaulting to active')
 
   baseStubs()
+  .command(['msig:propose-updateauth', 'BAD NAME!', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', WA_KEY])
+  .catch(/proposal name/)
+  .it('rejects an invalid proposal name')
+
+  baseStubs()
+  .command(['msig:propose-updateauth', 'waprop', 'BAD NAME!', 'ruter1@active', '--threshold', '1', '--keys', WA_KEY])
+  .catch(/not a valid EOSIO account name/)
+  .it('rejects an invalid account name')
+
+  baseStubs()
+  .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--permission', 'trading', '--parent', 'nosuchperm', '--threshold', '1', '--keys', WA_KEY])
+  .catch(/does not exist on account/)
+  .it('rejects a parent permission that does not exist on the account')
+
+  baseStubs()
   .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', 'PUB_WA_NOTVALID'])
   .catch(/invalid public key/)
   .it('rejects keys the chain cannot decode')
