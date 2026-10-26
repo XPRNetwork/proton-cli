@@ -32,6 +32,7 @@ const baseStubs = () => test
 .stub(network, 'transact', capture(transaction))
 .stub(network.api, 'serializeActions', async (...args: unknown[]) => args[0])
 .stub(network.rpc, 'get_account', async () => accountWithActive)
+.stub(network.protonApi, 'getChainTable', async () => ({max_transaction_delay: 3600}))
 .stub(network.protonApi, 'generateTransactionSettings', async () => ({expiration: '2030-01-01T00:00:00', ref_block_num: 1, ref_block_prefix: 2}))
 .stub(network.protonApi, 'getRequiredAccounts', async () => ([
   {actor: 'ruter2', permission: 'active'},
@@ -116,6 +117,59 @@ describe('msig:propose-updateauth', () => {
   .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--permission', 'trading', '--parent', 'nosuchperm', '--threshold', '1', '--keys', WA_KEY])
   .catch(/does not exist on account/)
   .it('rejects a parent permission that does not exist on the account')
+
+  baseStubs()
+  .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--permission', 'active', '--parent', 'active', '--threshold', '1', '--keys', WA_KEY])
+  .catch(/already has parent/)
+  .it('rejects changing the parent of an existing permission')
+
+  baseStubs()
+  .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--permission', 'eosio.code', '--parent', 'active', '--threshold', '1', '--keys', WA_KEY])
+  .catch(/reserved/)
+  .it('rejects reserved eosio dot permission names')
+
+  baseStubs()
+  .stdout()
+  .command(['msig:propose-updateauth', 'acctprop', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', WA_KEY, '--accounts', 'ruter1@active'])
+  .it('accepts account authorities that exist on chain', ctx => {
+    const propose = transaction.value?.actions[0]
+    const trx = propose?.data.trx as {actions: Array<{data: Record<string, unknown>}>}
+    const auth = trx.actions[0].data.auth as {accounts: unknown}
+
+    expect(auth.accounts).to.deep.equal([
+      {permission: {actor: 'ruter1', permission: 'active'}, weight: 1},
+    ])
+    expect(ctx.stdout).to.contain('/msig/ruter1/acctprop')
+  })
+
+  baseStubs()
+  .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', WA_KEY, '--accounts', 'ruter1@trading'])
+  .catch(/permission "ruter1@trading" does not exist/)
+  .it('rejects account authorities whose permission does not exist')
+
+  test
+  .stub(network, 'transact', capture(transaction))
+  .stub(network.api, 'serializeActions', async (...args: unknown[]) => args[0])
+  .stub(network.rpc, 'get_account', async (...args: unknown[]) => {
+    if (args[0] === 'victorcrisan') {
+      return accountWithActive
+    }
+
+    throw new Error('unknown account')
+  })
+  .stub(network.protonApi, 'getChainTable', async () => ({max_transaction_delay: 3600}))
+  .stub(network.protonApi, 'generateTransactionSettings', async () => ({expiration: '2030-01-01T00:00:00', ref_block_num: 1, ref_block_prefix: 2}))
+  .stub(network.protonApi, 'getRequiredAccounts', async () => ([
+    {actor: 'ruter1', permission: 'active'},
+  ]))
+  .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', WA_KEY, '--accounts', 'nosuchacct@active'])
+  .catch(/account "nosuchacct" does not exist/)
+  .it('rejects account authorities whose account does not exist')
+
+  baseStubs()
+  .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', WA_KEY, '--waits', '86400'])
+  .catch(/maximum transaction delay/)
+  .it('rejects waits longer than the chain maximum transaction delay')
 
   baseStubs()
   .command(['msig:propose-updateauth', 'waprop', 'victorcrisan', 'ruter1@active', '--threshold', '1', '--keys', 'PUB_WA_NOTVALID'])

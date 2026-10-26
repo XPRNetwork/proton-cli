@@ -3,7 +3,7 @@ import { CliUx } from '@oclif/core'
 import { RpcInterfaces } from '@proton/js'
 import { green, red } from 'colors'
 import { network } from '../../storage/networks'
-import { sortRequiredAuth } from '../../utils/sortRequiredAuth'
+import { sortRequiredAuth } from '../../utils/sort-required-auth'
 
 export default class ContractEnableInline extends Command {
   static description = 'Enable Inline Actions on a Contract'

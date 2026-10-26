@@ -29,20 +29,37 @@ export const parseAuthorization = (value: string, label = 'authorization'): Auth
 
 export const authorizationKey = ({actor, permission}: Authorization): string => `${actor}@${permission}`
 
+const validateAuthorization = (value: unknown, label: string): Authorization => {
+  if (!value || typeof value !== 'object') {
+    throw new TypeError(`${label} must include actor and permission`)
+  }
+
+  const candidate = value as Partial<Authorization>
+  if (typeof candidate.actor !== 'string' || typeof candidate.permission !== 'string') {
+    throw new TypeError(`${label} must include actor and permission`)
+  }
+
+  return parseAuthorization(`${candidate.actor}@${candidate.permission}`, label)
+}
+
 export const resolveRequestedApprovers = async (
   actions: MultisigAction[],
   getRequiredAccounts: (actor: string, permission: string) => Promise<Authorization[]>,
 ): Promise<Authorization[]> => {
   const requested = new Map<string, Authorization>()
-  const actionAuthorizations = actions.flatMap(action => action.authorization)
-  const requiredAccounts = await Promise.all(actionAuthorizations.map(async level => {
-    const parsedLevel = parseAuthorization(`${level.actor}@${level.permission}`, 'action authorization')
-    const required = await getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
-    if (required.length === 0) {
+  const uniqueLevels = new Map<string, Authorization>()
+  for (const level of actions.flatMap(action => action.authorization)) {
+    const parsedLevel = validateAuthorization(level, 'action authorization')
+    uniqueLevels.set(authorizationKey(parsedLevel), parsedLevel)
+  }
+
+  const requiredAccounts = await Promise.all([...uniqueLevels.values()].map(async parsedLevel => {
+    const required: unknown = await getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
+    if (!Array.isArray(required) || required.length === 0) {
       throw new Error(`could not resolve required accounts for ${authorizationKey(parsedLevel)}`)
     }
 
-    return required
+    return required.map(entry => validateAuthorization(entry, 'required account'))
   }))
   for (const required of requiredAccounts.flat()) {
     requested.set(authorizationKey(required), required)

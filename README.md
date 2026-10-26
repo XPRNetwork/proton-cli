@@ -896,8 +896,8 @@ FLAGS
   -y, --yes                    Confirm replacing the owner permission (irreversible once executed)
   --accounts=<value>           Comma-separated accounts as actor@permission[:weight]
   --keys=<value>               Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)
-  --parent=<value>             Parent permission (default: current parent on chain; required for new custom permissions;
-                               must be empty for owner)
+  --parent=<value>             Parent permission (default: current parent on chain; cannot change an existing parent;
+                               required for new custom permissions; must be empty for owner)
   --permission=<value>         [default: active] Permission to change
   --threshold=<value>          (required) New permission threshold
   --waits=<value>              Comma-separated delays as seconds[:weight]

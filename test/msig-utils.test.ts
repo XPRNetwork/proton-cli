@@ -69,4 +69,36 @@ describe('multisig utilities', () => {
 
     await assert.rejects(resolveRequestedApprovers(actions, async () => []), /could not resolve required accounts/)
   })
+
+  it('resolves each distinct action authorization only once', async () => {
+    const actions: MultisigAction[] = [
+      {account: 'eosio', name: 'noop', authorization: [{actor: 'alice', permission: 'active'}], data: {}},
+      {account: 'eosio', name: 'noop', authorization: [{actor: 'alice', permission: 'active'}, {actor: 'bob', permission: 'active'}], data: {}},
+    ]
+    const calls: string[] = []
+    const resolver = async (actor: string, permission: string) => {
+      calls.push(`${actor}@${permission}`)
+      return [{actor, permission}]
+    }
+
+    assert.deepEqual(await resolveRequestedApprovers(actions, resolver), [
+      {actor: 'alice', permission: 'active'},
+      {actor: 'bob', permission: 'active'},
+    ])
+    assert.deepEqual(calls, ['alice@active', 'bob@active'])
+  })
+
+  it('rejects malformed required-account results', async () => {
+    const actions: MultisigAction[] = [{
+      account: 'eosio',
+      name: 'noop',
+      authorization: [{actor: 'alice', permission: 'active'}],
+      data: {},
+    }]
+
+    await assert.rejects(
+      resolveRequestedApprovers(actions, async () => ([{actor: '', permission: 'active'}])),
+      /account@permission/,
+    )
+  })
 })
