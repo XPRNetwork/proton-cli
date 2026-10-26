@@ -97,7 +97,7 @@ export const parseWaitWeights = (raw: string | undefined, argument = '--waits'):
   })
 }
 
-export const buildUpdateauthAuth = (options: {
+export const buildRequiredAuth = (options: {
   threshold: number;
   keys?: string;
   accounts?: string;
@@ -128,7 +128,7 @@ export const buildUpdateauthAuth = (options: {
   return auth
 }
 
-export const buildUpdateauthAction = (options: {
+export const buildUpdateAuthAction = (options: {
   account: string;
   permission: string;
   parent?: string;

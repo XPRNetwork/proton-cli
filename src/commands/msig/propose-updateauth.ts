@@ -5,7 +5,7 @@ import {Authorization} from '@proton/wrap-constants'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
 import {authorizationKey, parseAuthorization} from '../../utils/multisig'
-import {buildUpdateauthAction, buildUpdateauthAuth, compareNames} from '../../utils/updateauth'
+import {buildRequiredAuth, buildUpdateAuthAction, compareNames} from '../../utils/updateauth'
 
 /* eslint-disable camelcase */
 
@@ -35,19 +35,19 @@ export default class MultisigProposeUpdateauth extends Command {
     const permission = commandFlags.permission || 'active'
     const threshold = commandFlags.threshold as number
 
-    const auth = buildUpdateauthAuth({
+    const requiredAuth = buildRequiredAuth({
       threshold,
       keys: commandFlags.keys as string | undefined,
       accounts: commandFlags.accounts as string | undefined,
       waits: commandFlags.waits as string | undefined,
     })
-    const updateauthAction = buildUpdateauthAction({
+    const updateAuthAction = buildUpdateAuthAction({
       account: args.account,
       permission,
       parent: commandFlags.parent as string | undefined,
-      auth,
+      auth: requiredAuth,
     })
-    const parsedActions = [updateauthAction]
+    const parsedActions = [updateAuthAction]
 
     // Serialize action
     const serializedActions = await network.api.serializeActions(parsedActions)

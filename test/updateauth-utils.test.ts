@@ -3,8 +3,8 @@ import {strict as assert} from 'node:assert'
 /* eslint-disable camelcase, unicorn/numeric-separators-style */
 
 import {
-  buildUpdateauthAction,
-  buildUpdateauthAuth,
+  buildRequiredAuth,
+  buildUpdateAuthAction,
   parseAccountWeights,
   parseKeyWeights,
   parseWaitWeights,
@@ -48,19 +48,19 @@ describe('updateauth utilities', () => {
   })
 
   it('builds a threshold-1 WebAuthn authority', () => {
-    const auth = buildUpdateauthAuth({threshold: 1, keys: `${WA_A}:1`})
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${WA_A}:1`})
 
-    assert.equal(auth.threshold, 1)
-    assert.deepEqual(auth.keys, [{key: WA_A, weight: 1}])
-    assert.deepEqual(auth.accounts, [])
-    assert.deepEqual(auth.waits, [])
+    assert.equal(requiredAuth.threshold, 1)
+    assert.deepEqual(requiredAuth.keys, [{key: WA_A, weight: 1}])
+    assert.deepEqual(requiredAuth.accounts, [])
+    assert.deepEqual(requiredAuth.waits, [])
   })
 
   it('sorts keys deterministically', () => {
-    const auth = buildUpdateauthAuth({threshold: 1, keys: `${K1_B}:1,${K1_A}:1`})
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${K1_B}:1,${K1_A}:1`})
 
     // '4uNj…' orders before '6RMs…' regardless of input order.
-    assert.deepEqual(auth.keys.map(entry => entry.key), [K1_A, K1_B])
+    assert.deepEqual(requiredAuth.keys.map(entry => entry.key), [K1_A, K1_B])
   })
 
   it('rejects malformed account entries', () => {
@@ -70,23 +70,23 @@ describe('updateauth utilities', () => {
   })
 
   it('accepts 13-character names with a valid final character', () => {
-    const auth = buildUpdateauthAuth({threshold: 1, keys: `${K1_A}:1`})
-    const action = buildUpdateauthAction({account: 'abcdefghij123', permission: 'active', auth})
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${K1_A}:1`})
+    const action = buildUpdateAuthAction({account: 'abcdefghij123', permission: 'active', auth: requiredAuth})
 
     assert.equal((action.authorization as Array<{actor: string}>)[0].actor, 'abcdefghij123')
-    assert.throws(() => buildUpdateauthAction({account: 'abcdefghij1234', permission: 'active', auth}), /not a valid EOSIO account name/)
-    assert.throws(() => buildUpdateauthAction({account: 'abcdefghij123', permission: 'abcdefghijklm', auth}), /not a valid permission name/)
+    assert.throws(() => buildUpdateAuthAction({account: 'abcdefghij1234', permission: 'active', auth: requiredAuth}), /not a valid EOSIO account name/)
+    assert.throws(() => buildUpdateAuthAction({account: 'abcdefghij123', permission: 'abcdefghijklm', auth: requiredAuth}), /not a valid permission name/)
   })
 
   it('rejects unusable authorities', () => {
-    assert.throws(() => buildUpdateauthAuth({threshold: 1}), /at least one key, account, or wait/)
-    assert.throws(() => buildUpdateauthAuth({threshold: 0, keys: `${K1_A}:1`}), /threshold/)
-    assert.throws(() => buildUpdateauthAuth({threshold: 2, keys: `${K1_A}:1`}), /exceeds total weight/)
+    assert.throws(() => buildRequiredAuth({threshold: 1}), /at least one key, account, or wait/)
+    assert.throws(() => buildRequiredAuth({threshold: 0, keys: `${K1_A}:1`}), /threshold/)
+    assert.throws(() => buildRequiredAuth({threshold: 2, keys: `${K1_A}:1`}), /exceeds total weight/)
   })
 
   it('builds an updateauth action authorized by the updated permission', () => {
-    const auth = buildUpdateauthAuth({threshold: 1, keys: `${WA_A}:1`})
-    const action = buildUpdateauthAction({account: 'victorcrisan', permission: 'active', auth})
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${WA_A}:1`})
+    const action = buildUpdateAuthAction({account: 'victorcrisan', permission: 'active', auth: requiredAuth})
 
     assert.deepEqual(action, {
       account: 'eosio',
@@ -107,15 +107,15 @@ describe('updateauth utilities', () => {
   })
 
   it('stores owner authorities without a parent', () => {
-    const auth = buildUpdateauthAuth({threshold: 1, keys: `${K1_A}:1`})
-    const action = buildUpdateauthAction({account: 'victorcrisan', permission: 'owner', auth})
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${K1_A}:1`})
+    const action = buildUpdateAuthAction({account: 'victorcrisan', permission: 'owner', auth: requiredAuth})
 
     assert.equal((action.data as {parent: string}).parent, '')
   })
 
   it('rejects permissions that name themselves as parent', () => {
-    const auth = buildUpdateauthAuth({threshold: 1, keys: `${K1_A}:1`})
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${K1_A}:1`})
 
-    assert.throws(() => buildUpdateauthAction({account: 'victorcrisan', permission: 'active', parent: 'active', auth}), /parent/)
+    assert.throws(() => buildUpdateAuthAction({account: 'victorcrisan', permission: 'active', parent: 'active', auth: requiredAuth}), /parent/)
   })
 })
