@@ -1,22 +1,11 @@
 import {Command, flags} from '@oclif/command'
 import {CliUx} from '@oclif/core'
 import {getExplorer} from '../../apis/getExplorer'
-import {Authorization} from '@proton/wrap-constants'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
-import {authorizationKey, parseActions, parseAuthorization} from '../../utils/multisig'
+import {parseActions, parseAuthorization, resolveRequestedApprovers} from '../../utils/multisig'
 
 /* eslint-disable camelcase */
-
-// Code-unit order matches EOSIO name collation (`.` < `1-5` < `a-z`)
-// and is stable across machines, unlike localeCompare.
-const compareNames = (left: string, right: string): number => {
-  if (left === right) {
-    return 0
-  }
-
-  return left < right ? -1 : 1
-}
 
 export default class MultisigPropose extends Command {
   static description = 'Multisig Propose'
@@ -42,23 +31,8 @@ export default class MultisigPropose extends Command {
     const transactionSettings = await network.protonApi.generateTransactionSettings(commandFlags.expireSeconds, commandFlags.blocksBehind, 0)
 
     // Find required signers
-    const requested = new Map<string, Authorization>()
-    const actionAuthorizations = parsedActions.flatMap(action => action.authorization)
-    const requiredAccounts = await Promise.all(actionAuthorizations.map(async level => {
-      const parsedLevel = parseAuthorization(`${level.actor}@${level.permission}`, 'action authorization')
-      const required = await network.protonApi.getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
-      if (required.length === 0) {
-        throw new Error(`could not resolve required accounts for ${authorizationKey(parsedLevel)}`)
-      }
-
-      return required
-    }))
-    for (const required of requiredAccounts.flat()) {
-      requested.set(authorizationKey(required), required)
-    }
-
-    const sortedRequested = [...requested.values()].sort((left, right) =>
-      compareNames(left.actor, right.actor) || compareNames(left.permission, right.permission))
+    const sortedRequested = await resolveRequestedApprovers(parsedActions, (actor, permission) =>
+      network.protonApi.getRequiredAccounts(actor, permission))
 
     await network.transact({
       actions: [{

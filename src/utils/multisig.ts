@@ -7,6 +7,16 @@ export type MultisigAction = {
   data: unknown;
 };
 
+// Code-unit order matches EOSIO name collation (`.` < `1-5` < `a-z`)
+// and is stable across machines, unlike localeCompare.
+export const compareNames = (left: string, right: string): number => {
+  if (left === right) {
+    return 0
+  }
+
+  return left < right ? -1 : 1
+}
+
 export const parseAuthorization = (value: string, argument = 'authorization'): Authorization => {
   const [actor, permission = 'active', ...extra] = value.split('@')
 
@@ -18,6 +28,29 @@ export const parseAuthorization = (value: string, argument = 'authorization'): A
 }
 
 export const authorizationKey = ({actor, permission}: Authorization): string => `${actor}@${permission}`
+
+export const resolveRequestedApprovers = async (
+  actions: MultisigAction[],
+  getRequiredAccounts: (actor: string, permission: string) => Promise<Authorization[]>,
+): Promise<Authorization[]> => {
+  const requested = new Map<string, Authorization>()
+  const actionAuthorizations = actions.flatMap(action => action.authorization)
+  const requiredAccounts = await Promise.all(actionAuthorizations.map(async level => {
+    const parsedLevel = parseAuthorization(`${level.actor}@${level.permission}`, 'action authorization')
+    const required = await getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
+    if (required.length === 0) {
+      throw new Error(`could not resolve required accounts for ${authorizationKey(parsedLevel)}`)
+    }
+
+    return required
+  }))
+  for (const required of requiredAccounts.flat()) {
+    requested.set(authorizationKey(required), required)
+  }
+
+  return [...requested.values()].sort((left, right) =>
+    compareNames(left.actor, right.actor) || compareNames(left.permission, right.permission))
+}
 
 export const parseActions = (value: string): MultisigAction[] => {
   let actions: unknown

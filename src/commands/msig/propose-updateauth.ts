@@ -1,11 +1,10 @@
 import {Command, flags} from '@oclif/command'
 import {CliUx} from '@oclif/core'
 import {getExplorer} from '../../apis/getExplorer'
-import {Authorization} from '@proton/wrap-constants'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
-import {authorizationKey, parseAuthorization} from '../../utils/multisig'
-import {buildRequiredAuth, buildUpdateAuthAction, compareNames} from '../../utils/updateauth'
+import {parseAuthorization, resolveRequestedApprovers} from '../../utils/multisig'
+import {buildRequiredAuth, buildUpdateAuthAction} from '../../utils/updateauth'
 
 /* eslint-disable camelcase */
 
@@ -19,12 +18,13 @@ export default class MultisigProposeUpdateauth extends Command {
   ]
 
   static flags = {
-    permission: flags.string({description: 'Permission to change (default: active)'}),
-    parent: flags.string({description: 'Parent permission (default: owner; empty for owner)'}),
-    threshold: flags.integer({description: 'New permission threshold (required)', required: true}),
+    permission: flags.string({description: 'Permission to change', default: 'active'}),
+    parent: flags.string({description: 'Parent permission (default: current parent on chain; required for new custom permissions; must be empty for owner)'}),
+    threshold: flags.integer({description: 'New permission threshold', required: true}),
     keys: flags.string({description: 'Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)'}),
     accounts: flags.string({description: 'Comma-separated accounts as actor@permission[:weight]'}),
     waits: flags.string({description: 'Comma-separated delays as seconds[:weight]'}),
+    yes: flags.boolean({char: 'y', description: 'Confirm replacing the owner permission (irreversible once executed)'}),
     blocksBehind: flags.integer({char: 'b', default: 30}),
     expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7}),
   }
@@ -32,8 +32,16 @@ export default class MultisigProposeUpdateauth extends Command {
   async run(): Promise<void> {
     const {args, flags: commandFlags} = this.parse(MultisigProposeUpdateauth)
     const authorization = parseAuthorization(args.auth)
-    const permission = commandFlags.permission || 'active'
+    const permission = commandFlags.permission as string | undefined
+    if (permission === undefined || permission === '') {
+      throw new Error('--permission must not be empty')
+    }
+
     const threshold = commandFlags.threshold as number
+
+    if (permission === 'owner' && !commandFlags.yes) {
+      throw new Error('replacing the owner permission can permanently lock the account; re-run with --yes to confirm')
+    }
 
     const requiredAuth = buildRequiredAuth({
       threshold,
@@ -41,12 +49,33 @@ export default class MultisigProposeUpdateauth extends Command {
       accounts: commandFlags.accounts as string | undefined,
       waits: commandFlags.waits as string | undefined,
     })
+
+    // Resolve the parent and the existing permission from the chain so a
+    // custom permission keeps its current parent unless --parent overrides it.
+    const onChain = await network.rpc.get_account(args.account)
+    const existing = onChain.permissions.find(entry => entry.perm_name === permission)
+    if (existing) {
+      CliUx.ux.log(`Current ${permission} authority: ${JSON.stringify(existing.required_auth)}`)
+    }
+
+    CliUx.ux.log(`Proposed ${permission} authority: ${JSON.stringify(requiredAuth)}`)
+
+    const flagParent = commandFlags.parent as string | undefined
+    const parent = flagParent === undefined || flagParent === '' ? existing?.parent : flagParent
     const updateAuthAction = buildUpdateAuthAction({
       account: args.account,
       permission,
-      parent: commandFlags.parent as string | undefined,
+      parent,
       auth: requiredAuth,
     })
+
+    // A permission that does not exist yet cannot authorize; the parent
+    // authority creates it.
+    if (!existing) {
+      const actionData = updateAuthAction.data as {parent: string}
+      updateAuthAction.authorization = [{actor: args.account, permission: actionData.parent}]
+    }
+
     const parsedActions = [updateAuthAction]
 
     // Serialize action
@@ -58,23 +87,8 @@ export default class MultisigProposeUpdateauth extends Command {
     )
 
     // Find required signers
-    const requested = new Map<string, Authorization>()
-    const actionAuthorizations = parsedActions.flatMap(action => action.authorization)
-    const requiredAccounts = await Promise.all(actionAuthorizations.map(async level => {
-      const parsedLevel = parseAuthorization(`${level.actor}@${level.permission}`, 'action authorization')
-      const required = await network.protonApi.getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
-      if (required.length === 0) {
-        throw new Error(`could not resolve required accounts for ${authorizationKey(parsedLevel)}`)
-      }
-
-      return required
-    }))
-    for (const required of requiredAccounts.flat()) {
-      requested.set(authorizationKey(required), required)
-    }
-
-    const sortedRequested = [...requested.values()].sort((left, right) =>
-      compareNames(left.actor, right.actor) || compareNames(left.permission, right.permission))
+    const sortedRequested = await resolveRequestedApprovers(parsedActions, (actor, permissionName) =>
+      network.protonApi.getRequiredAccounts(actor, permissionName))
 
     await network.transact({
       actions: [{

@@ -8,23 +8,17 @@ import {isPositiveInteger} from './integer'
 // EOSIO names allow up to 13 characters; a 13th character is restricted to [.1-5a-j].
 const validName = /^([.1-5a-z]{1,12}|[.1-5a-z]{12}[.1-5a-j])$/
 
+// Chain limits: weights are uint16, delays and thresholds are uint32.
+const maxWeight = 65_535
+const maxUint32 = 4_294_967_295
+
 export type KeyWeight = {key: string; weight: number};
 export type AccountWeight = {permission: {actor: string; permission: string}; weight: number};
 export type WaitWeight = {wait_sec: number; weight: number};
 
-// Code-unit order matches EOSIO name collation (`.` < `1-5` < `a-z`)
-// and is stable across machines, unlike localeCompare.
-export const compareNames = (left: string, right: string): number => {
-  if (left === right) {
-    return 0
-  }
-
-  return left < right ? -1 : 1
-}
-
 const parseWeight = (entry: string, value: string, argument: string): number => {
-  if (!isPositiveInteger(value) || Number(value) < 1) {
-    throw new Error(`${argument} weight in "${entry}" must be a positive integer`)
+  if (!isPositiveInteger(value) || Number(value) < 1 || Number(value) > maxWeight) {
+    throw new Error(`${argument} weight in "${entry}" must be an integer between 1 and ${maxWeight}`)
   }
 
   return Number(value)
@@ -89,8 +83,8 @@ export const parseWaitWeights = (raw: string | undefined, argument = '--waits'):
     const seconds = separator === -1 ? entry : entry.slice(0, separator)
     const weight = separator === -1 ? 1 : parseWeight(entry, entry.slice(separator + 1), argument)
 
-    if (!isPositiveInteger(seconds)) {
-      throw new Error(`${argument} wait delay in "${entry}" must be a positive integer number of seconds`)
+    if (!isPositiveInteger(seconds) || Number(seconds) < 1 || Number(seconds) > maxUint32) {
+      throw new Error(`${argument} wait delay in "${entry}" must be an integer between 1 and ${maxUint32} seconds`)
     }
 
     return {wait_sec: Number(seconds), weight}
@@ -105,8 +99,8 @@ export const buildRequiredAuth = (options: {
 }): RpcInterfaces.RequiredAuth => {
   const {threshold} = options
 
-  if (!Number.isInteger(threshold) || threshold < 1) {
-    throw new Error('--threshold must be a positive integer')
+  if (!Number.isInteger(threshold) || threshold < 1 || threshold > maxUint32) {
+    throw new Error(`--threshold must be an integer between 1 and ${maxUint32}`)
   }
 
   const keys = parseKeyWeights(options.keys)
@@ -115,6 +109,35 @@ export const buildRequiredAuth = (options: {
 
   if (keys.length === 0 && accounts.length === 0 && waits.length === 0) {
     throw new Error('at least one key, account, or wait is required')
+  }
+
+  const seenKeys = new Set<string>()
+  for (const {key} of keys) {
+    const canonical = Numeric.publicKeyToString(Numeric.stringToPublicKey(key))
+    if (seenKeys.has(canonical)) {
+      throw new Error(`--keys contains duplicate key "${key}"`)
+    }
+
+    seenKeys.add(canonical)
+  }
+
+  const seenAccounts = new Set<string>()
+  for (const {permission} of accounts) {
+    const level = `${permission.actor}@${permission.permission}`
+    if (seenAccounts.has(level)) {
+      throw new Error(`--accounts contains duplicate account "${level}"`)
+    }
+
+    seenAccounts.add(level)
+  }
+
+  const seenWaits = new Set<number>()
+  for (const {wait_sec} of waits) {
+    if (seenWaits.has(wait_sec)) {
+      throw new Error(`--waits contains duplicate delay "${wait_sec}"`)
+    }
+
+    seenWaits.add(wait_sec)
   }
 
   const total = [...keys, ...accounts, ...waits].reduce((sum, entry) => sum + entry.weight, 0)
@@ -151,8 +174,20 @@ export const buildUpdateAuthAction = (options: {
     }
 
     parent = ''
-  } else {
+  } else if (permission === 'active') {
     parent = parent === undefined || parent === '' ? 'owner' : parent
+    if (!validName.test(parent)) {
+      throw new Error(`parent "${parent}" is not a valid permission name`)
+    }
+
+    if (parent === permission) {
+      throw new Error(`permission "${permission}" cannot name itself as parent`)
+    }
+  } else {
+    if (parent === undefined || parent === '') {
+      throw new Error(`permission "${permission}" requires an explicit --parent so an existing permission is never silently reparented`)
+    }
+
     if (!validName.test(parent)) {
       throw new Error(`parent "${parent}" is not a valid permission name`)
     }

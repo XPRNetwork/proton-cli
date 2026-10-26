@@ -887,18 +887,20 @@ Propose an eosio::updateauth permission change through the multisig contract
 
 ```
 USAGE
-  $ proton msig:propose-updateauth [PROPOSALNAME] [ACCOUNT] [AUTH] [--permission <value>] [--parent <value>] [--threshold <value>] [--keys <value>]
-    [--accounts <value>] [--waits <value>] [-b <value>] [-x <value>]
+  $ proton msig:propose-updateauth [PROPOSALNAME] [ACCOUNT] [AUTH] --threshold <value> [--permission <value>] [--parent
+    <value>] [--keys <value>] [--accounts <value>] [--waits <value>] [-y] [-b <value>] [-x <value>]
 
 FLAGS
-  -b, --blocksBehind=<value>  [default: 30]
+  -b, --blocksBehind=<value>   [default: 30]
   -x, --expireSeconds=<value>  [default: 604800]
-  --accounts=<value>          Comma-separated accounts as actor@permission[:weight]
-  --keys=<value>              Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)
-  --parent=<value>            Parent permission (default: owner; empty for owner)
-  --permission=<value>        Permission to change (default: active)
-  --threshold=<value>         (required) New permission threshold
-  --waits=<value>             Comma-separated delays as seconds[:weight]
+  -y, --yes                    Confirm replacing the owner permission (irreversible once executed)
+  --accounts=<value>           Comma-separated accounts as actor@permission[:weight]
+  --keys=<value>               Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)
+  --parent=<value>             Parent permission (default: current parent on chain; required for new custom permissions;
+                               must be empty for owner)
+  --permission=<value>         [default: active] Permission to change
+  --threshold=<value>          (required) New permission threshold
+  --waits=<value>              Comma-separated delays as seconds[:weight]
 
 DESCRIPTION
   Propose an eosio::updateauth permission change through the multisig contract

@@ -1,51 +1,42 @@
-import { Numeric, Serialize } from "@proton/js"
-import { RpcInterfaces } from "@proton/js"
+import {Numeric, RpcInterfaces} from '@proton/js'
+import {compareNames} from './multisig'
 
+/* eslint-disable camelcase */
 
-export const decodeWaPublicKey = (waPublicKey: string) => {
-	if (!waPublicKey.startsWith('PUB_WA_')) {
-	  throw new Error('Not WA Public Key (starts with PUB_WA_)')
-	}
-  
-	const pubKey = Numeric.stringToPublicKey(waPublicKey)
-	const ser = new Serialize.SerialBuffer({ array: pubKey.data })
-	
-	const data = ser.getUint8Array(33)
-	const userPresence = ser.get()
-	const rpid = ser.getString()
+const compareBytes = (left: Uint8Array, right: Uint8Array): number => {
+  const shared = Math.min(left.length, right.length)
+  for (let i = 0; i < shared; i++) {
+    if (left[i] !== right[i]) {
+      return left[i] < right[i] ? -1 : 1
+    }
+  }
 
-	return {
-		data,
-		userPresence,
-		rpid
-	}
+  if (left.length === right.length) {
+    return 0
+  }
+
+  return left.length < right.length ? -1 : 1
 }
 
-export const sortRequiredAuth = (required_auth: RpcInterfaces.RequiredAuth) => {
-    required_auth.accounts = required_auth.accounts.sort((a: { permission: { actor: any; }; }, b: { permission: { actor: any; }; }) => a.permission.actor.localeCompare(b.permission.actor))
-    required_auth.waits    = required_auth.waits.sort((a: { wait_sec: any; }, b: { wait_sec: any; }) => a.wait_sec.localeCompare(b.wait_sec))
-    required_auth.keys = required_auth.keys.sort((a: { key: string }, b: { key: string }) => {
-      if (a.key.includes('PUB_WA_') && b.key.includes('PUB_WA_')) {
-        const keyADecoded = decodeWaPublicKey(a.key)
-        const keyBDecoded = decodeWaPublicKey(b.key)
-        
-        for (let i = 0; i < 33; i++) {
-          if (keyADecoded.data[i] < keyBDecoded.data[i]) {
-            return -1
-          } else if (keyADecoded.data[i] > keyBDecoded.data[i]) {
-            return 1
-          }
-        }
+// Chain order for authority keys is (key type, key bytes): decode every key
+// instead of comparing base58 strings, where '10...' would sort before '9...'.
+const compareKeys = (left: string, right: string): number => {
+  if (left === right) {
+    return 0
+  }
 
-        if (keyADecoded.userPresence < keyBDecoded.userPresence) {
-          return -1
-        } else if (keyADecoded.userPresence > keyBDecoded.userPresence) {
-          return 1
-        }
+  const leftKey = Numeric.stringToPublicKey(left)
+  const rightKey = Numeric.stringToPublicKey(right)
+  if (leftKey.type !== rightKey.type) {
+    return leftKey.type < rightKey.type ? -1 : 1
+  }
 
-        return keyADecoded.rpid.localeCompare(keyBDecoded.rpid)
-      }
+  return compareBytes(leftKey.data, rightKey.data)
+}
 
-      return a.key.localeCompare(b.key)
-    })
+export const sortRequiredAuth = (auth: RpcInterfaces.RequiredAuth): void => {
+  auth.keys.sort((a: {key: string}, b: {key: string}) => compareKeys(a.key, b.key))
+  auth.accounts.sort((a: {permission: {actor: string; permission: string}}, b: {permission: {actor: string; permission: string}}) =>
+    compareNames(a.permission.actor, b.permission.actor) || compareNames(a.permission.permission, b.permission.permission))
+  auth.waits.sort((a: {wait_sec: number}, b: {wait_sec: number}) => a.wait_sec - b.wait_sec)
 }

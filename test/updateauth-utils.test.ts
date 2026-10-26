@@ -118,4 +118,50 @@ describe('updateauth utilities', () => {
 
     assert.throws(() => buildUpdateAuthAction({account: 'victorcrisan', permission: 'active', parent: 'active', auth: requiredAuth}), /parent/)
   })
+
+  it('sorts multiple waits numerically', () => {
+    const requiredAuth = buildRequiredAuth({threshold: 1, waits: '86400,3600:2'})
+
+    assert.deepEqual(requiredAuth.waits.map(entry => entry.wait_sec), [3600, 86400])
+  })
+
+  it('sorts mixed key types by type then bytes', () => {
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${WA_A}:1,${K1_A}:1`})
+
+    assert.deepEqual(requiredAuth.keys.map(entry => entry.key), [K1_A, WA_A])
+  })
+
+  it('sorts several permissions of one actor by permission name', () => {
+    const requiredAuth = buildRequiredAuth({threshold: 1, accounts: 'ruter1@owner,ruter1@active'})
+
+    assert.deepEqual(requiredAuth.accounts.map(entry => entry.permission.permission), ['active', 'owner'])
+  })
+
+  it('rejects duplicate keys, accounts, and waits', () => {
+    assert.throws(() => buildRequiredAuth({threshold: 1, keys: `${K1_A}:1,${K1_A}:2`}), /duplicate key/)
+    assert.throws(() => buildRequiredAuth({threshold: 1, accounts: 'ruter1@active,ruter1@active:2'}), /duplicate account/)
+    assert.throws(() => buildRequiredAuth({threshold: 1, waits: '3600,3600:2'}), /duplicate delay/)
+  })
+
+  it('rejects weights above uint16', () => {
+    assert.throws(() => buildRequiredAuth({threshold: 1, keys: `${K1_A}:65536`}), /between 1 and 65535/)
+  })
+
+  it('rejects zero and out-of-range wait delays', () => {
+    assert.throws(() => buildRequiredAuth({threshold: 1, waits: '0'}), /between 1 and 4294967295/)
+    assert.throws(() => buildRequiredAuth({threshold: 1, waits: '4294967296'}), /between 1 and 4294967295/)
+  })
+
+  it('rejects thresholds above uint32', () => {
+    assert.throws(() => buildRequiredAuth({threshold: 4294967296, keys: `${K1_A}:1`}), /between 1 and 4294967295/)
+  })
+
+  it('requires an explicit parent for custom permissions', () => {
+    const requiredAuth = buildRequiredAuth({threshold: 1, keys: `${K1_A}:1`})
+
+    assert.throws(() => buildUpdateAuthAction({account: 'victorcrisan', permission: 'trading', auth: requiredAuth}), /explicit --parent/)
+    const action = buildUpdateAuthAction({account: 'victorcrisan', permission: 'trading', parent: 'active', auth: requiredAuth})
+
+    assert.equal((action.data as {parent: string}).parent, 'active')
+  })
 })
