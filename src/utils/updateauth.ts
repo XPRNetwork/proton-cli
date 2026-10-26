@@ -5,7 +5,8 @@ import {isPositiveInteger} from './integer'
 
 /* eslint-disable camelcase */
 
-const validName = /^[.1-5a-z]{1,12}$/
+// EOSIO names allow up to 13 characters; a 13th character is restricted to [.1-5a-j].
+const validName = /^([.1-5a-z]{1,12}|[.1-5a-z]{12}[.1-5a-j])$/
 
 export type KeyWeight = {key: string; weight: number};
 export type AccountWeight = {permission: {actor: string; permission: string}; weight: number};
@@ -72,6 +73,10 @@ export const parseAccountWeights = (raw: string | undefined, argument = '--accou
 
     if (!validName.test(permission.actor)) {
       throw new Error(`${argument} entry "${entry}" has invalid account "${permission.actor}"`)
+    }
+
+    if (!validName.test(permission.permission)) {
+      throw new Error(`${argument} entry "${entry}" has invalid permission "${permission.permission}"`)
     }
 
     return {permission, weight}

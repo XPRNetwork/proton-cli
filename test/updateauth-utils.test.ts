@@ -59,7 +59,23 @@ describe('updateauth utilities', () => {
   it('sorts keys deterministically', () => {
     const auth = buildUpdateauthAuth({threshold: 1, keys: `${K1_B}:1,${K1_A}:1`})
 
-    assert.deepEqual(auth.keys.map(entry => entry.key), [K1_A, K1_B].sort())
+    // '4uNj…' orders before '6RMs…' regardless of input order.
+    assert.deepEqual(auth.keys.map(entry => entry.key), [K1_A, K1_B])
+  })
+
+  it('rejects malformed account entries', () => {
+    assert.throws(() => parseAccountWeights('ruter1@active:'), /invalid permission/)
+    assert.throws(() => parseAccountWeights('ruter1@foo!'), /invalid permission/)
+    assert.throws(() => parseAccountWeights('no@such@perm:1'), /account@permission/)
+  })
+
+  it('accepts 13-character names with a valid final character', () => {
+    const auth = buildUpdateauthAuth({threshold: 1, keys: `${K1_A}:1`})
+    const action = buildUpdateauthAction({account: 'abcdefghij123', permission: 'active', auth})
+
+    assert.equal((action.authorization as Array<{actor: string}>)[0].actor, 'abcdefghij123')
+    assert.throws(() => buildUpdateauthAction({account: 'abcdefghij1234', permission: 'active', auth}), /not a valid EOSIO account name/)
+    assert.throws(() => buildUpdateauthAction({account: 'abcdefghij123', permission: 'abcdefghijklm', auth}), /not a valid permission name/)
   })
 
   it('rejects unusable authorities', () => {
