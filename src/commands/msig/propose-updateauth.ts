@@ -40,6 +40,22 @@ const assertCommandNames = (
   }
 }
 
+const errorText = (error: unknown): string => {
+  if (!(error instanceof Error)) {
+    return String(error)
+  }
+
+  const detailed = error as Error & {details?: unknown; json?: unknown}
+  try {
+    return `${error.message} ${JSON.stringify(detailed.json ?? '')} ${JSON.stringify(detailed.details ?? '')}`
+  } catch {
+    return error.message
+  }
+}
+
+const isAccountNotFoundError = (error: unknown): boolean =>
+  /account_query_exception|unknown account|account (?:does not exist|not found)|unable to (?:find|get) account|no such account/i.test(errorText(error))
+
 const assertAccountAuthoritiesExist = async (
   requiredAuth: RpcInterfaces.RequiredAuth,
   account: string,
@@ -57,7 +73,11 @@ const assertAccountAuthoritiesExist = async (
 
     try {
       return [actor, await network.rpc.get_account(actor)] as const
-    } catch {
+    } catch (error) {
+      if (!isAccountNotFoundError(error)) {
+        throw error
+      }
+
       throw new Error(`--accounts account "${actor}" does not exist`)
     }
   }))
@@ -91,7 +111,7 @@ const assertWaitsWithinChainLimit = async (requiredAuth: RpcInterfaces.RequiredA
 }
 
 export default class MultisigProposeUpdateauth extends Command {
-  static description = 'Propose an eosio::updateauth permission change through the multisig contract'
+  static description = 'Propose an eosio::updateauth permission change through the multisig contract. Chain state is checked when proposing; it can change before exec, so an approved proposal can still fail at exec.'
 
   static args = [
     {name: 'proposalName', required: true, help: 'Name of proposal'},
@@ -105,7 +125,7 @@ export default class MultisigProposeUpdateauth extends Command {
     threshold: flags.integer({description: 'New permission threshold', required: true}),
     keys: flags.string({description: 'Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)'}),
     accounts: flags.string({description: 'Comma-separated accounts as actor@permission[:weight]'}),
-    waits: flags.string({description: 'Comma-separated delays as seconds[:weight]'}),
+    waits: flags.string({description: 'Comma-separated delays as seconds[:weight] (keys/accounts must meet --threshold without waits)'}),
     yes: flags.boolean({char: 'y', description: 'Confirm replacing the owner permission (irreversible once executed)'}),
     blocksBehind: flags.integer({char: 'b', default: 30}),
     expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7}),

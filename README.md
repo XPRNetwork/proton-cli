@@ -883,7 +883,7 @@ _See code: [lib/commands/msig/propose.js](https://github.com/ProtonProtocol/prot
 
 ## `proton msig:propose-updateauth PROPOSALNAME ACCOUNT AUTH`
 
-Propose an eosio::updateauth permission change through the multisig contract
+Propose an eosio::updateauth permission change through the multisig contract. Chain state is checked when proposing; it can change before exec, so an approved proposal can still fail at exec.
 
 ```
 USAGE
@@ -900,10 +900,12 @@ FLAGS
                                required for new custom permissions; must be empty for owner)
   --permission=<value>         [default: active] Permission to change
   --threshold=<value>          (required) New permission threshold
-  --waits=<value>              Comma-separated delays as seconds[:weight]
+  --waits=<value>              Comma-separated delays as seconds[:weight] (keys/accounts must meet --threshold without
+                               waits)
 
 DESCRIPTION
-  Propose an eosio::updateauth permission change through the multisig contract
+  Propose an eosio::updateauth permission change through the multisig contract. Chain state is checked when proposing;
+  it can change before exec, so an approved proposal can still fail at exec.
 ```
 
 _See code: [lib/commands/msig/propose-updateauth.js](https://github.com/ProtonProtocol/proton-cli/blob/v0.1.98/lib/commands/msig/propose-updateauth.js)_
