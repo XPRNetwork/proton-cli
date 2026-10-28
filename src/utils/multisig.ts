@@ -7,17 +7,67 @@ export type MultisigAction = {
   data: unknown;
 };
 
-export const parseAuthorization = (value: string, argument = 'authorization'): Authorization => {
+// Code-unit order matches EOSIO name collation (`.` < `1-5` < `a-z`)
+// and is stable across machines, unlike localeCompare.
+export const compareNames = (left: string, right: string): number => {
+  if (left === right) {
+    return 0
+  }
+
+  return left < right ? -1 : 1
+}
+
+export const parseAuthorization = (value: string, label = 'authorization'): Authorization => {
   const [actor, permission = 'active', ...extra] = value.split('@')
 
   if (!actor || !permission || extra.length > 0) {
-    throw new Error(`${argument} must use the account@permission format`)
+    throw new Error(`${label} must use the account@permission format`)
   }
 
   return {actor, permission}
 }
 
 export const authorizationKey = ({actor, permission}: Authorization): string => `${actor}@${permission}`
+
+const validateAuthorization = (value: unknown, label: string): Authorization => {
+  if (!value || typeof value !== 'object') {
+    throw new TypeError(`${label} must include actor and permission`)
+  }
+
+  const candidate = value as Partial<Authorization>
+  if (typeof candidate.actor !== 'string' || typeof candidate.permission !== 'string') {
+    throw new TypeError(`${label} must include actor and permission`)
+  }
+
+  return parseAuthorization(`${candidate.actor}@${candidate.permission}`, label)
+}
+
+export const resolveRequestedApprovers = async (
+  actions: MultisigAction[],
+  getRequiredAccounts: (actor: string, permission: string) => Promise<Authorization[]>,
+): Promise<Authorization[]> => {
+  const requested = new Map<string, Authorization>()
+  const uniqueLevels = new Map<string, Authorization>()
+  for (const level of actions.flatMap(action => action.authorization)) {
+    const parsedLevel = validateAuthorization(level, 'action authorization')
+    uniqueLevels.set(authorizationKey(parsedLevel), parsedLevel)
+  }
+
+  const requiredAccounts = await Promise.all([...uniqueLevels.values()].map(async parsedLevel => {
+    const required: unknown = await getRequiredAccounts(parsedLevel.actor, parsedLevel.permission)
+    if (!Array.isArray(required) || required.length === 0) {
+      throw new Error(`could not resolve required accounts for ${authorizationKey(parsedLevel)}`)
+    }
+
+    return required.map(entry => validateAuthorization(entry, 'required account'))
+  }))
+  for (const required of requiredAccounts.flat()) {
+    requested.set(authorizationKey(required), required)
+  }
+
+  return [...requested.values()].sort((left, right) =>
+    compareNames(left.actor, right.actor) || compareNames(left.permission, right.permission))
+}
 
 export const parseActions = (value: string): MultisigAction[] => {
   let actions: unknown

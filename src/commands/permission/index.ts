@@ -7,7 +7,7 @@ import { getLightAccount } from '../../apis/lightApi'
 import { network } from '../../storage/networks'
 import { parsePermissions } from '../../utils/permissions'
 import { promptChoices, promptInteger, promptKey, promptAuthority, promptName } from '../../utils/prompt'
-import { sortRequiredAuth } from '../../utils/sortRequiredAuth'
+import { sortRequiredAuth } from '../../utils/sort-required-auth'
 import { wait } from '../../utils/wait'
 
 const parseKey = (key: { weight: number, key: string }) => `+${key.weight} | ${key.key}`
