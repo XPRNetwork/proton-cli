@@ -1,4 +1,5 @@
-import { CliUx } from "@oclif/core"
+import { ux } from './ux'
+
 import { red, yellow } from "colors"
 
 // Common error patterns and helpful hints
@@ -59,14 +60,14 @@ export const parseDetailsError = (e: Error | any) => {
   const errorMessage = error || e?.message || ''
 
   if (errorMessage || typeof e === 'object') {
-    CliUx.ux.log('\n' + red(errorMessage || JSON.stringify(e)))
+    ux.log('\n' + red(errorMessage || JSON.stringify(e)))
 
     // Check for helpful hints
     const hint = getHintForError(errorMessage)
     if (hint) {
-      CliUx.ux.log(yellow('Hint: ') + hint)
+      ux.log(yellow('Hint: ') + hint)
     }
   } else {
-    CliUx.ux.styledJSON(e)
+    ux.styledJSON(e)
   }
 }

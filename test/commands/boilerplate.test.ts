@@ -1,7 +1,7 @@
 import * as rimraf from 'rimraf'
 import fs from 'node:fs'
 import path from 'node:path'
-import {expect, test} from '@oclif/test'
+import {expect, test} from '../helpers/oclif'
 
 // const TEST_DIR_NAME = 'testdir'
 // const TEST_DIR = path.join(process.cwd(), TEST_DIR_NAME)

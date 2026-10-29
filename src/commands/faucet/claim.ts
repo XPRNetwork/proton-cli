@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { green } from 'colors'
 import { getFaucets } from '../../apis/getFaucets'
 import { network } from '../../storage/networks'
@@ -7,13 +8,18 @@ import { network } from '../../storage/networks'
 export default class ClaimFaucet extends Command {
   static description = 'Claim faucet'
 
-  static args = [
-    { name: 'symbol', required: true },
-    { name: 'authorization', required: true, description: 'Authorization like account1@active' },
-  ]
+  static args = {
+    symbol: Args.string({
+      required: true,
+    }),
+    authorization: Args.string({
+      required: true,
+      description: 'Authorization like account1@active',
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(ClaimFaucet)
+    const { args } = await this.parse(ClaimFaucet)
 
     const faucets = await getFaucets()
     const faucet = faucets.find(faucet => faucet.claimToken.quantity.split(' ')[1] === args.symbol)
@@ -38,6 +44,6 @@ export default class ClaimFaucet extends Command {
       }]
     })
 
-    CliUx.ux.log(`${green('Success:')} Faucet claimed`)
+    ux.log(`${green('Success:')} Faucet claimed`)
   }
 }

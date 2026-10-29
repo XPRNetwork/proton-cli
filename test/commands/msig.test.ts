@@ -1,4 +1,4 @@
-import {expect, test} from '@oclif/test'
+import {expect, test} from '../helpers/oclif'
 import {network} from '../../src/storage/networks'
 
 /* eslint-disable camelcase */
@@ -249,12 +249,12 @@ describe('multisig commands', () => {
   test
   .stub(network, 'transact', capture(transaction))
   .command(['msig:approve', 'proposer', 'proposal', 'signer@active', '--level', 'requested@owner'])
-  .catch(/Unexpected argument/)
+  .catch(/Nonexistent flag: --level/)
   .it('rejects --level on approve so the level cannot differ from the signer')
 
   test
   .stub(network, 'transact', capture(transaction))
   .command(['msig:unapprove', 'proposer', 'proposal', 'signer@active', '--level', 'requested@owner'])
-  .catch(/Unexpected argument/)
+  .catch(/Nonexistent flag: --level/)
   .it('rejects --level on unapprove so the level cannot differ from the signer')
 })

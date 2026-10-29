@@ -1,27 +1,27 @@
-import {Command, flags} from '@oclif/command'
-import {CliUx} from '@oclif/core'
+import {Args, Command, Flags} from '@oclif/core'
 import {getExplorer} from '../../apis/getExplorer'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
 import {parseAuthorization} from '../../utils/multisig'
+import {ux} from '../../utils/ux'
 
 /* eslint-disable camelcase */
 
 export default class MultisigApprove extends Command {
   static description = 'Multisig Approve'
 
-  static args = [
-    {name: 'proposer', required: true, help: 'Name of proposer'},
-    {name: 'proposal', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Requested permission to approve; also signs the transaction (e.g. user1@active)'},
-  ]
+  static args = {
+    proposer: Args.string({required: true, help: 'Name of proposer'}),
+    proposal: Args.string({required: true, help: 'Name of proposal'}),
+    auth: Args.string({required: true, help: 'Requested permission to approve; also signs the transaction (e.g. user1@active)'}),
+  }
 
   static flags = {
-    'proposal-hash': flags.string({description: 'Optional proposal transaction hash (64 hex characters, 0x prefix allowed)'}),
+    'proposal-hash': Flags.string({description: 'Optional proposal transaction hash (64 hex characters, 0x prefix allowed)'}),
   }
 
   async run(): Promise<void> {
-    const {args, flags: commandFlags} = this.parse(MultisigApprove)
+    const {args, flags: commandFlags} = await this.parse(MultisigApprove)
     const authorization = parseAuthorization(args.auth)
     const data: Record<string, unknown> = {
       proposer: args.proposer,
@@ -48,8 +48,8 @@ export default class MultisigApprove extends Command {
       }],
     })
 
-    CliUx.ux.log(`Multisig ${args.proposal} successfully approved.`)
-    CliUx.ux.url('View Proposal', `${getExplorer()}/msig/${args.proposer}/${args.proposal}`)
+    ux.log(`Multisig ${args.proposal} successfully approved.`)
+    ux.url('View Proposal', `${getExplorer()}/msig/${args.proposer}/${args.proposal}`)
   }
 
   async catch(e: Error | any): Promise<void> {

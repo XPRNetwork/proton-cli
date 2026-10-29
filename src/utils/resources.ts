@@ -1,5 +1,6 @@
+import { ux } from './ux'
 import { parseNetAndRam, parseCpu } from "@bloks/numbers"
-import { CliUx } from "@oclif/core"
+
 import { RpcInterfaces } from "@proton/js"
 
 export const generateResourceTable = (account: RpcInterfaces.GetAccountResult) => {
@@ -28,7 +29,7 @@ export const generateResourceTable = (account: RpcInterfaces.GetAccountResult) =
   ]
 
   let resourceTableText = ""
-  CliUx.ux.table(resourceTable, {
+  ux.table(resourceTable, {
     type: {
       header: 'Type'
     },
@@ -45,7 +46,7 @@ export const generateResourceTable = (account: RpcInterfaces.GetAccountResult) =
       header: 'Delegated',
     }
   }, {
-    printLine: (line) => { resourceTableText += line + '\n' },
+    printLine: (line: string) => { resourceTableText += line + '\n' },
   })
   return resourceTableText
 }

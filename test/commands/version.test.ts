@@ -1,4 +1,4 @@
-import {expect, test} from '@oclif/test'
+import {expect, test} from '../helpers/oclif'
 
 const packageJson = require('../../package.json')
 

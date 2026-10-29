@@ -1,4 +1,4 @@
-import { Hook, toConfiguredId, toStandardizedId } from '@oclif/core';
+import { Hook, toConfiguredId, toStandardizedId } from '@oclif/core'
 import { prompt } from 'inquirer';
 
 const hook: Hook.CommandIncomplete = async function ({ config, matches, argv }) {

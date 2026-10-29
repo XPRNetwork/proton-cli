@@ -1,22 +1,25 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 
 export default class Transaction extends Command {
   static description = 'Get Transaction by Transaction ID'
 
-  static args = [
-    { name: 'id', required: true },
-  ]
+  static args = {
+    id: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(Transaction)
+    const { args } = await this.parse(Transaction)
     const result = await network.rpc.history_get_transaction(args.id)
-    CliUx.ux.styledJSON(result)
+    ux.styledJSON(result)
   }
 
   async catch(e: Error) {
-    CliUx.ux.styledJSON(e)
+    ux.styledJSON(e)
   }
 }
 

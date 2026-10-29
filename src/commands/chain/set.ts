@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx, Flags } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
+import { Flags, Command, Args } from '@oclif/core'
 import { network } from '../../storage/networks'
 import * as inquirer from 'inquirer'
 import { networks } from '../../constants'
@@ -7,12 +8,15 @@ import { networks } from '../../constants'
 export default class SetChain extends Command {
   static description = 'Set Chain'
 
-  static args = [
-    { name: 'chain', required: false, description: 'Specific chain' },
-  ]
+  static args = {
+    chain: Args.string({
+      required: false,
+      description: 'Specific chain',
+    }),
+  }
 
   async run() {
-    const {args} = this.parse(SetChain)
+    const {args} = await this.parse(SetChain)
 
     if (!args.chain) {
       let responses: any = await inquirer.prompt([{
@@ -30,10 +34,10 @@ export default class SetChain extends Command {
       throw new Error(`No chain found with ${args.chain}`)
     }
 
-    network.setChain(args.chain)
+    network.setChain(args.chain!)
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(e)
+    ux.error(e)
   }
 }

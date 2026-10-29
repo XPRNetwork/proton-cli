@@ -1,5 +1,6 @@
+import { ux } from '../utils/ux'
 import { Key, Numeric } from '@proton/js'
-import { CliUx } from '@oclif/core'
+
 import { config } from './config'
 import { encryptor } from './encryptor'
 import { green } from 'colors'
@@ -46,7 +47,7 @@ class PasswordManager {
 
     async getPassword() {
         while (!this.password) {
-            const enteredPassword = await CliUx.ux.prompt('Please enter your 32 character password', { type: 'hide' })
+            const enteredPassword = await ux.prompt('Please enter your 32 character password', { type: 'hide' })
             this.password = enteredPassword;
         }
         return this.password
@@ -113,7 +114,7 @@ class PasswordManager {
         config.set('privateKeys', privateKeys)
     
         // Log out
-        CliUx.ux.log(`${green('Success:')} Added new private key for public key: ${privateKey.getPublicKey().toString()}\n`)
+        ux.log(`${green('Success:')} Added new private key for public key: ${privateKey.getPublicKey().toString()}\n`)
     }
     
     async removePrivateKey (privateKey: string) {
@@ -125,7 +126,7 @@ class PasswordManager {
         if (privateKeys && privateKeys.length > 0) {
             config.set('privateKeys', privateKeys.filter((key: string) => key !== privateKey));
         } else {
-            CliUx.ux.error(`You are not allowed to delete your last key`)
+            ux.error(`You are not allowed to delete your last key`)
         }
     }
 }

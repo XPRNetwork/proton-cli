@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 import GenerateKey from '../key/generate'
 import { Key } from '@proton/js'
@@ -10,12 +11,14 @@ import { green } from 'colors'
 export default class CreateNewAccount extends Command {
   static description = 'Create New Account'
 
-  static args = [
-    { name: 'account', required: true },
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(CreateNewAccount)
+    const { args } = await this.parse(CreateNewAccount)
 
     // Validate account
     if (!RegExp('^[a-zA-Z12345.]+$').test(args.account)) {
@@ -28,12 +31,12 @@ export default class CreateNewAccount extends Command {
     // Check account doesnt exist
     try {
       await network.rpc.get_account(args.account)
-      CliUx.ux.log(`Account ${args.account} already exists`)
+      ux.log(`Account ${args.account} already exists`)
       return
     } catch (e) {}
 
     // Create key
-    let privateKey = await CliUx.ux.prompt('Enter private key for new account (leave empty to generate new key)', { type: 'hide', required: false })
+    let privateKey = await ux.prompt('Enter private key for new account (leave empty to generate new key)', { type: 'hide', required: false })
     if (!privateKey) {
       privateKey = await GenerateKey.run()
       await AddPrivateKey.run([privateKey])
@@ -42,8 +45,8 @@ export default class CreateNewAccount extends Command {
     const publicKey = Key.PrivateKey.fromString(privateKey).getPublicKey().toString()
 
     // Get some data
-    const email = await CliUx.ux.prompt('Enter email for verification code', { required: true })
-    const displayName = await CliUx.ux.prompt('Enter display name for account', { required: true })
+    const email = await ux.prompt('Enter email for verification code', { required: true })
+    const displayName = await ux.prompt('Enter display name for account', { required: true })
 
     // Send request
     const data = {
@@ -58,7 +61,7 @@ export default class CreateNewAccount extends Command {
 
     // Exit early if error
     if (res.error && res.error === 'mfa_required') {
-      data.verificationCode = await CliUx.ux.prompt(`Enter 6-digit verification code (sent to ${email})`, { required: true })
+      data.verificationCode = await ux.prompt(`Enter 6-digit verification code (sent to ${email})`, { required: true })
     } else {
       throw new Error(`Could not create account with error: ${res.error}`)
     }
@@ -66,7 +69,7 @@ export default class CreateNewAccount extends Command {
     // Send verification
     res = await createAccount(data)
     if (res.user) {
-      CliUx.ux.log(green(`Account ${args.account} successfully created!`))
+      ux.log(green(`Account ${args.account} successfully created!`))
     } else {
       throw new Error(`Could not create account with error: ${res.error}`)
     }

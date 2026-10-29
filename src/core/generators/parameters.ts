@@ -1,4 +1,5 @@
-import { CliUx } from '@oclif/core';
+import { ux } from '../../utils/ux'
+
 import { prompt } from 'inquirer'
 import { OptionalKind, ParameterDeclarationStructure, ParameteredNode } from 'ts-morph';
 import { promptChoices, promptName } from '../../utils';
@@ -87,7 +88,7 @@ export async function parametersCollect(existingParameters: IParameter[] = []) {
     existingParameters.push(property);
     parametersToAdd.push(property);
 
-    CliUx.ux.log(`————————————`);
+    ux.log(`————————————`);
 
     const { next } = await prompt<{ next: boolean }>([
       {

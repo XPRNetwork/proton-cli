@@ -1,9 +1,9 @@
-import {Command, flags} from '@oclif/command'
-import {CliUx} from '@oclif/core'
+import {Args, Command, Flags} from '@oclif/core'
 import {getExplorer} from '../../apis/getExplorer'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
 import {parseAuthorization, resolveRequestedApprovers} from '../../utils/multisig'
+import {ux} from '../../utils/ux'
 import {buildRequiredAuth, buildUpdateAuthAction, isValidEosioName} from '../../utils/updateauth'
 import {RpcInterfaces} from '@proton/js'
 
@@ -113,26 +113,26 @@ const assertWaitsWithinChainLimit = async (requiredAuth: RpcInterfaces.RequiredA
 export default class MultisigProposeUpdateauth extends Command {
   static description = 'Propose an eosio::updateauth permission change through the multisig contract. Chain state is checked when proposing; it can change before exec, so an approved proposal can still fail at exec.'
 
-  static args = [
-    {name: 'proposalName', required: true, help: 'Name of proposal'},
-    {name: 'account', required: true, help: 'Account whose permission changes'},
-    {name: 'auth', required: true, help: 'Your authorization (e.g. proposer@active)'},
-  ]
+  static args = {
+    proposalName: Args.string({required: true, help: 'Name of proposal'}),
+    account: Args.string({required: true, help: 'Account whose permission changes'}),
+    auth: Args.string({required: true, help: 'Your authorization (e.g. proposer@active)'}),
+  }
 
   static flags = {
-    permission: flags.string({description: 'Permission to change', default: 'active'}),
-    parent: flags.string({description: 'Parent permission (default: current parent on chain; cannot change an existing parent; required for new custom permissions; must be empty for owner)'}),
-    threshold: flags.integer({description: 'New permission threshold', required: true}),
-    keys: flags.string({description: 'Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)'}),
-    accounts: flags.string({description: 'Comma-separated accounts as actor@permission[:weight]'}),
-    waits: flags.string({description: 'Comma-separated delays as seconds[:weight] (keys/accounts must meet --threshold without waits)'}),
-    yes: flags.boolean({char: 'y', description: 'Confirm replacing the owner permission (irreversible once executed)'}),
-    blocksBehind: flags.integer({char: 'b', default: 30}),
-    expireSeconds: flags.integer({char: 'x', default: 60 * 60 * 24 * 7}),
+    permission: Flags.string({description: 'Permission to change', default: 'active'}),
+    parent: Flags.string({description: 'Parent permission (default: current parent on chain; cannot change an existing parent; required for new custom permissions; must be empty for owner)'}),
+    threshold: Flags.integer({description: 'New permission threshold', required: true}),
+    keys: Flags.string({description: 'Comma-separated new keys as PUB_...[:weight] (PUB_K1_, PUB_R1_, PUB_WA_ supported)'}),
+    accounts: Flags.string({description: 'Comma-separated accounts as actor@permission[:weight]'}),
+    waits: Flags.string({description: 'Comma-separated delays as seconds[:weight] (keys/accounts must meet --threshold without waits)'}),
+    yes: Flags.boolean({char: 'y', description: 'Confirm replacing the owner permission (irreversible once executed)'}),
+    blocksBehind: Flags.integer({char: 'b', default: 30}),
+    expireSeconds: Flags.integer({char: 'x', default: 60 * 60 * 24 * 7}),
   }
 
   async run(): Promise<void> {
-    const {args, flags: commandFlags} = this.parse(MultisigProposeUpdateauth)
+    const {args, flags: commandFlags} = await this.parse(MultisigProposeUpdateauth)
     const authorization = parseAuthorization(args.auth)
     const permission = commandFlags.permission as string | undefined
     if (permission === undefined || permission === '') {
@@ -165,10 +165,10 @@ export default class MultisigProposeUpdateauth extends Command {
 
     const existing = onChain.permissions.find(entry => entry.perm_name === permission)
     if (existing) {
-      CliUx.ux.log(`Current ${permission} authority: ${JSON.stringify(existing.required_auth)}`)
+      ux.log(`Current ${permission} authority: ${JSON.stringify(existing.required_auth)}`)
     }
 
-    CliUx.ux.log(`Proposed ${permission} authority: ${JSON.stringify(requiredAuth)}`)
+    ux.log(`Proposed ${permission} authority: ${JSON.stringify(requiredAuth)}`)
 
     const flagParent = commandFlags.parent as string | undefined
     const parent = flagParent === undefined || flagParent === '' ? existing?.parent : flagParent
@@ -227,8 +227,8 @@ export default class MultisigProposeUpdateauth extends Command {
       }],
     })
 
-    CliUx.ux.log(`Multisig ${args.proposalName} successfully proposed.`)
-    CliUx.ux.url('View Proposal', `${getExplorer()}/msig/${authorization.actor}/${args.proposalName}`)
+    ux.log(`Multisig ${args.proposalName} successfully proposed.`)
+    ux.url('View Proposal', `${getExplorer()}/msig/${authorization.actor}/${args.proposalName}`)
   }
 
   async catch(e: Error | any): Promise<void> {

@@ -1,22 +1,22 @@
-import {Command} from '@oclif/command'
-import {CliUx} from '@oclif/core'
+import {Args, Command} from '@oclif/core'
 import {network} from '../../storage/networks'
 import {parseDetailsError} from '../../utils/detailsError'
 import {parseAuthorization} from '../../utils/multisig'
+import {ux} from '../../utils/ux'
 
 /* eslint-disable camelcase */
 
 export default class MultisigUnapprove extends Command {
   static description = 'Multisig Unapprove'
 
-  static args = [
-    {name: 'proposer', required: true, help: 'Name of proposer'},
-    {name: 'proposal', required: true, help: 'Name of proposal'},
-    {name: 'auth', required: true, help: 'Requested permission to unapprove; also signs the transaction (e.g. user1@active)'},
-  ]
+  static args = {
+    proposer: Args.string({required: true, help: 'Name of proposer'}),
+    proposal: Args.string({required: true, help: 'Name of proposal'}),
+    auth: Args.string({required: true, help: 'Requested permission to unapprove; also signs the transaction (e.g. user1@active)'}),
+  }
 
   async run(): Promise<void> {
-    const {args} = this.parse(MultisigUnapprove)
+    const {args} = await this.parse(MultisigUnapprove)
     const authorization = parseAuthorization(args.auth)
 
     await network.transact({
@@ -32,7 +32,7 @@ export default class MultisigUnapprove extends Command {
       }],
     })
 
-    CliUx.ux.log(`Multisig ${args.proposal} successfully unapproved.`)
+    ux.log(`Multisig ${args.proposal} successfully unapproved.`)
   }
 
   async catch(e: Error | any): Promise<void> {

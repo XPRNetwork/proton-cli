@@ -1,6 +1,7 @@
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
 import { parseUtcTimestamp } from '@bloks/numbers'
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+
 import { cyan } from 'colors'
 import { network } from '../../storage/networks'
 import dedent from 'ts-dedent'
@@ -11,17 +12,19 @@ import { getLightAccount, getLightBalances } from '../../apis/lightApi'
 export default class GetAccount extends Command {
   static description = 'Get Account Information'
 
-  static args = [
-    { name: 'account', required: true },
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+    }),
+  }
 
   static flags = {
-    raw: flags.boolean({ char: 'r', default: false }),
-    tokens: flags.boolean({ char: 't', default: false, description: 'Show token balances' }),
+    raw: Flags.boolean({ char: 'r', default: false }),
+    tokens: Flags.boolean({ char: 't', default: false, description: 'Show token balances' }),
   }
 
   async run() {
-    const { args, flags } = this.parse(GetAccount)
+    const { args, flags } = await this.parse(GetAccount)
 
     const [account, lightAccount, balances] = await Promise.all([
       network.rpc.get_account(args.account),
@@ -30,9 +33,9 @@ export default class GetAccount extends Command {
     ])
 
     if (flags.raw) {
-      CliUx.ux.styledJSON(account)
+      ux.styledJSON(account)
     } else {
-      CliUx.ux.log(dedent`
+      ux.log(dedent`
         ${cyan('Created:')}
         ${parseUtcTimestamp(account.created)}
 
