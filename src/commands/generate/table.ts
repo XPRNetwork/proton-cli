@@ -1,4 +1,5 @@
-import { CliUx, Command, Flags } from '@oclif/core'
+import { ux } from '../../utils/ux'
+import { Command, Flags, Args } from '@oclif/core'
 import * as path from 'path';
 import { green, red } from 'colors';
 import { prompt } from 'inquirer'
@@ -33,13 +34,12 @@ export default class ContractTableCreateCommand extends Command {
 
   static description = 'Add table for the smart contract';
 
-  static args = [
-    {
-      name: 'tableName',
+  static args = {
+    tableName: Args.string({
       required: true,
       description: 'The name of the contract\'s table. 1-12 chars, only lowercase a-z and numbers 1-5 are possible',
-    },
-  ]
+    }),
+  }
 
   static flags = {
     class: tableClass,
@@ -82,8 +82,8 @@ export default class ContractTableCreateCommand extends Command {
       tableFileNameWithExt: `${contractName}.tables.ts`
     }
 
-    CliUx.ux.log(green(`Starting to generate a table '${this.data.tableName}' for contract`));
-    CliUx.ux.log(green(`Let's collect some properties:`));
+    ux.log(green(`Starting to generate a table '${this.data.tableName}' for contract`));
+    ux.log(green(`Let's collect some properties:`));
 
     if (!flags.class) {
       this.data.className = this.data.className.charAt(0).toUpperCase() + this.data.className.slice(1)
@@ -166,7 +166,7 @@ export default class ContractTableCreateCommand extends Command {
 
           const namedImports = ["Name", "Table"];
 
-          CliUx.ux.log(`Let's add a primary parameter for the table`);
+          ux.log(`Let's add a primary parameter for the table`);
 
           const primaryProperty = await parameterPrompt(
             [],
@@ -187,7 +187,7 @@ export default class ContractTableCreateCommand extends Command {
           constructorAddParameter(tableContructor, primaryProperty);
           tableAddPrimaryParameter(table, primaryProperty);
 
-          CliUx.ux.log(`————————————`);
+          ux.log(`————————————`);
 
           const { addMore } = await prompt<{ addMore: boolean }>([
             {
@@ -210,7 +210,7 @@ export default class ContractTableCreateCommand extends Command {
 
           sourceTables.formatText(FORMAT_SETTINGS);
           sourceTables.saveSync();
-          CliUx.ux.log(`Table ${this.data.tableName} successfully created`);
+          ux.log(`Table ${this.data.tableName} successfully created`);
         } else {
           throw `The table ${this.data.className} already exists. Try changing the name.`;
         }
@@ -219,7 +219,7 @@ export default class ContractTableCreateCommand extends Command {
   }
 
   private updateContract(contractFilePath: string) {
-    CliUx.ux.log(`Adding the table to the contract ${this.data.contractName}`);
+    ux.log(`Adding the table to the contract ${this.data.contractName}`);
     if (this.project) {
       this.project.addSourceFilesAtPaths([contractFilePath])
       const contractSource = this.project.getSourceFile(contractFilePath);
@@ -245,7 +245,7 @@ export default class ContractTableCreateCommand extends Command {
 
         contractSource.formatText(FORMAT_SETTINGS);
         contractSource.saveSync();
-        CliUx.ux.log(green(`Contract ${this.data.contractName} was successfully updated`));
+        ux.log(green(`Contract ${this.data.contractName} was successfully updated`));
       } else {
         throw `Not contract ${this.data.contractName} found`;
       }

@@ -2,5 +2,11 @@
   "extends": [
     "oclif",
     "oclif-typescript"
-  ]
+  ],
+  "rules": {
+    "node/no-missing-import": ["error", {
+      "tryExtensions": [".js", ".ts"],
+      "allowModules": ["@oclif/core"]
+    }]
+  }
 }

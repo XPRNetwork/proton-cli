@@ -1,4 +1,5 @@
-import {CliUx} from '@oclif/core'
+import { ux } from '../utils/ux'
+
 import {
   JsonRpc,
   Api,
@@ -82,12 +83,12 @@ class Network {
 
     config.set('currentChain', chain)
     this.initialize()
-    CliUx.ux.log(`${green('Success:')} Switched to chain ${chain}`)
+    ux.log(`${green('Success:')} Switched to chain ${chain}`)
   }
 
   setEndpoint(endpoint: string) {
     this.initialize()
-    CliUx.ux.log(`${green('Success:')} Switched to endpoint ${endpoint}`)
+    ux.log(`${green('Success:')} Switched to endpoint ${endpoint}`)
   }
 
   overrideEndpoint(endpointList: string[]) {
@@ -98,7 +99,7 @@ class Network {
     filteredEndpoints.push(newEndpoints)
     console.log(filteredEndpoints, 'this is the endpoints after override')
     config.set('endpoints', filteredEndpoints)
-    CliUx.ux.log(
+    ux.log(
       `${green('Success:')} Endpoints set to ${endpointList} for ${chain}`,
     )
   }

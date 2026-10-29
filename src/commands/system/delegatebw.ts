@@ -1,6 +1,8 @@
-import { Command, flags } from '@oclif/command'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
-import { CliUx } from '@oclif/core'
+
 import { green } from 'colors';
 import { getExplorer } from '../../apis/getExplorer';
 
@@ -9,18 +11,23 @@ export default class DelegateBandwidth extends Command {
   static hidden = true
 
   static flags = {
-    transfer: flags.boolean({char: 't', default: false}),
+    transfer: Flags.boolean({char: 't', default: false}),
   }
 
-  static args = [
-    {name: 'receiver', required: true},
-    {name: 'cpu', required: true},
-    {name: 'net', required: true},
-  ]
+  static args = {
+    receiver: Args.string({
+      required: true,
+    }),
+    cpu: Args.string({
+      required: true,
+    }),
+    net: Args.string({
+      required: true,
+    }),
+  }
 
   async run() {
-    const {args, flags} = this.parse(DelegateBandwidth)
-
+    const {args, flags} = await this.parse(DelegateBandwidth)
 
     const actions = [
       {
@@ -43,7 +50,7 @@ export default class DelegateBandwidth extends Command {
     // Execute
     await network.transact({ actions })
 
-    this.log(`${green('Success:')} Added resources to ${args.account}!`)
-    await CliUx.ux.url('View Account on block explorer', `${getExplorer()}/account/${args.receiver}`)
+    this.log(`${green('Success:')} Added resources to ${args.receiver}!`)
+    await ux.url('View Account on block explorer', `${getExplorer()}/account/${args.receiver}`)
   }
 }

@@ -1,5 +1,6 @@
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Flags } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { Key } from '@proton/js'
 import { red, yellow } from 'colors'
 import passwordManager from '../../storage/passwordManager'
@@ -11,12 +12,12 @@ export default class ListAllKeys extends Command {
   static description = 'List saved keys. Shows public keys and associated accounts by default; pass --reveal-private to include private keys (gated by the reveal password if one is set).'
 
   static flags = {
-    'reveal-private': flags.boolean({
+    'reveal-private': Flags.boolean({
       char: 'r',
       description: 'Include private keys in the output (requires the reveal password if set, or a typed confirmation otherwise)',
       default: false,
     }),
-    force: flags.boolean({
+    force: Flags.boolean({
       char: 'f',
       description: 'Skip the typed confirmation and TTY check when used with --reveal-private. Intended for non-interactive scripts. Does NOT skip the reveal password if one is set.',
       default: false,
@@ -24,12 +25,12 @@ export default class ListAllKeys extends Command {
   }
 
   async run() {
-    const { flags: parsedFlags } = this.parse(ListAllKeys)
+    const { flags: parsedFlags } = await this.parse(ListAllKeys)
     const revealPrivate = parsedFlags['reveal-private']
 
     const privateKeys = await passwordManager.getPrivateKeys()
     if (privateKeys.length === 0) {
-      CliUx.ux.log('No keys saved.')
+      ux.log('No keys saved.')
       return
     }
 
@@ -46,7 +47,7 @@ export default class ListAllKeys extends Command {
         list.push({ account: entry.account_name, permission: entry.permission_name })
       }
     } catch (err) {
-      CliUx.ux.warn(`Could not resolve accounts for keys: ${(err as Error).message}`)
+      ux.warn(`Could not resolve accounts for keys: ${(err as Error).message}`)
     }
 
     if (!revealPrivate) {
@@ -57,14 +58,14 @@ export default class ListAllKeys extends Command {
           accounts: accountsByPubkey[publicKey] || [],
         }
       })
-      CliUx.ux.styledJSON(display)
-      CliUx.ux.log(yellow('\nPrivate keys hidden. Use --reveal-private to include them.'))
+      ux.styledJSON(display)
+      ux.log(yellow('\nPrivate keys hidden. Use --reveal-private to include them.'))
       return
     }
 
     if (!parsedFlags.force) {
       if (!process.stdout.isTTY || !process.stdin.isTTY) {
-        CliUx.ux.error('Refusing to print private keys to a non-TTY stream. Run this in an interactive terminal, or pass --force in a trusted script.')
+        ux.error('Refusing to print private keys to a non-TTY stream. Run this in an interactive terminal, or pass --force in a trusted script.')
       }
     }
 
@@ -72,12 +73,12 @@ export default class ListAllKeys extends Command {
       // Reveal password is required regardless of --force.
       await requireRevealPassword()
     } else if (!parsedFlags.force) {
-      CliUx.ux.log(yellow('No reveal password is set. Run `proton key:reveal-setup` to protect private-key reveals behind a password that AI agents running on this machine cannot bypass.'))
-      CliUx.ux.log(red('WARNING: This will print your PRIVATE KEYS to the terminal.'))
-      CliUx.ux.log(red('Anyone with these keys can control your accounts. Make sure no one is watching and your terminal is not being recorded.'))
-      const confirmation = await CliUx.ux.prompt(`Type "${CONFIRMATION_PHRASE}" to continue`)
+      ux.log(yellow('No reveal password is set. Run `proton key:reveal-setup` to protect private-key reveals behind a password that AI agents running on this machine cannot bypass.'))
+      ux.log(red('WARNING: This will print your PRIVATE KEYS to the terminal.'))
+      ux.log(red('Anyone with these keys can control your accounts. Make sure no one is watching and your terminal is not being recorded.'))
+      const confirmation = await ux.prompt(`Type "${CONFIRMATION_PHRASE}" to continue`)
       if (confirmation !== CONFIRMATION_PHRASE) {
-        CliUx.ux.error('Confirmation phrase did not match. Aborting.')
+        ux.error('Confirmation phrase did not match. Aborting.')
       }
     }
 
@@ -90,6 +91,6 @@ export default class ListAllKeys extends Command {
         accounts: accountsByPubkey[publicKey] || [],
       }
     })
-    CliUx.ux.styledJSON(display)
+    ux.styledJSON(display)
   }
 }

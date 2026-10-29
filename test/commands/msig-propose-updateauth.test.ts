@@ -1,4 +1,4 @@
-import {expect, test} from '@oclif/test'
+import {expect, test} from '../helpers/oclif'
 import {network} from '../../src/storage/networks'
 
 /* eslint-disable camelcase */

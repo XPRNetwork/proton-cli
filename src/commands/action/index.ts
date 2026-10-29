@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 import dedent from 'ts-dedent'
 import { ABI } from '@greymass/eosio'
@@ -8,15 +9,24 @@ import { parseDetailsError } from '../../utils/detailsError'
 export default class Action extends Command {
   static description = 'Execute Action'
 
-  static args = [
-    { name: 'contract', required: true },
-    { name: 'action', required: false },
-    { name: 'data', required: false },
-    { name: 'authorization', required: false, description: 'Account to authorize with' },
-  ]
+  static args = {
+    contract: Args.string({
+      required: true,
+    }),
+    action: Args.string({
+      required: false,
+    }),
+    data: Args.string({
+      required: false,
+    }),
+    authorization: Args.string({
+      required: false,
+      description: 'Account to authorize with',
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(Action)
+    const { args } = await this.parse(Action)
 
     // Get ABI
     const { abi: rawAbi } = await network.rpc.get_abi(args.contract)
@@ -30,7 +40,7 @@ export default class Action extends Command {
         return `• ${a.name} (${fields})`
       }).join('\n')
 
-      CliUx.ux.log(dedent`
+      ux.log(dedent`
         Available actions:
         ${availableActions}
       `)
@@ -87,7 +97,7 @@ export default class Action extends Command {
         authorization
       }]
     })
-    CliUx.ux.styledJSON(result)
+    ux.styledJSON(result)
   }
 
   async catch(e: Error | any) {

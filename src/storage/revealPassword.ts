@@ -1,5 +1,6 @@
+import { ux } from '../utils/ux'
 import { scryptSync, randomBytes, timingSafeEqual } from 'crypto'
-import { CliUx } from '@oclif/core'
+
 import { config, RevealPasswordHash } from './config'
 
 const SCRYPT_PARAMS = { N: 2 ** 15, r: 8, p: 1, keyLen: 64 }
@@ -85,18 +86,18 @@ export async function requireRevealPassword(): Promise<void> {
   if (!stored) return
 
   if (!process.stdin.isTTY || !process.stdout.isTTY) {
-    CliUx.ux.error('Refusing to prompt for the reveal password in a non-TTY stream. Run this in an interactive terminal.')
+    ux.error('Refusing to prompt for the reveal password in a non-TTY stream. Run this in an interactive terminal.')
   }
 
-  const input = await CliUx.ux.prompt('Enter reveal password', { type: 'hide' })
+  const input = await ux.prompt('Enter reveal password', { type: 'hide' })
   let ok: boolean
   try {
     ok = verifyRevealPassword(input, stored)
   } catch (err) {
-    CliUx.ux.error(`Stored reveal password configuration is invalid: ${(err as Error).message}\nRun \`proton key:reveal-disable\` and then \`proton key:reveal-setup\` to reset it.`)
+    ux.error(`Stored reveal password configuration is invalid: ${(err as Error).message}\nRun \`proton key:reveal-disable\` and then \`proton key:reveal-setup\` to reset it.`)
     return
   }
   if (!ok) {
-    CliUx.ux.error('Reveal password is incorrect.')
+    ux.error('Reveal password is incorrect.')
   }
 }

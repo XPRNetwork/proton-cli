@@ -1,24 +1,28 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Args, Command } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 
 export default class AccountsByAuthorizer extends Command {
   static description = 'Get Accounts by Authorization'
 
-  static args = [
-    {
-      name: 'authorizations', required: true, default: [], parse: (input: string) => {
-        const parsed = JSON.parse(input)
-        return Array.isArray(parsed) ? parsed : [parsed]
-      }
-    },
-    { name: 'keys', required: false, default: [] },
-  ]
+  static args = {
+    authorizations: Args.string({
+      required: true,
+      description: 'JSON-encoded list of {actor, permission} authorizations',
+    }),
+    keys: Args.string({
+      required: false,
+      description: 'JSON-encoded list of public keys',
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(AccountsByAuthorizer)
-    console.log(args.authorizations, args.keys)
-    const res = await network.rpc.get_accounts_by_authorizers(args.authorizations, args.keys)
-    await CliUx.ux.styledJSON(res)
+    const { args } = await this.parse(AccountsByAuthorizer)
+    const parsedAuth = JSON.parse(args.authorizations)
+    const authorizations = Array.isArray(parsedAuth) ? parsedAuth : [parsedAuth]
+    const keys: string[] = args.keys ? JSON.parse(args.keys) : []
+    const res = await network.rpc.get_accounts_by_authorizers(authorizations, keys)
+    await ux.styledJSON(res)
   }
 }

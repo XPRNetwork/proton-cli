@@ -1,5 +1,6 @@
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { green } from 'colors'
 import { network } from '../../storage/networks'
 import { parseDetailsError } from '../../utils/detailsError'
@@ -12,21 +13,30 @@ export default class RamBuy extends Command {
     '$ proton ram:buy payer receiver 50000 -p payer@active',
   ]
 
-  static args = [
-    { name: 'buyer', required: true, description: 'Account paying for RAM' },
-    { name: 'receiver', required: true, description: 'Account receiving RAM' },
-    { name: 'bytes', required: true, description: 'Number of bytes of RAM to purchase' },
-  ]
+  static args = {
+    buyer: Args.string({
+      required: true,
+      description: 'Account paying for RAM',
+    }),
+    receiver: Args.string({
+      required: true,
+      description: 'Account receiving RAM',
+    }),
+    bytes: Args.string({
+      required: true,
+      description: 'Number of bytes of RAM to purchase',
+    }),
+  }
 
   static flags = {
-    authorization: flags.string({
+    authorization: Flags.string({
       char: 'p',
       description: 'Authorization to use (e.g., account@active). Defaults to buyer@active'
     }),
   }
 
   async run() {
-    const { args, flags } = this.parse(RamBuy)
+    const { args, flags } = await this.parse(RamBuy)
 
     const [actor, permission] = flags.authorization
       ? flags.authorization.split('@')
@@ -49,10 +59,10 @@ export default class RamBuy extends Command {
         }]
       })
 
-      CliUx.ux.log(green('✓ RAM Purchased'))
-      CliUx.ux.log(`  Buyer: ${actor}`)
-      CliUx.ux.log(`  Receiver: ${args.receiver}`)
-      CliUx.ux.log(`  Bytes: ${Number(args.bytes).toLocaleString()}`)
+      ux.log(green('✓ RAM Purchased'))
+      ux.log(`  Buyer: ${actor}`)
+      ux.log(`  Receiver: ${args.receiver}`)
+      ux.log(`  Bytes: ${Number(args.bytes).toLocaleString()}`)
     } catch (error) {
       parseDetailsError(error)
     }

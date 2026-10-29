@@ -1,11 +1,12 @@
-import { CliUx } from '@oclif/core';
+import { ux } from './ux'
+
 import { yellow } from 'colors';
 import * as fs from 'fs';
 import * as path from 'path';
 
 export function createRootFolder(folderPath: string) {
   if (!fs.existsSync(folderPath)) {
-    CliUx.ux.log(yellow(`${folderPath} is not found. Creating.`))
+    ux.log(yellow(`${folderPath} is not found. Creating.`))
     fs.mkdirSync(folderPath, { recursive: true });
   }
 }

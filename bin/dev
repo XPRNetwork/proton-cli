@@ -1,5 +1,4 @@
 #!/usr/bin/env node
 
-require('@oclif/command').run()
-.then(require('@oclif/command/flush'))
-.catch(require('@oclif/errors/handle'))
+// Runs commands from src via ts-node instead of the compiled lib
+require('@oclif/core').execute({development: true, dir: __dirname})

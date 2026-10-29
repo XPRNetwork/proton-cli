@@ -1,5 +1,6 @@
-import { Command } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { Key, RpcInterfaces } from '@proton/js'
 import { green, red } from 'colors'
 import { Separator } from 'inquirer'
@@ -16,12 +17,15 @@ const parseAccount = (acc: { weight: number, permission: { actor: string, permis
 export default class UpdatePermission extends Command {
   static description = 'Update Permission'
 
-  static args = [
-    { name: 'account', required: true, description: 'Account to modify' },
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+      description: 'Account to modify',
+    }),
+  }
 
   async run() {
-    const { args } = this.parse(UpdatePermission)
+    const { args } = await this.parse(UpdatePermission)
 
     // Track
     let account: RpcInterfaces.GetAccountResult
@@ -34,7 +38,7 @@ export default class UpdatePermission extends Command {
       // Sorts in-place and displays
       account = await network.rpc.get_account(args.account)
       lightAccount = await getLightAccount(args.account)
-      await CliUx.ux.log('\n' + parsePermissions(account.permissions, lightAccount) + '\n')
+      await ux.log('\n' + parsePermissions(account.permissions, lightAccount) + '\n')
       account.permissions.map(perm => {
         perm.required_auth.keys = perm.required_auth.keys.map(key => {
           key.key = Key.PublicKey.fromString(key.key).toString()
@@ -54,10 +58,10 @@ export default class UpdatePermission extends Command {
     const save = async () => {
       sortRequiredAuth(currentPermission.required_auth)
 
-      await CliUx.ux.log(green('\n' + 'Expected Permissions:'))
-      await CliUx.ux.log(parsePermissions(account!.permissions, lightAccount, false) + '\n')
+      await ux.log(green('\n' + 'Expected Permissions:'))
+      await ux.log(parsePermissions(account!.permissions, lightAccount, false) + '\n')
 
-      const authority = await CliUx.ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
+      const authority = await ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
       const [actor, permission] = authority.split('@')
       await network.transact({
         actions: [{
@@ -72,13 +76,13 @@ export default class UpdatePermission extends Command {
           authorization: [{ actor, permission }]
         }]
       })
-      await CliUx.ux.log(`${green('Success:')} Permission updated`)
+      await ux.log(`${green('Success:')} Permission updated`)
       step = 'displayPermission'
       await wait(1000)
     }
 
     const deleteCurrentPerm = async () => {
-      const authority = await CliUx.ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
+      const authority = await ux.prompt(green(`Enter signing permission`), { default: `${args.account}@active` })
       const [actor, permission] = authority.split('@')
 
       const authorization = [{ actor, permission }]
@@ -112,7 +116,7 @@ export default class UpdatePermission extends Command {
       await network.transact({
         actions: removeLinksActions.concat(deleteActions)
       })
-      await CliUx.ux.log(`${green('Success:')} Permission deleted`)
+      await ux.log(`${green('Success:')} Permission deleted`)
       step = 'displayPermission'
       await wait(1000)
     }
@@ -277,6 +281,6 @@ export default class UpdatePermission extends Command {
   }
 
   async catch(e: Error) {
-    CliUx.ux.error(red(e.message))
+    ux.error(red(e.message))
   }
 }

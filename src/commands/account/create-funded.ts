@@ -1,5 +1,6 @@
-import { Command, flags } from '@oclif/command'
-import { CliUx } from '@oclif/core'
+import { Command, Flags, Args } from '@oclif/core'
+import { ux } from '../../utils/ux'
+
 import { network } from '../../storage/networks'
 import { Mnemonic } from '@proton/mnemonic'
 import passwordManager from '../../storage/passwordManager'
@@ -37,20 +38,22 @@ The creator account must hold enough XPR to cover RAM costs.`
     '$ proton account:create-funded agentacct -c fundingacct --owner paul123',
   ]
 
-  static args = [
-    { name: 'account', required: true, description: 'New account name (4-12 chars, a-z and 1-5 only)' },
-  ]
+  static args = {
+    account: Args.string({
+      required: true,
+      description: 'New account name (4-12 chars, a-z and 1-5 only)',
+    }),
+  }
 
   static flags = {
-    help: flags.help({ char: 'h' }),
-    creator: flags.string({ char: 'c', required: true, description: 'Existing account that pays for and creates the new account' }),
-    key: flags.string({ char: 'k', description: 'Public key for new account (PUB_K1_... format). Generates new key if omitted' }),
-    ram: flags.integer({ char: 'r', default: 3000, description: 'RAM bytes to purchase for new account (minimum 3000)' }),
-    owner: flags.string({ char: 'o', description: 'Account to add as backup owner (can recover/rotate keys if agent key is lost)' }),
+creator: Flags.string({ char: 'c', required: true, description: 'Existing account that pays for and creates the new account' }),
+    key: Flags.string({ char: 'k', description: 'Public key for new account (PUB_K1_... format). Generates new key if omitted' }),
+    ram: Flags.integer({ char: 'r', default: 3000, description: 'RAM bytes to purchase for new account (minimum 3000)' }),
+    owner: Flags.string({ char: 'o', description: 'Account to add as backup owner (can recover/rotate keys if agent key is lost)' }),
   }
 
   async run() {
-    const { args, flags } = this.parse(CreateFundedAccount)
+    const { args, flags } = await this.parse(CreateFundedAccount)
     const accountName: string = args.account.toLowerCase()
 
     // Validate account name with helpful error messages
@@ -96,7 +99,7 @@ The creator account must hold enough XPR to cover RAM costs.`
       const privateKey = keyPair.privateKey.toString()
 
       this.log('Generated new key pair:')
-      CliUx.ux.styledJSON({
+      ux.styledJSON({
         public: publicKey,
         private: privateKey,
         mnemonic: mnemonic.phrase,
@@ -170,7 +173,7 @@ The creator account must hold enough XPR to cover RAM costs.`
     }
     this.log(`RAM: ${flags.ram} bytes`)
     this.log(`CPU/NET: delegated by wlcm.proton (free)`)
-    await CliUx.ux.url('View on explorer', `${getExplorer()}/account/${accountName}`)
+    await ux.url('View on explorer', `${getExplorer()}/account/${accountName}`)
   }
 
   async catch(e: Error | any) {

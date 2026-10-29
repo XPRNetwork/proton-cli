@@ -1,4 +1,5 @@
-import { CliUx, Command, Flags } from '@oclif/core'
+import { ux } from '../../utils/ux'
+import { Command, Flags } from '@oclif/core'
 import * as path from 'path';
 import { green, red } from 'colors';
 
@@ -61,7 +62,7 @@ export default class ContractActionsAddCommand extends Command {
       contractSource.formatText(FORMAT_SETTINGS);
       contractSource.saveSync();
 
-      CliUx.ux.log(green(`Actions were successfully added`));
+      ux.log(green(`Actions were successfully added`));
 
     }
   }

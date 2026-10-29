@@ -1,6 +1,6 @@
 /* eslint-disable camelcase, unicorn/numeric-separators-style, no-restricted-imports, @typescript-eslint/no-empty-function */
-import {expect, test} from '@oclif/test'
-import {CliUx} from '@oclif/core'
+import {expect, test} from '../helpers/oclif'
+import {ux} from '../../src/utils/ux'
 import {green} from 'colors'
 import * as lightApi from '../../src/apis/lightApi'
 import {network} from '../../src/storage/networks'
@@ -51,7 +51,7 @@ const accountFixture = () => ({
   ],
 })
 
-const originalPrompt = Object.getOwnPropertyDescriptor(CliUx.ux, 'prompt')
+const originalPrompt = Object.getOwnPropertyDescriptor(ux, 'prompt')
 let choiceCalls = 0
 const choose = async () => {
   choiceCalls++
@@ -72,11 +72,11 @@ describe('permission', () => {
   .stub(promptUtils, 'promptKey', async () => WA_A)
   .stub(promptUtils, 'promptAuthority', async () => ({actor: 'ruter1', permission: 'active'}))
   .do(() => {
-    Object.defineProperty(CliUx.ux, 'prompt', {value: async () => 'victorcrisan@active', configurable: true})
+    Object.defineProperty(ux, 'prompt', {value: async () => 'victorcrisan@active', configurable: true})
   })
   .finally(() => {
     if (originalPrompt) {
-      Object.defineProperty(CliUx.ux, 'prompt', originalPrompt)
+      Object.defineProperty(ux, 'prompt', originalPrompt)
     }
   })
   .stub(waitUtils, 'wait', async () => {})
